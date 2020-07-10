@@ -1,0 +1,28 @@
+{
+	"name": "le-bot-en-js",
+	"version": "0.0.1",
+	"description": "Le bot discord en JS.",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/TanguyChiffoleau/Le-bot-en-JS.git"
+	},
+	"author": "Tanguy Chiffoleau",
+	"license": "MIT License",
+	"bugs": {
+		"url": "https://github.com/TanguyChiffoleau/Le-bot-en-JS/issues"
+	},
+	"homepage": "https://github.com/TanguyChiffoleau/Le-bot-en-JS#readme",
+	"dependencies": {
+		"discord.js": "^12.2.0"
+	},
+	"devDependencies": {
+		"eslint": "^7.4.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"prettier": "^2.0.5"
+	}
+}
