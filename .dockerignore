@@ -1,3 +1,8 @@
-# Dossiers
-node_modules/
-.vscode/
+# On ignore tous les fichiers
+*.*
+
+# Sauf
+!src/
+!*.env
+!package.json
+!package-lock.json
