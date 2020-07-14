@@ -4,7 +4,10 @@
 	"description": "Le bot discord en JS.",
 	"main": "src/index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "node .",
+		"test": "eslint src && prettier --check src/**/*.js",
+		"docker-start": "docker-compose up -d --build",
+		"docker-stop": "docker-compose down"
 	},
 	"repository": {
 		"type": "git",

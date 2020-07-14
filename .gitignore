@@ -1,2 +1,10 @@
-# Dossiers
+## Dossiers
+
 node_modules/
+.vscode/
+
+## Fichiers
+
+# fichiers d'environnement
+bot.env
+database.env
