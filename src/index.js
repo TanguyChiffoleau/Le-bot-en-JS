@@ -6,6 +6,6 @@ client.login(process.env.TOKEN)
 
 client.on('ready', () => console.log('ready'))
 
-	client.on('message', message => {
-	console.log(message.content);
+client.on('message', message => {
+	console.log(message.content)
 })
