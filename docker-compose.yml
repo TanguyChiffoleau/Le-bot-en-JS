@@ -1,19 +1,17 @@
 version: '3.8'
 
 services:
+
     db:
         image: postgres
         restart: on-failure
-        environment:
-           POSTGRES_PASSWORD: postgres
-           POSTGRES_USER: postgres
-           POSTGRES_DB: stripe-example
+        env_file: ./config/database.env
         ports:
-            - '5432:5432'
+            - 5432:5432
+
     bot:
-        image: tanguy/test:latest
+        build: ./
+        restart: on-failure
         depends_on:
             - db
-        restart: on-failure
-        environment:
-            TOKEN: NzI5Mzk3MDc1NzUzNTY2MjA4.XwIWEA.4P1djiAPN34Ru8r0_LoYtLRnqaM
+        env_file: ./config/bot.env
