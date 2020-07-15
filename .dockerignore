@@ -1,5 +1,5 @@
 # On ignore tous les fichiers
-*.*
+*
 
 # Sauf
 !src/
