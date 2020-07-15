@@ -17,3 +17,5 @@ services:
         env_file: 
             - ./config/bot.env
             - ./config/database.env
+        environment:
+            NODE_ENV: production
