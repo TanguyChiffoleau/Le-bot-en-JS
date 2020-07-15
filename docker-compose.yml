@@ -14,4 +14,8 @@ services:
         restart: on-failure
         depends_on:
             - db
-        env_file: ./config/bot.env
+        env_file: 
+            - ./config/bot.env
+            - ./config/database.env
+        environment:
+            NODE_ENV: production
