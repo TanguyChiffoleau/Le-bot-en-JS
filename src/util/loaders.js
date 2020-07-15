@@ -2,11 +2,16 @@ const fs = require('fs')
 
 module.exports = {
 	events: client => {
-		const eventsDir = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'))
-		eventsDir.forEach(eventFile => {
-			const event = require(`../events/${eventFile}`)
-			const eventName = eventFile.split('.')[0]
-			client.on(eventName, event.bind(null, client))
+		const eventsDir = fs.readdirSync('./src/events')
+		eventsDir.forEach(eventCategory => {
+			const events = fs
+				.readdirSync(`./src/events/${eventCategory}`)
+				.filter(file => file.endsWith('.js'))
+			events.forEach(eventFile => {
+				const event = require(`../events/${eventCategory}/${eventFile}`)
+				const eventName = eventFile.split('.')[0]
+				client.on(eventName, event.bind(null, client))
+			})
 		})
 	},
 
