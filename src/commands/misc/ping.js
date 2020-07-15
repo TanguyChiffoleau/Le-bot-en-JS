@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'ping',
-	description: "Donne le ping de l'API ainsi que du bot (",
+	description: "Donne le ping de l'API ainsi que du bot",
 	aliases: ['pong'],
 	isEnabled: true,
 	needArguments: false,
