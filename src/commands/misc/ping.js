@@ -4,14 +4,13 @@ module.exports = {
 	aliases: ['pong'],
 	isEnabled: true,
 	needArguments: false,
-	execute(client, message) {
-		message.channel.send(`🏓 Pong`).then(async sentMessage => {
-			const start = new Date()
-			await sentMessage.edit(`🏓 Pong ?`)
-			const editLatency = Math.round(new Date() - start)
-			sentMessage.edit(
-				`Modification d'un message: **${editLatency}** ms\nAPI: **${client.ws.ping}** ms`,
-			)
-		})
+	execute: async (client, message) => {
+		const sentMessage = await message.channel.send(`🏓 Pong`)
+		const start = new Date()
+		await sentMessage.edit(`🏓 Pong ?`)
+		const editLatency = Math.round(new Date() - start)
+		sentMessage.edit(
+			`Modification d'un message: **${editLatency}** ms\nAPI: **${client.ws.ping}** ms`,
+		)
 	},
 }
