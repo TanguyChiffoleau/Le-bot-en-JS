@@ -1,5 +1,8 @@
 /* eslint-disable consistent-return */
+
 module.exports = async (client, message) => {
+	if (message.guild && message.guild.id !== process.env.GUILD_ID) return
+
 	if (message.author.bot || !message.content.startsWith(client.prefix)) return
 
 	const args = message.content.slice(client.prefix.length).split(/ +/)
