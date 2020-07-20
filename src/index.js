@@ -1,3 +1,4 @@
+const { Collection } = require('discord.js')
 const {
 	events: eventsLoader,
 	commands: commandsLoader,
@@ -8,6 +9,8 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config({ path: './c
 
 const run = async () => {
 	const client = await createClient()
+
+	client.cooldowns = new Collection()
 
 	eventsLoader(client)
 
