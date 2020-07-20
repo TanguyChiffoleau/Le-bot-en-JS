@@ -1,3 +1,5 @@
+const { version } = require('../../../package.json')
+
 module.exports = {
 	name: 'infos',
 	description: 'Donne quelques infos sur le bot',
@@ -15,6 +17,11 @@ module.exports = {
 					icon_url: client.user.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [
+					{
+						name: 'version',
+						value: version,
+						inline: true,
+					},
 					{
 						name: 'Latence API:',
 						value: `${client.ws.ping} ms`,
