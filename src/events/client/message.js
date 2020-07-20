@@ -49,5 +49,6 @@ module.exports = async (client, message) => {
 	} catch (error) {
 		message.channel.stopTyping(true)
 		message.reply('il y a eu une erreur en exécutant la commande 😬')
+		console.error(error)
 	}
 }
