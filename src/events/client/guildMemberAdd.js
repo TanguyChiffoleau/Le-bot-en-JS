@@ -11,7 +11,7 @@ module.exports = (cient, guildMember) => {
 			color: '57C92A',
 			author: {
 				name: `${guildMember.user.tag} (ID ${guildMember.id})`,
-				icon_url: guildMember.user.displayAvatarURL(),
+				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 			},
 			description: `<@${guildMember.id}>`,
 			fields: [

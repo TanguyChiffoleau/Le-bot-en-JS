@@ -13,7 +13,7 @@ module.exports = (cient, guildMember) => {
 			color: 'C9572A',
 			author: {
 				name: `${guildMember.user.tag} (ID ${guildMember.id})`,
-				icon_url: guildMember.user.displayAvatarURL(),
+				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 			},
 			footer: {
 				text: `Un utilisateur a quitté le serveur • ${convertDate(new Date())}`,
