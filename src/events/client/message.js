@@ -40,7 +40,7 @@ module.exports = async (client, message) => {
 		return message.reply("tu n'as pas donné d'argument(s) 😕")
 
 	if (command.guildOnly && message.channel.type !== 'text')
-		return message.reply('je ne peux pas exécuter cette commande dans les DMs 😮')
+		return message.reply('je ne peux pas exécuter cette commande dans les messages privés 😕')
 
 	try {
 		message.channel.startTyping()
