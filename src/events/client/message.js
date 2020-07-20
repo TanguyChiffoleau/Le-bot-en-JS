@@ -17,6 +17,9 @@ module.exports = async (client, message) => {
 	if (command.needArguments && !args.length)
 		return message.reply("tu n'as pas donné d'argument(s) 😕")
 
+	if (command.guildOnly && message.channel.type !== 'text')
+		return message.reply('je ne peux pas exécuter cette commande dans les DMs 😮')
+
 	try {
 		message.channel.startTyping()
 		await command.execute(client, message, args)
