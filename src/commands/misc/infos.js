@@ -8,10 +8,11 @@ module.exports = {
 	execute: (client, message) => {
 		message.channel.send({
 			embed: {
+				color: '01579B',
 				title: 'Infos',
 				author: {
 					name: client.user.username,
-					icon_url: client.user.displayAvatarURL.displayAvatarURL({ dynamic: true }),
+					icon_url: client.user.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [
 					{
