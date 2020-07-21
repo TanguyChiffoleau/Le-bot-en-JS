@@ -30,7 +30,7 @@ module.exports = {
 	},
 
 	client: async () => {
-		const client = new Client()
+		const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
 		client.commands = new Collection()
 		client.prefix = '!'
 
