@@ -12,7 +12,13 @@ module.exports = async (client, messageReaction, user) => {
 	if (messageReaction.partial) await messageReaction.fetch().catch()
 	const { message, emoji } = messageReaction
 
-	if (user.bot || emoji.name !== '🚨' || message.channel.type !== 'text') return
+	if (
+		user.bot ||
+		emoji.name !== '🚨' ||
+		message.channel.type !== 'text' ||
+		message.author === user
+	)
+		return
 
 	const reportChannel = message.guild.channels.cache.find(
 		channel => channel.id === process.env.REPORT_CHANNEL,
