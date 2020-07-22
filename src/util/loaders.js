@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { Client, Collection } = require('discord.js')
 
 module.exports = {
 	events: client => {
@@ -26,5 +27,15 @@ module.exports = {
 				if (command.isEnabled) client.commands.set(command.name, command)
 			})
 		})
+	},
+
+	client: async () => {
+		const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
+		client.commands = new Collection()
+		client.prefix = '!'
+
+		await client.login(process.env.DISCORD_TOKEN)
+
+		return client
 	},
 }

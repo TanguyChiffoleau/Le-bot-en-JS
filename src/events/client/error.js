@@ -1,1 +1,1 @@
-module.exports = error => console.error(error)
+module.exports = (client, error) => console.error(error)

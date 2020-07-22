@@ -5,17 +5,19 @@ services:
     db:
         image: postgres
         restart: on-failure
-        env_file: ./config/database.env
+        env_file: ../config/database.env
         ports:
             - 5432:5432
 
     bot:
-        build: ./
+        build:
+            context: ../
+            dockerfile: ./docker/Dockerfile
         restart: on-failure
         depends_on:
             - db
         env_file: 
-            - ./config/bot.env
-            - ./config/database.env
+            - ../config/bot.env
+            - ../config/database.env
         environment:
             NODE_ENV: production

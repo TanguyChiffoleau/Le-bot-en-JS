@@ -1,14 +1,20 @@
-const Discord = require('discord.js')
-const { events: eventsLoader, commands: commandsLoader } = require('./util/loaders')
+const { Collection } = require('discord.js')
+const {
+	events: eventsLoader,
+	commands: commandsLoader,
+	client: createClient,
+} = require('./util/loaders')
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config({ path: './config/bot.env' })
 
-const client = new Discord.Client()
-client.commands = new Discord.Collection()
-client.prefix = '!'
+const run = async () => {
+	const client = await createClient()
 
-client.login(process.env.DISCORD_TOKEN)
+	client.cooldowns = new Collection()
 
-eventsLoader(client)
+	eventsLoader(client)
 
-commandsLoader(client)
+	commandsLoader(client)
+}
+
+run().catch(error => console.error(error))
