@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 const { convertDate } = require('../../util/util')
-// Test
 
 module.exports = async (client, messageReaction, user) => {
 	if (messageReaction.partial) await messageReaction.fetch().catch()
