@@ -27,24 +27,15 @@ module.exports = {
 		const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
 		const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
 
-		if (years !== 0)
-			return `${pluralize('année', years)} ${pluralize('moi', months, true)} ${pluralize(
-				'jour',
-				days,
-			)} ${pluralize('heure', hours)} ${pluralize('minute', minutes)}`
-		else if (months !== 0)
-			return `${pluralize('moi', months, true)} ${pluralize('jour', days)} ${pluralize(
-				'heure',
-				hours,
-			)} ${pluralize('minute', minutes)}`
-		else if (days !== 0)
-			return `${pluralize('jour', days)} ${pluralize('heure', hours)} ${pluralize(
-				'minute',
-				minutes,
-			)}`
-		else if (hours !== 0) return `${pluralize('heure', hours)} ${pluralize('minute', minutes)}`
-		else if (minutes !== 0) return pluralize('minute', minutes)
+		const total = []
+		if (years) total.push(pluralize('année', years))
+		if (months) total.push(pluralize('moi', months, true))
+		if (days) total.push(pluralize('jour', days))
+		if (hours) total.push(pluralize('heure', hours))
+		if (minutes) total.push(pluralize('minute', minutes))
 
-		return `Il y a moins d'une minute`
+		if (!total.length) return "Il y a moins d'une minute"
+
+		return total.join(' ')
 	},
 }
