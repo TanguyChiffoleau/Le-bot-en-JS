@@ -14,21 +14,28 @@ module.exports = {
 			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
 
 	diffDate: date => {
-		const diff = new Date().now - date
-		const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12))
-		const months = Math.floor((diff / (1000 * 60 * 60 * 24 * 30)) % 12)
-		const days = Math.floor((diff / (1000 * 60 * 60 * 24)) % 365.25)
+		const pluralize = (word, quantity, isAlwaysPlural = false) => {
+			if (quantity === 0) return ''
+			else if (isAlwaysPlural) return `${quantity} ${word}s`
+			return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
+		}
+
+		const diff = new Date() - date
+		const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.4375 * 12))
+		const months = Math.floor((diff / (1000 * 60 * 60 * 24 * 30.4375)) % 12)
+		const days = Math.floor(((diff / (1000 * 60 * 60 * 24)) % 365.25) % 30.4375)
 		const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
 		const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
 
-		if (years !== 0)
-			return `${years} année(s) ${months} mois ${days} jour(s) ${hours} heure(s) ${minutes} minute(s)`
-		else if (months !== 0)
-			return `${months} mois ${days} jour(s) ${hours} heure(s) ${minutes} minute(s)`
-		else if (days !== 0) return `${days} jour(s) ${hours} heure(s) ${minutes} minute(s)`
-		else if (hours !== 0) return `${hours} heure(s) ${minutes} minute(s)`
-		else if (minutes !== 0) return `${minutes} minute(s)`
+		const total = []
+		if (years) total.push(pluralize('année', years))
+		if (months) total.push(pluralize('moi', months, true))
+		if (days) total.push(pluralize('jour', days))
+		if (hours) total.push(pluralize('heure', hours))
+		if (minutes) total.push(pluralize('minute', minutes))
 
-		return `À l'instant`
+		if (!total.length) return "Il y a moins d'une minute"
+
+		return total.join(' ')
 	},
 }

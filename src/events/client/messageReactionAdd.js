@@ -1,13 +1,5 @@
 /* eslint-disable consistent-return */
-// eslint-disable-next-line no-unused-vars
-const Discord = require('discord.js')
 const { convertDate } = require('../../util/util')
-/**
- *
- * @param {Discord.Client} client
- * @param {Discord.MessageReaction} messageReaction
- * @param {Discord.User} user
- */
 
 module.exports = async (client, messageReaction, user) => {
 	if (messageReaction.partial) await messageReaction.fetch().catch()

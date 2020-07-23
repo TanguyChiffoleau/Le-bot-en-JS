@@ -1,4 +1,5 @@
 const { version } = require('../../../package.json')
+const { diffDate } = require('../../util/util')
 
 module.exports = {
 	name: 'infos',
@@ -14,17 +15,31 @@ module.exports = {
 				title: 'Infos',
 				author: {
 					name: client.user.username,
-					icon_url: client.user.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [
+					{
+						name: 'Latence API:',
+						value: `${client.ws.ping} ms`,
+						inline: true,
+					},
+					{
+						name: 'Uptime',
+						value: diffDate(client.readyAt),
+						inline: true,
+					},
+					{
+						name: '\u200b',
+						value: '\u200b',
+						inline: true,
+					},
 					{
 						name: 'version',
 						value: version,
 						inline: true,
 					},
 					{
-						name: 'Latence API:',
-						value: `${client.ws.ping} ms`,
+						name: 'Source Code',
+						value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
 						inline: true,
 					},
 				],
