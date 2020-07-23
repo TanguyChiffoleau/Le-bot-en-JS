@@ -14,7 +14,13 @@ module.exports = {
 			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
 
 	diffDate: date => {
-		const diff = new Date().now - date
+		const pluralize = (word, quantity, isAlwaysPlural = false) => {
+			if (quantity === 0) return ''
+			else if (isAlwaysPlural) return `${quantity} ${word}s`
+			return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
+		}
+
+		const diff = new Date() - date
 		const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12))
 		const months = Math.floor((diff / (1000 * 60 * 60 * 24 * 30)) % 12)
 		const days = Math.floor((diff / (1000 * 60 * 60 * 24)) % 365.25)
@@ -22,13 +28,23 @@ module.exports = {
 		const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
 
 		if (years !== 0)
-			return `${years} année(s) ${months} mois ${days} jour(s) ${hours} heure(s) ${minutes} minute(s)`
+			return `${pluralize('année', years)} ${pluralize('moi', months, true)} ${pluralize(
+				'jour',
+				days,
+			)} ${pluralize('heure', hours)} ${pluralize('minute', minutes)}`
 		else if (months !== 0)
-			return `${months} mois ${days} jour(s) ${hours} heure(s) ${minutes} minute(s)`
-		else if (days !== 0) return `${days} jour(s) ${hours} heure(s) ${minutes} minute(s)`
-		else if (hours !== 0) return `${hours} heure(s) ${minutes} minute(s)`
-		else if (minutes !== 0) return `${minutes} minute(s)`
+			return `${pluralize('moi', months, true)} ${pluralize('jour', days)} ${pluralize(
+				'heure',
+				hours,
+			)} ${pluralize('minute', minutes)}`
+		else if (days !== 0)
+			return `${pluralize('jour', days)} ${pluralize('heure', hours)} ${pluralize(
+				'minute',
+				minutes,
+			)}`
+		else if (hours !== 0) return `${pluralize('heure', hours)} ${pluralize('minute', minutes)}`
+		else if (minutes !== 0) return pluralize('minute', minutes)
 
-		return `À l'instant`
+		return `Il y a moins d'une minute`
 	},
 }
