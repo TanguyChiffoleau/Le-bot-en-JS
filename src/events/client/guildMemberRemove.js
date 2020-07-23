@@ -1,4 +1,4 @@
-const { convertDate } = require('../../util/util')
+const { convertDate, diffDate } = require('../../util/util')
 
 module.exports = (cient, guildMember) => {
 	if (guildMember.guild.id !== process.env.GUILD_ID) return
@@ -14,6 +14,18 @@ module.exports = (cient, guildMember) => {
 				name: `${guildMember.user.tag} (ID ${guildMember.id})`,
 				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 			},
+			fields: [
+				{
+					name: 'Date de création du compte',
+					value: convertDate(guildMember.user.createdAt),
+					inline: true,
+				},
+				{
+					name: 'Âge du compte',
+					value: diffDate(guildMember.user.createdAt),
+					inline: true,
+				},
+			],
 			footer: {
 				text: `Un utilisateur a quitté le serveur • ${convertDate(new Date())}`,
 			},
