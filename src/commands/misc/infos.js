@@ -42,6 +42,11 @@ module.exports = {
 						value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
 						inline: true,
 					},
+					{
+						name: '\u200b',
+						value: '\u200b',
+						inline: true,
+					},
 				],
 			},
 		})
