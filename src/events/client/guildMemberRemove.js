@@ -1,7 +1,7 @@
 const { convertDate, diffDate } = require('../../util/util')
 
 module.exports = (cient, guildMember) => {
-	if (guildMember.guild.id !== process.env.GUILD_ID) return
+	if (guildMember.user.bot || guildMember.guild.id !== process.env.GUILD_ID) return
 
 	const leaveJoinChannel = guildMember.guild.channels.cache.find(
 		channel => channel.id === process.env.LEAVE_JOIN_CHANNEL_ID,
