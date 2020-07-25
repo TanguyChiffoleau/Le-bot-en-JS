@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
 	if (
 		message.author.bot ||
 		!message.content.startsWith(client.prefix) ||
-		(message.channel.type === 'text' && message.guild.id !== process.env.GUILD_ID)
+		(message.guild && message.guild.id !== process.env.GUILD_ID)
 	)
 		return
 
