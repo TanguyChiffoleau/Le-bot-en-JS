@@ -78,7 +78,7 @@ module.exports = async (client, messageReaction, user) => {
 							},
 							{
 								name: 'Message',
-								value: `[${message.id}](${message.url})`,
+								value: `[Aller au message](${message.url})`,
 								inline: true,
 							},
 						],
