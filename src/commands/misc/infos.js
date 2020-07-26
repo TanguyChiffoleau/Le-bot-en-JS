@@ -18,7 +18,7 @@ module.exports = {
 				},
 				fields: [
 					{
-						name: 'Latence API:',
+						name: 'Latence API',
 						value: `${client.ws.ping} ms`,
 						inline: true,
 					},
@@ -28,8 +28,8 @@ module.exports = {
 						inline: true,
 					},
 					{
-						name: '\u200b',
-						value: '\u200b',
+						name: 'Prefix',
+						value: `\`${client.prefix}\``,
 						inline: true,
 					},
 					{
