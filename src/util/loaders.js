@@ -7,7 +7,7 @@ module.exports = {
 			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
-			client.prefix = '!'
+			client.prefix = process.env.PREFIX
 
 			return client
 		},
