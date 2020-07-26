@@ -7,7 +7,7 @@
 
 ### Variables d'environnement
 
-- Renommer les fichiers `bot.example.env` et `database.example.env` en `bot.env` et `database.env` respectivement, puis modifier les variables d'environnement pour la [base de données](#databaseenv) ainsi que le [bot](#botenv).
+- Renommer les fichiers `bot.example.env` et `database.example.env` en `bot.env` et `database.env` respectivement, puis modifier les variables d'environnement pour la [base de données](#fichier-databaseenv) ainsi que le [bot](#fichier-botenv).
 - Pour pouvoir récupérer les identifiants (ID) sur discord, il faut activer le [mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
 #### Fichier bot.env
