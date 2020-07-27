@@ -4,7 +4,7 @@ module.exports = async (client, messageReaction, user) => {
 	if (messageReaction.partial) await messageReaction.fetch().catch()
 	const { message, emoji } = messageReaction
 
-	if (user.bot || (message.guild && message.guild.id !== process.env.GUILD_ID)) return
+	if (user.bot || (message.guild && message.guild.id !== client.config.guildID)) return
 
 	switch (emoji.name) {
 		case '🚨': {
@@ -12,7 +12,7 @@ module.exports = async (client, messageReaction, user) => {
 				return
 
 			const reportChannel = message.guild.channels.cache.find(
-				channel => channel.id === process.env.REPORT_CHANNEL,
+				channel => channel.id === client.config.reportChannelID,
 			)
 
 			const fetchedMessages = await reportChannel.messages.fetch()

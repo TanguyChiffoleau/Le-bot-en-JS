@@ -29,7 +29,7 @@ module.exports = {
 					},
 					{
 						name: 'Prefix',
-						value: `\`${client.prefix}\``,
+						value: `\`${client.config.prefix}\``,
 						inline: true,
 					},
 					{

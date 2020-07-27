@@ -1,8 +1,8 @@
 module.exports = (client, oldGuildMember, newMGuildMember) => {
 	if (
-		oldGuildMember.guild.id !== process.env.GUILD_ID ||
+		oldGuildMember.guild.id !== client.config.guildID ||
 		oldGuildMember.user.bot ||
-		newMGuildMember.guild.id !== process.env.GUILD_ID ||
+		newMGuildMember.guild.id !== client.config.guildID ||
 		newMGuildMember.user.bot
 	)
 		return
