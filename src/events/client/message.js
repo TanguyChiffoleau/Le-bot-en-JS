@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable consistent-return */
 const { Collection } = require('discord.js')
 const { convertDate } = require('../../util/util')
@@ -62,12 +63,13 @@ module.exports = async (client, message) => {
 			const foundChannel = message.guild.channels.cache.find(
 				channel => channel.id === channelId,
 			)
-			if (!foundChannel) return
+			if (!foundChannel) continue
 			// eslint-disable-next-line no-await-in-loop
 			const fetchedMessages = await foundChannel.messages.fetch()
-			if (!fetchedMessages.size) return
+			if (!fetchedMessages.size) continue
 			const foundMessage = fetchedMessages.find(msg => msg.id === messageId)
-			if (!foundMessage) return
+			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
+				continue
 			const embed = {
 				embed: {
 					author: {
