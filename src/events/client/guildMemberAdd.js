@@ -1,10 +1,17 @@
 const { convertDate, diffDate } = require('../../util/util')
 
-module.exports = (cient, guildMember) => {
-	if (guildMember.guild.id !== process.env.GUILD_ID) return
+module.exports = (client, guildMember) => {
+	if (guildMember.user.bot || guildMember.guild.id !== client.config.guildID) return
+
+	if (
+		guildMember.displayName.match(
+			/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/,
+		)
+	)
+		guildMember.edit({ nick: 'Mon pseudo ne respècte pas les règles !' })
 
 	const leaveJoinChannel = guildMember.guild.channels.cache.find(
-		channel => channel.id === process.env.LEAVE_JOIN_CHANNEL_ID,
+		channel => channel.id === client.config.leaveJoinChannelID,
 	)
 
 	leaveJoinChannel.send({

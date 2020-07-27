@@ -18,7 +18,7 @@ module.exports = {
 				},
 				fields: [
 					{
-						name: 'Latence API:',
+						name: 'Latence API',
 						value: `${client.ws.ping} ms`,
 						inline: true,
 					},
@@ -28,8 +28,8 @@ module.exports = {
 						inline: true,
 					},
 					{
-						name: '\u200b',
-						value: '\u200b',
+						name: 'Prefix',
+						value: `\`${client.config.prefix}\``,
 						inline: true,
 					},
 					{
@@ -40,6 +40,11 @@ module.exports = {
 					{
 						name: 'Source Code',
 						value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
+						inline: true,
+					},
+					{
+						name: '\u200b',
+						value: '\u200b',
 						inline: true,
 					},
 				],

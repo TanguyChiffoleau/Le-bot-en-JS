@@ -1,27 +1,31 @@
-const fs = require('fs')
+const fs = require('fs').promises
 const { Client, Collection } = require('discord.js')
 
 module.exports = {
-	events: client => {
-		const eventsDir = fs.readdirSync('./src/events')
-		eventsDir.forEach(eventCategory => {
-			const events = fs
-				.readdirSync(`./src/events/${eventCategory}`)
-				.filter(file => file.endsWith('.js'))
-			events.forEach(eventFile => {
-				const event = require(`../events/${eventCategory}/${eventFile}`)
-				const eventName = eventFile.split('.')[0]
-				client.on(eventName, event.bind(null, client))
-			})
-		})
+	client: {
+		prepare: () => {
+			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
+			client.commands = new Collection()
+			client.cooldowns = new Collection()
+			client.config = {
+				prefix: process.env.PREFIX,
+				guildID: process.env.GUILD_ID,
+				reportChannelID: process.env.REPORT_CHANNEL,
+				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
+			}
+
+			return client
+		},
+
+		login: client => client.login(process.env.DISCORD_TOKEN),
 	},
 
-	commands: client => {
-		const commandsDir = fs.readdirSync('./src/commands')
-		commandsDir.forEach(commandCategory => {
-			const commands = fs
-				.readdirSync(`./src/commands/${commandCategory}`)
-				.filter(file => file.endsWith('.js'))
+	commands: async client => {
+		const commandsDir = await fs.readdir('./src/commands')
+		commandsDir.forEach(async commandCategory => {
+			const commands = (await fs.readdir(`./src/commands/${commandCategory}`)).filter(file =>
+				file.endsWith('.js'),
+			)
 			commands.forEach(commandFile => {
 				const command = require(`../commands/${commandCategory}/${commandFile}`)
 				if (command.isEnabled) client.commands.set(command.name, command)
@@ -29,13 +33,17 @@ module.exports = {
 		})
 	},
 
-	client: async () => {
-		const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
-		client.commands = new Collection()
-		client.prefix = '!'
-
-		await client.login(process.env.DISCORD_TOKEN)
-
-		return client
+	events: async client => {
+		const eventsDir = await fs.readdir('./src/events')
+		eventsDir.forEach(async eventCategory => {
+			const events = (await fs.readdir(`./src/events/${eventCategory}`)).filter(file =>
+				file.endsWith('.js'),
+			)
+			events.forEach(eventFile => {
+				const event = require(`../events/${eventCategory}/${eventFile}`)
+				const eventName = eventFile.split('.')[0]
+				client.on(eventName, event.bind(null, client))
+			})
+		})
 	},
 }
