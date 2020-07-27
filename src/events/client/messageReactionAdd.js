@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const { convertDate } = require('../../util/util')
 
 module.exports = async (client, messageReaction, user) => {
@@ -8,8 +9,9 @@ module.exports = async (client, messageReaction, user) => {
 
 	switch (emoji.name) {
 		case '🚨': {
-			if (message.author === user || message.author.bot || message.channel.type !== 'text')
-				return
+			if (message.author.bot || message.channel.type !== 'text') return
+
+			if (message.author === user) return messageReaction.users.remove(user)
 
 			const reportChannel = message.guild.channels.cache.find(
 				channel => channel.id === client.config.reportChannelID,
@@ -17,9 +19,9 @@ module.exports = async (client, messageReaction, user) => {
 
 			const fetchedMessages = await reportChannel.messages.fetch()
 
-			const logReport = fetchedMessages.find(msg =>
-				msg.embeds[0].fields.find(field => field.value.includes(message.id)),
-			)
+			const logReport = fetchedMessages
+				.filter(msg => msg.embeds)
+				.find(msg => msg.embeds[0].fields.find(field => field.value.includes(message.id)))
 
 			if (logReport) {
 				if (logReport.embeds[0].fields.some(field => field.value.includes(user.id))) return
