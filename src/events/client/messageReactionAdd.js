@@ -16,6 +16,7 @@ module.exports = async (client, messageReaction, user) => {
 			const reportChannel = message.guild.channels.cache.find(
 				channel => channel.id === client.config.reportChannelID,
 			)
+			if (!reportChannel) return
 
 			const fetchedMessages = await reportChannel.messages.fetch()
 

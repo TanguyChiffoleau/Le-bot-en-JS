@@ -6,6 +6,7 @@ module.exports = (client, guildMember) => {
 	const leaveJoinChannel = guildMember.guild.channels.cache.find(
 		channel => channel.id === client.config.leaveJoinChannelID,
 	)
+	if (!leaveJoinChannel) return
 
 	leaveJoinChannel.send({
 		embed: {
