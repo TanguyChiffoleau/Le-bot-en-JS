@@ -4,7 +4,7 @@ const { Client, Collection } = require('discord.js')
 module.exports = {
 	client: {
 		prepare: () => {
-			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
+			const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
