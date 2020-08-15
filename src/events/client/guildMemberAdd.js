@@ -8,7 +8,7 @@ module.exports = (client, guildMember) => {
 			/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/,
 		)
 	)
-		guildMember.edit({ nick: 'Mon pseudo ne respècte pas les règles !' })
+		guildMember.edit({ nick: 'Change ton pseudo' })
 
 	const leaveJoinChannel = guildMember.guild.channels.cache.find(
 		channel => channel.id === client.config.leaveJoinChannelID,
