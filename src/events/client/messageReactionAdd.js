@@ -58,9 +58,11 @@ module.exports = async (client, messageReaction, user) => {
 							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
 							inline: false,
 						})
+						client.cache.deleteMessagesID.add(messageReaction.message.id)
 						messageReaction.message.delete()
 						break
 					default:
+						client.cache.deleteMessagesID.add(messageReaction.message.id)
 						messageReaction.message.delete()
 						break
 				}
@@ -158,9 +160,11 @@ module.exports = async (client, messageReaction, user) => {
 								inline: false,
 							},
 						)
+						client.cache.deleteMessagesID.add(messageReaction.message.id)
 						messageReaction.message.delete()
 						break
 					default:
+						client.cache.deleteMessagesID.add(messageReaction.message.id)
 						messageReaction.message.delete()
 						break
 				}

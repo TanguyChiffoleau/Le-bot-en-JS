@@ -138,7 +138,9 @@ module.exports = async (client, message) => {
 		if (
 			!message.cleanContent.replace(regexGlobal, '').trim() &&
 			sentMessages === matches.length
-		)
+		) {
+			client.cache.deleteMessagesID.add(message.id)
 			message.delete()
+		}
 	}
 }
