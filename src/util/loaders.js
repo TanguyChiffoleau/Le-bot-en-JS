@@ -12,6 +12,7 @@ module.exports = {
 				guildID: process.env.GUILD_ID,
 				reportChannelID: process.env.REPORT_CHANNEL,
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
+				logsChannelID: process.env.LOGS_CHANNEL,
 			}
 
 			return client
