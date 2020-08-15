@@ -37,7 +37,7 @@ module.exports = async (client, message) => {
 		if (command.needArguments && !args.length)
 			return message.reply("tu n'as pas donné d'argument(s) 😕")
 
-		if (command.guildOnly && message.channel.type !== 'text')
+		if (command.guildOnly && !message.guild)
 			return message.reply(
 				'je ne peux pas exécuter cette commande dans les messages privés 😕',
 			)

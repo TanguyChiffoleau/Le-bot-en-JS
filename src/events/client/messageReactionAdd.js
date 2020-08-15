@@ -9,7 +9,7 @@ module.exports = async (client, messageReaction, user) => {
 
 	switch (emoji.name) {
 		case '🚨': {
-			if (message.author.bot || message.channel.type !== 'text') return
+			if (message.author.bot || !message.guild) return
 
 			if (message.author === user) return messageReaction.users.remove(user)
 
