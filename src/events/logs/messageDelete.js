@@ -65,11 +65,12 @@ module.exports = async (client, message) => {
 			text: `Date de suppression: ${convertDate(new Date())}`,
 		}
 	}
+
 	const title = []
 
 	if (message.cleanContent) {
 		title.push('Message')
-		embed.embed.description = `\`\`\`${message.cleanContent}\`\`\``
+		embed.embed.description = `\`\`\`\n${message.cleanContent.replace(/`{3}/g, "'''")}\`\`\``
 	}
 
 	const attachements = message.attachments
