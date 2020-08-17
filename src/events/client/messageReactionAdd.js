@@ -32,7 +32,7 @@ module.exports = async (client, messageReaction, user) => {
 					fields: [logReport.embeds[0].fields],
 					footer: logReport.embeds[0].footer,
 				}
-				switch (logReport.embeds[0].fields.length - 2) {
+				switch (logReport.embeds[0].fields.length - 3) {
 					case 1:
 						editLogReport.color = 'ff8200'
 						editLogReport.fields.push({
@@ -68,11 +68,16 @@ module.exports = async (client, messageReaction, user) => {
 			} else {
 				const sendLogReport = {
 					author: {
-						name: `${message.author.tag} (ID ${message.author.id})`,
+						name: 'Nouveau signalement',
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
 					description: `**Contenu du message**\n${message.cleanContent}`,
 					fields: [
+						{
+							name: 'Auteur',
+							value: message.author,
+							inline: true,
+						},
 						{
 							name: 'Channel',
 							value: message.channel,
@@ -80,13 +85,10 @@ module.exports = async (client, messageReaction, user) => {
 						},
 						{
 							name: 'Message',
-							value: `[Aller au message](${message.url})`,
+							value: `[Posté le ${convertDate(message.createdAt)}](${message.url})`,
 							inline: true,
 						},
 					],
-					footer: {
-						text: `Message posté le ${convertDate(message.createdAt)}`,
-					},
 				}
 				switch (messageReaction.count) {
 					case 1:
