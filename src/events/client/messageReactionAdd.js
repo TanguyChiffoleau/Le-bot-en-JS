@@ -25,14 +25,15 @@ module.exports = async (client, messageReaction, user) => {
 				.find(msg => msg.embeds[0].fields.find(field => field.value.includes(message.id)))
 
 			if (logReport) {
-				if (logReport.embeds[0].fields.some(field => field.value.includes(user.id))) return
+				const logReportEmbed = logReport.embeds[0]
+				if (logReportEmbed.fields.some(field => field.value.includes(user.id))) return
 				const editLogReport = {
-					author: logReport.embeds[0].author,
-					description: logReport.embeds[0].description,
-					fields: [logReport.embeds[0].fields],
-					footer: logReport.embeds[0].footer,
+					author: logReportEmbed.author,
+					description: logReportEmbed.description,
+					fields: [logReportEmbed.fields],
+					footer: logReportEmbed.footer,
 				}
-				switch (logReport.embeds[0].fields.length - 3) {
+				switch (logReportEmbed.fields.length - 3) {
 					case 1:
 						editLogReport.color = 'ff8200'
 						editLogReport.fields.push({
