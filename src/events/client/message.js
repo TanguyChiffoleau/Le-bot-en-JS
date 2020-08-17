@@ -74,34 +74,32 @@ module.exports = async (client, message) => {
 			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
 				continue
 			const embed = {
-				embed: {
-					author: {
-						name: `${foundMessage.author.tag} (ID ${foundMessage.author.id})`,
-						icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
+				author: {
+					name: `${foundMessage.author.tag} (ID ${foundMessage.author.id})`,
+					icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
+				},
+				description: foundMessage.cleanContent,
+				fields: [
+					{
+						name: 'Channel',
+						value: foundMessage.channel,
+						inline: true,
 					},
-					description: foundMessage.cleanContent,
-					fields: [
-						{
-							name: 'Channel',
-							value: foundMessage.channel,
-							inline: true,
-						},
-						{
-							name: 'Message',
-							value: `[Aller au message](${foundMessage.url})`,
-							inline: true,
-						},
-					],
-					footer: {
-						text: `Date: ${convertDate(foundMessage.createdAt)}`,
+					{
+						name: 'Message',
+						value: `[Aller au message](${foundMessage.url})`,
+						inline: true,
 					},
+				],
+				footer: {
+					text: `Date: ${convertDate(foundMessage.createdAt)}`,
 				},
 			}
 			if (foundMessage.editedAt)
-				embed.embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
+				embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
 			if (message.author !== foundMessage.author) {
-				embed.embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
-				embed.embed.footer.text += `\nCité par ${message.author.tag} (ID ${
+				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
+				embed.footer.text += `\nCité par ${message.author.tag} (ID ${
 					message.author.id
 				}) le ${convertDate(message.createdAt)}`
 			}
@@ -110,28 +108,28 @@ module.exports = async (client, message) => {
 				if (attachments.size === 1) {
 					const file = attachments.first()
 					const format = file.name.split('.').pop().toLowerCase()
-					if (format.match(/png|jpeg|jpg|gif|webp/)) embed.embed.image = { url: file.url }
+					if (format.match(/png|jpeg|jpg|gif|webp/)) embed.image = { url: file.url }
 					else
-						embed.embed.fields.push({
+						embed.fields.push({
 							name: file.filename,
 							value: file.url,
 							inline: true,
 						})
 				} else {
-					embed.embed.fields.push({
+					embed.fields.push({
 						name: '\u200b',
 						value: '\u200b',
 						inline: true,
 					})
 					attachments.forEach(attachement =>
-						embed.embed.fields.push({
+						embed.fields.push({
 							name: attachement.name,
 							value: attachement.url,
 							inline: true,
 						}),
 					)
 				}
-			message.channel.send(embed)
+			message.channel.send({ embed })
 			sentMessages += 1
 		}
 

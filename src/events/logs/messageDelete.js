@@ -24,28 +24,26 @@ module.exports = async (client, message) => {
 	const { executor, target, extra } = deletionLog
 
 	const embed = {
-		embed: {
-			author: {
-				icon_url: message.author.displayAvatarURL({ dynamic: true }),
-			},
-			fields: [
-				{
-					name: 'Auteur',
-					value: message.author,
-					inline: true,
-				},
-				{
-					name: 'Channel',
-					value: message.channel,
-					inline: true,
-				},
-				{
-					name: 'Posté le',
-					value: convertDate(message.createdAt),
-					inline: true,
-				},
-			],
+		author: {
+			icon_url: message.author.displayAvatarURL({ dynamic: true }),
 		},
+		fields: [
+			{
+				name: 'Auteur',
+				value: message.author,
+				inline: true,
+			},
+			{
+				name: 'Channel',
+				value: message.channel,
+				inline: true,
+			},
+			{
+				name: 'Posté le',
+				value: convertDate(message.createdAt),
+				inline: true,
+			},
+		],
 	}
 
 	if (
@@ -54,14 +52,14 @@ module.exports = async (client, message) => {
 		deletionLog.createdTimestamp > Date.now() - 5000 &&
 		extra.count >= 1
 	) {
-		embed.embed.color = 'fc3c3c'
-		embed.embed.footer = {
+		embed.color = 'fc3c3c'
+		embed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
 			text: `Supprimé par: ${executor.tag}\nDate de suppression: ${convertDate(new Date())}`,
 		}
 	} else {
-		embed.embed.color = '00FF00'
-		embed.embed.footer = {
+		embed.color = '00FF00'
+		embed.footer = {
 			text: `Date de suppression: ${convertDate(new Date())}`,
 		}
 	}
@@ -70,7 +68,7 @@ module.exports = async (client, message) => {
 
 	if (message.cleanContent) {
 		title.push('Message')
-		embed.embed.description = `\`\`\`\n${message.cleanContent.replace(/`{3}/g, "'''")}\`\`\``
+		embed.description = `\`\`\`\n${message.cleanContent.replace(/`{3}/g, "'''")}\`\`\``
 	}
 
 	const attachements = message.attachments
@@ -82,6 +80,6 @@ module.exports = async (client, message) => {
 			else title.push('Attachement')
 		}
 
-	embed.embed.author.name = `${title.join(' + ')} supprimé${title.length > 1 ? 's' : ''}`
-	logsChannel.send(embed)
+	embed.author.name = `${title.join(' + ')} supprimé${title.length > 1 ? 's' : ''}`
+	logsChannel.send({ embed })
 }
