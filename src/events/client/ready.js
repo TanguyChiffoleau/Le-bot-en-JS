@@ -1,1 +1,1 @@
-module.exports = () => console.log(`Ready !`)
+module.exports = () => console.log('Ready !')

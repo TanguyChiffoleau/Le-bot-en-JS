@@ -10,7 +10,7 @@ module.exports = {
 		const start = new Date()
 		await sentMessage.edit(`🏓 Pong ?`)
 		const editLatency = Math.round(new Date() - start)
-		sentMessage.edit(
+		return sentMessage.edit(
 			`Modification d'un message: **${editLatency}** ms\nAPI: **${client.ws.ping}** ms`,
 		)
 	},

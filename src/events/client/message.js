@@ -1,5 +1,4 @@
 /* eslint-disable no-continue */
-/* eslint-disable consistent-return */
 const { Collection } = require('discord.js')
 const { convertDate } = require('../../util/util')
 
@@ -45,7 +44,7 @@ module.exports = async (client, message) => {
 		try {
 			message.channel.startTyping()
 			await command.execute(client, message, args)
-			message.channel.stopTyping(true)
+			return message.channel.stopTyping(true)
 		} catch (error) {
 			message.channel.stopTyping(true)
 			message.reply('Il y a eu une erreur en exécutant la commande 😬')
@@ -143,7 +142,7 @@ module.exports = async (client, message) => {
 			sentMessages === matches.length
 		) {
 			client.cache.deleteMessagesID.add(message.id)
-			message.delete()
+			return message.delete()
 		}
 	}
 }
