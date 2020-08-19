@@ -1,4 +1,3 @@
-
 # Le-bot-en-JS
 
 [![Node.js CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions?query=workflow%3A%22Node.js+CI%22)
@@ -19,6 +18,7 @@
 | GUILD_ID              | 123456789012345678                                          | ID du serveur (= guild) sur lequel le bot est utilisé                                                            |
 | LEAVE_JOIN_CHANNEL_ID | 123456789012345678                                          | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
 | REPORT_CHANNEL        | 123456789012345678                                          | ID du channel sur lequel les messages de signalement seront postés                                               |
+| LOGS_CHANNEL          | 123456789012345678                                          | ID du channel sur lequel les messages de logs seront postés                                                      |
 
 #### Fichier database.env
 
