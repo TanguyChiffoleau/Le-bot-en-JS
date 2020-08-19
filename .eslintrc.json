@@ -17,7 +17,6 @@
 		"no-template-curly-in-string": "error",
 		// Best Practices
 		"accessor-pairs": "warn",
-		"consistent-return": "error",
 		"curly": ["error", "multi", "consistent"],
 		"default-case": "warn",
 		"dot-location": ["error", "property"],
