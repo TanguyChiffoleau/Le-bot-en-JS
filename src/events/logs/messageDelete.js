@@ -81,5 +81,5 @@ module.exports = async (client, message) => {
 		}
 
 	embed.author.name = `${title.join(' + ')} supprimé${title.length > 1 ? 's' : ''}`
-	logsChannel.send({ embed })
+	return logsChannel.send({ embed })
 }

@@ -8,7 +8,7 @@ module.exports = (client, guildMember) => {
 	)
 	if (!leaveJoinChannel) return
 
-	leaveJoinChannel.send({
+	return leaveJoinChannel.send({
 		embed: {
 			color: 'C9572A',
 			author: {
