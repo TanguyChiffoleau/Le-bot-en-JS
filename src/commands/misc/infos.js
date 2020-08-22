@@ -8,7 +8,7 @@ module.exports = {
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
-	execute: (client, message) => {
+	execute: (client, message) =>
 		message.channel.send({
 			embed: {
 				color: '01579B',
@@ -49,6 +49,5 @@ module.exports = {
 					},
 				],
 			},
-		})
-	},
+		}),
 }

@@ -4,7 +4,7 @@ const { Client, Collection } = require('discord.js')
 module.exports = {
 	client: {
 		prepare: () => {
-			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
+			const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
@@ -12,7 +12,10 @@ module.exports = {
 				guildID: process.env.GUILD_ID,
 				reportChannelID: process.env.REPORT_CHANNEL,
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
+				logsChannelID: process.env.LOGS_CHANNEL,
 			}
+			client.cache = {}
+			client.cache.deleteMessagesID = new Set()
 
 			return client
 		},

@@ -1,5 +1,4 @@
 /* eslint-disable no-continue */
-/* eslint-disable consistent-return */
 const { Collection } = require('discord.js')
 const { convertDate } = require('../../util/util')
 
@@ -25,7 +24,7 @@ module.exports = async (client, message) => {
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000
 				return message.reply(
-					`merci d'attendre ${timeLeft.toFixed(
+					`Merci d'attendre ${timeLeft.toFixed(
 						1,
 					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
 				)
@@ -35,20 +34,20 @@ module.exports = async (client, message) => {
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
 
 		if (command.needArguments && !args.length)
-			return message.reply("tu n'as pas donné d'argument(s) 😕")
+			return message.reply("Tu n'as pas donné d'argument(s) 😕")
 
-		if (command.guildOnly && message.channel.type !== 'text')
+		if (command.guildOnly && !message.guild)
 			return message.reply(
-				'je ne peux pas exécuter cette commande dans les messages privés 😕',
+				'Je ne peux pas exécuter cette commande dans les messages privés 😕',
 			)
 
 		try {
 			message.channel.startTyping()
 			await command.execute(client, message, args)
-			message.channel.stopTyping(true)
+			return message.channel.stopTyping(true)
 		} catch (error) {
 			message.channel.stopTyping(true)
-			message.reply('il y a eu une erreur en exécutant la commande 😬')
+			message.reply('Il y a eu une erreur en exécutant la commande 😬')
 			console.error(error)
 		}
 	} else {
@@ -74,34 +73,37 @@ module.exports = async (client, message) => {
 			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
 				continue
 			const embed = {
-				embed: {
-					author: {
-						name: `${foundMessage.author.tag} (ID ${foundMessage.author.id})`,
-						icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
+				author: {
+					name: 'Citation',
+					icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
+				},
+				description: foundMessage.cleanContent,
+				fields: [
+					{
+						name: 'Auteur',
+						value: foundMessage.member,
+						inline: true,
 					},
-					description: foundMessage.cleanContent,
-					fields: [
-						{
-							name: 'Channel',
-							value: foundMessage.channel,
-							inline: true,
-						},
-						{
-							name: 'Message',
-							value: `[Aller au message](${foundMessage.url})`,
-							inline: true,
-						},
-					],
-					footer: {
-						text: `Date: ${convertDate(foundMessage.createdAt)}`,
+					{
+						name: 'Channel',
+						value: foundMessage.channel,
+						inline: true,
 					},
+					{
+						name: 'Message',
+						value: `[Aller au message](${foundMessage.url})`,
+						inline: true,
+					},
+				],
+				footer: {
+					text: `Date: ${convertDate(foundMessage.createdAt)}`,
 				},
 			}
 			if (foundMessage.editedAt)
-				embed.embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
+				embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
 			if (message.author !== foundMessage.author) {
-				embed.embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
-				embed.embed.footer.text += `\nCité par ${message.author.tag} (ID ${
+				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
+				embed.footer.text += `\nCité par ${message.author.tag} (ID ${
 					message.author.id
 				}) le ${convertDate(message.createdAt)}`
 			}
@@ -110,35 +112,37 @@ module.exports = async (client, message) => {
 				if (attachments.size === 1) {
 					const file = attachments.first()
 					const format = file.name.split('.').pop().toLowerCase()
-					if (format.match(/png|jpeg|jpg|gif|webp/)) embed.embed.image = { url: file.url }
+					if (format.match(/png|jpeg|jpg|gif|webp/)) embed.image = { url: file.url }
 					else
-						embed.embed.fields.push({
+						embed.fields.push({
 							name: file.filename,
 							value: file.url,
 							inline: true,
 						})
 				} else {
-					embed.embed.fields.push({
+					embed.fields.push({
 						name: '\u200b',
 						value: '\u200b',
 						inline: true,
 					})
 					attachments.forEach(attachement =>
-						embed.embed.fields.push({
+						embed.fields.push({
 							name: attachement.name,
 							value: attachement.url,
 							inline: true,
 						}),
 					)
 				}
-			message.channel.send(embed)
+			message.channel.send({ embed })
 			sentMessages += 1
 		}
 
 		if (
 			!message.cleanContent.replace(regexGlobal, '').trim() &&
 			sentMessages === matches.length
-		)
-			message.delete()
+		) {
+			client.cache.deleteMessagesID.add(message.id)
+			return message.delete()
+		}
 	}
 }
