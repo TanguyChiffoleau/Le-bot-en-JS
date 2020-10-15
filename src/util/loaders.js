@@ -1,5 +1,6 @@
 const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
+const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
 
 module.exports = {
 	client: {
@@ -48,5 +49,16 @@ module.exports = {
 				client.on(eventName, event.bind(null, client))
 			})
 		})
+	},
+
+	reactionManager: async client => {
+		client.reactionRoleMap = new Map()
+		for (const reactionRole of reactionRoleConfig) {
+			client.reactionRoleMap.set(reactionRole.messageId, reactionRoleConfig)
+			const channel = await client.channels.fetch(reactionRole.channelId)
+			const message = await channel.messages.fetch(reactionRole.messageId)
+
+			for (const emoji of Object.keys(reactionRole.emojiRoleMap)) await message.react(emoji)
+		}
 	},
 }
