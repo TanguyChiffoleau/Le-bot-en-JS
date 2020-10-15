@@ -21,6 +21,8 @@ const run = async () => {
 	await clientLoader.login(client)
 
 	await reactionManagerLoader(client)
+
+	console.log('Setup finished')
 }
 
 run().catch(error => console.error(error))
