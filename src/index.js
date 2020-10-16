@@ -2,6 +2,7 @@ const {
 	events: eventsLoader,
 	commands: commandsLoader,
 	client: clientLoader,
+	reactionManager: reactionManagerLoader,
 } = require('./util/loaders')
 
 if (process.env.NODE_ENV !== 'production') {
@@ -17,7 +18,11 @@ const run = async () => {
 
 	await eventsLoader(client)
 
-	clientLoader.login(client)
+	await clientLoader.login(client)
+
+	await reactionManagerLoader(client)
+
+	console.log('Setup finished')
 }
 
 run().catch(error => console.error(error))
