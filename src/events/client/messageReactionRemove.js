@@ -6,7 +6,7 @@ module.exports = async (client, messageReaction, user) => {
 
 	if (client.reactionRoleMap.has(message.id)) {
 		const rule = client.reactionRoleMap.get(message.id)
-		const roleID = rule.emojiRoleMap[emoji.name]
+		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
 		if (!roleID) return
 
 		const guildMember = await message.guild.members.fetch(user)
