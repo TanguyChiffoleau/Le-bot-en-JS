@@ -2,12 +2,13 @@ name: CD
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - 'src/**'
   release:
-
+    types:
+      - published
 
 jobs:
   push_image_to_docker_hub:
