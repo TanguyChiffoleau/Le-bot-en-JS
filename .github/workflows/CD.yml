@@ -2,10 +2,12 @@ name: CD
 
 on:
   push:
-    branches: [master]
-    tags: "*.*.*"
+    branches: 
+      - master
     paths:
       - 'src/*'
+  release:
+
 
 jobs:
   push_image_to_docker_hub:
@@ -36,4 +38,4 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           docker pull tanguychiffoleau/le-bot-en-js:latest
-          docker-compose up -d
+          docker-compose up -f ./docker/docker-compose.yml up -d
