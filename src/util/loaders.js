@@ -1,5 +1,6 @@
-const fs = require('fs').promises
+const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
+const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
 
 module.exports = {
 	client: {
@@ -24,9 +25,9 @@ module.exports = {
 	},
 
 	commands: async client => {
-		const commandsDir = await fs.readdir('./src/commands')
+		const commandsDir = await readdir('./src/commands')
 		commandsDir.forEach(async commandCategory => {
-			const commands = (await fs.readdir(`./src/commands/${commandCategory}`)).filter(file =>
+			const commands = (await readdir(`./src/commands/${commandCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
 			commands.forEach(commandFile => {
@@ -37,9 +38,9 @@ module.exports = {
 	},
 
 	events: async client => {
-		const eventsDir = await fs.readdir('./src/events')
+		const eventsDir = await readdir('./src/events')
 		eventsDir.forEach(async eventCategory => {
-			const events = (await fs.readdir(`./src/events/${eventCategory}`)).filter(file =>
+			const events = (await readdir(`./src/events/${eventCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
 			events.forEach(eventFile => {
@@ -48,5 +49,16 @@ module.exports = {
 				client.on(eventName, event.bind(null, client))
 			})
 		})
+	},
+
+	reactionManager: async client => {
+		client.reactionRoleMap = new Map()
+		for (const reactionRole of reactionRoleConfig) {
+			client.reactionRoleMap.set(reactionRole.messageId, reactionRole)
+			const channel = await client.channels.fetch(reactionRole.channelId)
+			const message = await channel.messages.fetch(reactionRole.messageId)
+
+			for (const emoji of Object.keys(reactionRole.emojiRoleMap)) await message.react(emoji)
+		}
 	},
 }
