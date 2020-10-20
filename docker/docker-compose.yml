@@ -11,3 +11,5 @@ services:
             - ../config/bot.env
         environment:
             NODE_ENV: production
+        volumes:
+            - ../config/:/config/
