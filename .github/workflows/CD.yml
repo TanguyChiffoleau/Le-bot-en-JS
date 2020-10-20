@@ -38,4 +38,4 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           docker pull tanguychiffoleau/le-bot-en-js:latest
-          docker-compose up -f ./docker/docker-compose.yml up -d
+          docker-compose -f ./docker/docker-compose.yml up -d
