@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    #paths:
-    #  - 'src/**'
+    paths:
+     - '**/*.js'
   release:
     types:
       - published
