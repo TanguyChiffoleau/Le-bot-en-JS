@@ -1,6 +1,6 @@
 const { convertDate, diffDate } = require('../../util/util')
 
-module.exports = (client, guildMember) => {
+module.exports = async (client, guildMember) => {
 	if (guildMember.user.bot || guildMember.guild.id !== client.config.guildID) return
 
 	if (
@@ -14,6 +14,8 @@ module.exports = (client, guildMember) => {
 		channel => channel.id === client.config.leaveJoinChannelID,
 	)
 	if (!leaveJoinChannel) return
+
+	await guildMember.fetch()
 
 	return leaveJoinChannel.send({
 		embed: {
