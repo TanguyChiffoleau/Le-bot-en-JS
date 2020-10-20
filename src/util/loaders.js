@@ -54,7 +54,7 @@ module.exports = {
 	reactionManager: async client => {
 		client.reactionRoleMap = new Map()
 		for (const reactionRole of reactionRoleConfig) {
-			client.reactionRoleMap.set(reactionRole.messageId, reactionRoleConfig)
+			client.reactionRoleMap.set(reactionRole.messageId, reactionRole)
 			const channel = await client.channels.fetch(reactionRole.channelId)
 			const message = await channel.messages.fetch(reactionRole.messageId)
 

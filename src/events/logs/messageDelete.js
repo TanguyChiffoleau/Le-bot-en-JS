@@ -71,7 +71,7 @@ module.exports = async (client, message) => {
 		embed.description = `\`\`\`\n${message.cleanContent.replace(/`{3}/g, "'''")}\`\`\``
 	}
 
-	const attachements = message.attachments
+	const { attachements } = message
 	if (attachements.size > 0)
 		if (attachements.size === 1) {
 			const file = attachements.first()
