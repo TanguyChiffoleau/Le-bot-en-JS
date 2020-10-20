@@ -3,5 +3,4 @@
 
 # Sauf
 !src/
-!*.env
 !package*.json
