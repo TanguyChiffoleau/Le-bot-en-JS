@@ -52,14 +52,14 @@ module.exports = async (client, message) => {
 		}
 	} else {
 		// Partie citation
-		const regexGlobal = /https:\/\/discord(app)?.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/g
-		const regex = /https:\/\/discord(app)?.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/
+		const regexGlobal = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/g
+		const regex = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/
 		const matches = message.cleanContent.match(regexGlobal)
 		if (!matches) return
 
 		let sentMessages = 0
 		for (const match of matches) {
-			const [, , guildId, channelId, messageId] = regex.exec(match)
+			const [, , , guildId, channelId, messageId] = regex.exec(match)
 			if (guildId !== client.config.guildID) continue
 
 			const foundChannel = message.guild.channels.cache.find(
@@ -67,9 +67,7 @@ module.exports = async (client, message) => {
 			)
 			if (!foundChannel) continue
 			// eslint-disable-next-line no-await-in-loop
-			const fetchedMessages = await foundChannel.messages.fetch()
-			if (!fetchedMessages.size) continue
-			const foundMessage = fetchedMessages.find(msg => msg.id === messageId)
+			const foundMessage = await foundChannel.messages.fetch(messageId)
 			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
 				continue
 			const embed = {
