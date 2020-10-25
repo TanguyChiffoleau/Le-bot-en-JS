@@ -3,7 +3,11 @@ const { Collection } = require('discord.js')
 const { convertDate } = require('../../util/util')
 
 module.exports = async (client, message) => {
-	if (message.author.bot || (message.guild && message.guild.id !== client.config.guildID)) return
+	if (
+		message.author.bot ||
+		(message.guild && (message.guild.id !== client.config.guildID || !message.guild.available))
+	)
+		return
 
 	if (message.content.startsWith(client.config.prefix)) {
 		const args = message.content.slice(client.config.prefix.length).split(/ +/)
