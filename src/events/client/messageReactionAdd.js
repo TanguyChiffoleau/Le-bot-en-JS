@@ -14,7 +14,9 @@ module.exports = async (client, messageReaction, user) => {
 	if (client.reactionRoleMap.has(message.id)) {
 		const rule = client.reactionRoleMap.get(message.id)
 		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
+		if (!roleID) console.log('Système de réactions : pas de roleID (ligne 16)')
 		const guildMember = await message.guild.members.fetch(user)
+		if (!guildMember) console.log('Système de réactions : pas de guildMember (ligne 18)')
 
 		return guildMember.roles.add(roleID)
 	}
