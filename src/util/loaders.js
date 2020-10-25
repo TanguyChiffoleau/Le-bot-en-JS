@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
 const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
