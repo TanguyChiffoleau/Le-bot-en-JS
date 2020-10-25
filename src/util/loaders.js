@@ -5,7 +5,7 @@ const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
 module.exports = {
 	client: {
 		prepare: () => {
-			const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
+			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
