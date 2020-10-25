@@ -45,6 +45,11 @@ module.exports = {
 					inline: true,
 				},
 				{
+					name: 'Mention',
+					value: member,
+					inline: true,
+				},
+				{
 					name: 'Serveur rejoint le',
 					value: convertDate(member.joinedAt),
 					inline: true,
@@ -52,11 +57,6 @@ module.exports = {
 				{
 					name: 'Est sur le serveur depuis',
 					value: diffDate(member.joinedAt),
-					inline: true,
-				},
-				{
-					name: '\u200b',
-					value: '\u200b',
 					inline: true,
 				},
 			],
