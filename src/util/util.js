@@ -13,12 +13,14 @@ module.exports = {
 			.toString()
 			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
 
+	pluralize: (word, quantity, isAlwaysPlural = false) => {
+		if (quantity === 0) return ''
+		else if (isAlwaysPlural) return `${quantity} ${word}s`
+		return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
+	},
+
 	diffDate: date => {
-		const pluralize = (word, quantity, isAlwaysPlural = false) => {
-			if (quantity === 0) return ''
-			else if (isAlwaysPlural) return `${quantity} ${word}s`
-			return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
-		}
+		const pluralize = this.pluralize
 
 		const diff = new Date() - date
 		const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.4375 * 12))
