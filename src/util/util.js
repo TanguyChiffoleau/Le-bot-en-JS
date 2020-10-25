@@ -1,4 +1,12 @@
+const pluralize = (word, quantity, isAlwaysPlural = false) => {
+	if (quantity === 0) return ''
+	else if (isAlwaysPlural) return `${quantity} ${word}s`
+	return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
+}
+
 module.exports = {
+	pluralize,
+
 	convertDate: date =>
 		`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
 			.toString()
@@ -14,12 +22,6 @@ module.exports = {
 			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
 
 	diffDate: date => {
-		const pluralize = (word, quantity, isAlwaysPlural = false) => {
-			if (quantity === 0) return ''
-			else if (isAlwaysPlural) return `${quantity} ${word}s`
-			return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
-		}
-
 		const diff = new Date() - date
 		const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.4375 * 12))
 		const months = Math.floor((diff / (1000 * 60 * 60 * 24 * 30.4375)) % 12)

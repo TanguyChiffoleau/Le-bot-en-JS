@@ -15,6 +15,8 @@ module.exports = async (client, message) => {
 		channel => channel.id === client.config.logsChannelID,
 	)
 
+	if (!logsChannel) return
+
 	const fetchedLogs = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE', limit: 1 })
 
 	const deletionLog = fetchedLogs.entries.first()

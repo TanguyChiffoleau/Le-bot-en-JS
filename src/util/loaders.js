@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
 const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
@@ -5,7 +6,7 @@ const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
 module.exports = {
 	client: {
 		prepare: () => {
-			const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
+			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {

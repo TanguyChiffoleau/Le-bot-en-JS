@@ -1,20 +1,27 @@
 const { convertDate } = require('../../util/util')
 
 module.exports = async (client, messageReaction, user) => {
-	if (messageReaction.partial) await messageReaction.fetch()
 	const { message, emoji } = messageReaction
 
-	if (user.bot || (message.guild && message.guild.id !== client.config.guildID)) return
+	if (
+		user.bot ||
+		!message.guild ||
+		!message.guild.available ||
+		message.guild.id !== client.config.guildID
+	)
+		return
 
 	if (client.reactionRoleMap.has(message.id)) {
 		const rule = client.reactionRoleMap.get(message.id)
 		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
-		if (!roleID) return
-
+		if (!roleID) console.log('Système de réactions : pas de roleID (ligne 16)')
 		const guildMember = await message.guild.members.fetch(user)
+		if (!guildMember) console.log('Système de réactions : pas de guildMember (ligne 18)')
 
-		if (!guildMember.roles.cache.has(roleID)) return guildMember.roles.add(roleID)
+		return guildMember.roles.add(roleID)
 	}
+
+	if (messageReaction.partial) await messageReaction.fetch()
 
 	switch (emoji.name) {
 		case '🚨': {
