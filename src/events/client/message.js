@@ -14,7 +14,7 @@ module.exports = async (client, message) => {
 		const commandName = args.shift().toLowerCase()
 		const command =
 			client.commands.get(commandName) ||
-			client.commands.find(({ aliases }) => aliases && aliases.includes(commandName))
+			client.commands.find(({ aliases }) => aliases.includes(commandName))
 
 		if (!command) return
 
