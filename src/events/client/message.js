@@ -45,6 +45,12 @@ module.exports = async (client, message) => {
 				'Je ne peux pas exécuter cette commande dans les messages privés 😕',
 			)
 
+		if (
+			command.requirePermissions.length > 0 &&
+			!message.member.permissionsIn(message.channel).has(command.requirePermissions)
+		)
+			return message.reply("tu n'as pas les permissions d'effectuer cette commande 😕")
+
 		try {
 			message.channel.startTyping()
 			await command.execute(client, message, args)

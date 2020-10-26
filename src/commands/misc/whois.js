@@ -7,6 +7,7 @@ module.exports = {
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
+	requirePermissions: [],
 	execute: (client, message, args) => {
 		// eslint-disable-next-line init-declarations
 		let member
