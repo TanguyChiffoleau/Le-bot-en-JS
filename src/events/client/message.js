@@ -28,7 +28,7 @@ module.exports = async (client, message) => {
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000
 				return message.reply(
-					`Merci d'attendre ${timeLeft.toFixed(
+					`merci d'attendre ${timeLeft.toFixed(
 						1,
 					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
 				)
@@ -38,7 +38,7 @@ module.exports = async (client, message) => {
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
 
 		if (command.needArguments && !args.length)
-			return message.reply("Tu n'as pas donné d'argument(s) 😕")
+			return message.reply("tu n'as pas donné d'argument(s) 😕")
 
 		if (command.guildOnly && !message.guild)
 			return message.reply(
@@ -51,7 +51,7 @@ module.exports = async (client, message) => {
 			return message.channel.stopTyping(true)
 		} catch (error) {
 			message.channel.stopTyping(true)
-			message.reply('Il y a eu une erreur en exécutant la commande 😬')
+			message.reply('il y a eu une erreur en exécutant la commande 😬')
 			console.error(error)
 		}
 	} else {
