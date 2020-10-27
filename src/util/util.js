@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 const pluralize = (word, quantity, isAlwaysPlural = false) => {
 	if (quantity === 0) return ''
 	else if (isAlwaysPlural) return `${quantity} ${word}s`
@@ -37,6 +38,19 @@ module.exports = {
 		if (minutes) total.push(pluralize('minute', minutes))
 
 		if (!total.length) return "Il y a moins d'une minute"
+
+		return total.join(' ')
+	},
+
+	convertSecondsToString: secondsInput => {
+		const hours = Math.floor(secondsInput / 3600)
+		const minutes = Math.floor((secondsInput - hours * 3600) / 60)
+		const seconds = secondsInput - hours * 3600 - minutes * 60
+
+		const total = []
+		if (hours) total.push(pluralize('heure', hours))
+		if (minutes) total.push(pluralize('minute', minutes))
+		if (seconds) total.push(pluralize('seconde', seconds))
 
 		return total.join(' ')
 	},

@@ -7,6 +7,7 @@ module.exports = {
 	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,
+	requirePermissions: [],
 	execute: async (client, message, args) => {
 		message.delete()
 

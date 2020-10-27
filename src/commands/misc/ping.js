@@ -5,6 +5,7 @@ module.exports = {
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
+	requirePermissions: [],
 	execute: async (client, message) => {
 		const sentMessage = await message.channel.send(`🏓 Pong`)
 		const start = new Date()

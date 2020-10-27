@@ -8,6 +8,7 @@ module.exports = {
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
+	requirePermissions: [],
 	execute: (client, message) =>
 		message.channel.send({
 			embed: {

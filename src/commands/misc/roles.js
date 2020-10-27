@@ -3,10 +3,11 @@ const { pluralize } = require('../../util/util')
 module.exports = {
 	name: 'roles',
 	description: 'Affiche le nombre de membres pour chaque rôle',
-	aliases: ['rôles', 'role'],
+	aliases: ['rôles', 'rôle', 'role'],
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
+	requirePermissions: [],
 	execute: (client, message, args) => {
 		const embed = {
 			color: '01579B',
