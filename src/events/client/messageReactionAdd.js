@@ -3,6 +3,9 @@ const { convertDate } = require('../../util/util')
 module.exports = async (client, messageReaction, user) => {
 	const { message, emoji } = messageReaction
 
+	if (message.partial) await message.fetch()
+	if (messageReaction.partial) await messageReaction.fetch()
+
 	if (
 		user.bot ||
 		!message.guild ||
@@ -20,8 +23,6 @@ module.exports = async (client, messageReaction, user) => {
 
 		return guildMember.roles.add(roleID)
 	}
-
-	if (messageReaction.partial) await messageReaction.fetch()
 
 	switch (emoji.name) {
 		case '🚨': {
