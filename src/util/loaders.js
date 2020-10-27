@@ -6,7 +6,19 @@ const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
 module.exports = {
 	client: {
 		prepare: () => {
-			const client = new Client({ partials: ['MESSAGE', 'REACTION'] })
+			const client = new Client({
+				partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION'],
+				ws: {
+					intents: [
+						'GUILDS',
+						'GUILD_MEMBERS',
+						'GUILD_PRESENCES',
+						'GUILD_MESSAGES',
+						'GUILD_MESSAGE_REACTIONS',
+						'DIRECT_MESSAGES',
+					],
+				},
+			})
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
