@@ -11,9 +11,7 @@ module.exports = async (client, message) => {
 	)
 		return
 
-	const logsChannel = message.guild.channels.cache.find(
-		channel => channel.id === client.config.logsChannelID,
-	)
+	const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
 
 	if (!logsChannel) return
 
@@ -74,7 +72,7 @@ module.exports = async (client, message) => {
 	}
 
 	const { attachements } = message
-	if (attachements.size > 0)
+	if (attachements && attachements.size > 0)
 		if (attachements.size === 1) {
 			const file = attachements.first()
 			const format = file.name.split('.').pop().toLowerCase()

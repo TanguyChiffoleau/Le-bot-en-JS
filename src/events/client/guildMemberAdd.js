@@ -15,9 +15,7 @@ module.exports = async (client, guildMember) => {
 	)
 		guildMember.edit({ nick: 'Change ton pseudo' })
 
-	const leaveJoinChannel = guildMember.guild.channels.cache.find(
-		channel => channel.id === client.config.leaveJoinChannelID,
-	)
+	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
 
 	await guildMember.fetch()

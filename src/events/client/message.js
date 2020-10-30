@@ -72,9 +72,7 @@ module.exports = async (client, message) => {
 			const [, , , guildId, channelId, messageId] = regex.exec(match)
 			if (guildId !== client.config.guildID) continue
 
-			const foundChannel = message.guild.channels.cache.find(
-				channel => channel.id === channelId,
-			)
+			const foundChannel = message.guild.channels.cache.get(channelId)
 			if (!foundChannel) continue
 			// eslint-disable-next-line no-await-in-loop
 			const foundMessage = await foundChannel.messages.fetch(messageId)
