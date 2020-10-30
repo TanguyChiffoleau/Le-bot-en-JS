@@ -19,7 +19,9 @@ module.exports = {
 			},
 		}
 
-		const roles = message.guild.roles.cache.filter(role => role.members.size > 0)
+		const roles = message.guild.roles.cache
+			.filter(role => role.members.size > 0)
+			.sort((roleA, roleB) => roleB.members.size - roleA.members.size)
 
 		const rolesHoist = roles.filter(role => role.hoist)
 
