@@ -28,6 +28,12 @@ module.exports = {
 			.toString()
 			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
 
+	convertDateToHours: date =>
+		`${date.getHours().toString().padStart(2, '0')}:${date
+			.getMinutes()
+			.toString()
+			.padStart(2, '0')}`,
+
 	diffDate: date => {
 		const diff = new Date() - date
 		const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.4375 * 12))
