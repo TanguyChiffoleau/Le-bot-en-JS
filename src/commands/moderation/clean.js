@@ -70,10 +70,9 @@ module.exports = {
 				embed: {
 					color: '311B92',
 					author: {
-						name: message.author.tag,
+						name: 'Clean',
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
-					title: 'Clean',
 					description: firstDescription,
 				},
 			})
@@ -116,10 +115,9 @@ module.exports = {
 			embed: {
 				color: '311B92',
 				author: {
-					name: message.author.tag,
+					name: 'Clean',
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
-				title: 'Clean',
 				description: text,
 				fields: [
 					{
