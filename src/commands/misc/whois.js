@@ -15,13 +15,13 @@ module.exports = {
 			member = message.member
 		} else {
 			const matches = args[0].match(/^<@!?(\d+)>$|^(\d{16,18})$/)
-			if (!matches) return message.reply("je n'ai pas trouvé de mention ou d'ID valable.")
+			if (!matches) return message.reply("je n'ai pas trouvé de mention ou d'ID valable 😕")
 
 			const targetID = matches[1] || matches[2]
 			member = message.guild.members.cache.get(targetID)
 		}
 
-		if (!member) return message.reply("je n'ai pas trouvé cet utilisateur.")
+		if (!member) return message.reply("je n'ai pas trouvé cet utilisateur 😕")
 
 		const embed = {
 			color: member.displayColor,
