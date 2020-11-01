@@ -8,6 +8,12 @@ const pluralize = (word, quantity, isAlwaysPlural = false) => {
 module.exports = {
 	pluralize,
 
+	pluralizeWithoutQuantity: (word, quantity, isAlwaysPlural = false) => {
+		if (quantity === 0) return ''
+		else if (isAlwaysPlural) return `${quantity} ${word}s`
+		return `${word}${quantity > 1 ? 's' : ''}`
+	},
+
 	convertDate: date =>
 		`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
 			.toString()
@@ -21,6 +27,12 @@ module.exports = {
 			.getMinutes()
 			.toString()
 			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
+
+	convertDateToHours: date =>
+		`${date.getHours().toString().padStart(2, '0')}:${date
+			.getMinutes()
+			.toString()
+			.padStart(2, '0')}`,
 
 	diffDate: date => {
 		const diff = new Date() - date

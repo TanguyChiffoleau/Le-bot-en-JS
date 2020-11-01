@@ -8,9 +8,7 @@ module.exports = (client, guildMember) => {
 	)
 		return
 
-	const leaveJoinChannel = guildMember.guild.channels.cache.find(
-		channel => channel.id === client.config.leaveJoinChannelID,
-	)
+	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
 
 	return leaveJoinChannel.send({

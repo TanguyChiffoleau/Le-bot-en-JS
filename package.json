@@ -20,6 +20,7 @@
 	},
 	"homepage": "https://github.com/TanguyChiffoleau/Le-bot-en-JS#readme",
 	"dependencies": {
+		"bent": "^7.3.12",
 		"discord.js": "^12.4.1"
 	},
 	"devDependencies": {
