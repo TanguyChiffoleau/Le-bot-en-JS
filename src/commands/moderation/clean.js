@@ -92,13 +92,13 @@ module.exports = {
 					description: lastDescription,
 					fields: [
 						{
-							name: 'Exécuté par',
-							value: message.member,
+							name: 'Channel',
+							value: message.channel,
 							inline: true,
 						},
 						{
-							name: 'Channel',
-							value: message.channel,
+							name: 'Exécuté par',
+							value: message.member,
 							inline: true,
 						},
 						{
@@ -123,13 +123,13 @@ module.exports = {
 				description: text,
 				fields: [
 					{
-						name: 'Exécuté par',
-						value: message.member,
+						name: 'Channel',
+						value: message.channel,
 						inline: true,
 					},
 					{
-						name: 'Channel',
-						value: message.channel,
+						name: 'Exécuté par',
+						value: message.member,
 						inline: true,
 					},
 					{
