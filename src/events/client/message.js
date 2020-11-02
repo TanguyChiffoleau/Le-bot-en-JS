@@ -80,7 +80,7 @@ module.exports = async (client, message) => {
 				continue
 			const embed = {
 				author: {
-					name: `${foundMessage.displayName} (ID ${foundMessage.member.id})`,
+					name: `${foundMessage.member.displayName} (ID ${foundMessage.member.id})`,
 					icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
 				},
 				description: foundMessage.cleanContent,

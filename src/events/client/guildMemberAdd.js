@@ -24,11 +24,15 @@ module.exports = async (client, guildMember) => {
 		embed: {
 			color: '57C92A',
 			author: {
-				name: `${guildMember.user.tag} (ID ${guildMember.id})`,
+				name: `${guildMember.displayName} (ID ${guildMember.id})`,
 				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 			},
-			description: `<@${guildMember.id}>`,
 			fields: [
+				{
+					name: 'Mention',
+					value: guildMember,
+					inline: true,
+				},
 				{
 					name: 'Date de création du compte',
 					value: convertDate(guildMember.user.createdAt),

@@ -26,13 +26,13 @@ module.exports = {
 		const embed = {
 			color: member.displayColor,
 			author: {
-				name: member.user.tag,
+				name: `${member.displayName} (ID ${member.id})`,
 				icon_url: member.user.displayAvatarURL({ dynamic: true }),
 			},
 			fields: [
 				{
-					name: 'ID',
-					value: member.user.id,
+					name: "Compte de l'utilisateur",
+					value: member.user.tag,
 					inline: true,
 				},
 				{
@@ -62,13 +62,6 @@ module.exports = {
 				},
 			],
 		}
-
-		if (member.nickname)
-			embed.fields.push({
-				name: 'Pseudo',
-				value: member.nickname,
-				inline: true,
-			})
 
 		if (member.premiumSince)
 			embed.fields.push({

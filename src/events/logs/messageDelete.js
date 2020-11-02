@@ -1,4 +1,4 @@
-const { convertDate, pluralizeWithoutQuantity: pluralize, isImage } = require('../../util/util')
+const { convertDate, pluralizeWithoutQuantity: isImage } = require('../../util/util')
 const { MessageAttachment, Util } = require('discord.js')
 const bent = require('bent')
 
@@ -32,6 +32,7 @@ module.exports = async (client, message) => {
 
 	const logEmbed = {
 		author: {
+			name: `${message.member.displayName} (ID ${message.member.id})`,
 			icon_url: message.author.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
@@ -75,13 +76,10 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	const title = []
-
 	// Partie contenu écrit du message
 	if (message.content) {
 		const escapedCleanContent = Util.escapeCodeBlock(message.cleanContent)
 		logEmbed.description = `\`\`\`\n${escapedCleanContent}\`\`\``
-		title.push('Message')
 	}
 
 	// Partie attachements (fichiers, images...)
@@ -106,7 +104,6 @@ module.exports = async (client, message) => {
 				const buffer = await getLinkBuffer(image.proxyURL)
 				const messageAttachment = new MessageAttachment(buffer, image.name)
 				messageAttachments.push(messageAttachment)
-				title.push('Image')
 			} else {
 				for (const [, attachment] of imageAttachments) {
 					// eslint-disable-next-line no-await-in-loop
@@ -114,7 +111,6 @@ module.exports = async (client, message) => {
 					const messageAttachment = new MessageAttachment(buffer, attachment.name)
 					messageAttachments.push(messageAttachment)
 				}
-				title.push('Images')
 			}
 
 		// Partie fichiers
@@ -122,10 +118,7 @@ module.exports = async (client, message) => {
 		// avant de recevoir l'event, il est impossible de récupérer
 		// les données pour pouvoir les logs
 		// TODO : trouver une solution
-		if (otherAttachments.size > 0) {
-			if (otherAttachments.size === 1) title.push('Attachement')
-			else title.push('Attachements')
-
+		if (otherAttachments.size > 0)
 			for (const [, attachment] of otherAttachments) {
 				const attachmentNameSplited = attachment.name.split('.')
 				const attachmentType = attachmentNameSplited.pop()
@@ -135,9 +128,7 @@ module.exports = async (client, message) => {
 					inline: true,
 				})
 			}
-		}
 	}
 
-	logEmbed.author.name = `${title.join(' + ')} ${pluralize('supprimé', title.length)}`
 	return logsChannel.send({ files: messageAttachments, embed: logEmbed })
 }
