@@ -36,7 +36,7 @@ module.exports = {
 		if (deletedMessages.size === 1) return message.reply('aucun message supprimé 😕')
 
 		// Réponse pour l'utilisateur
-		message.reply(
+		message.channel.send(
 			`${deletedMessages.size} ${pluralize('message', deletedMessages.size)} ${pluralize(
 				'supprimé',
 				deletedMessages.size,
