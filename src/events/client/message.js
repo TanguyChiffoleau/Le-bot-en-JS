@@ -74,20 +74,33 @@ module.exports = async (client, message) => {
 
 			const foundChannel = message.guild.channels.cache.get(channelId)
 			if (!foundChannel) continue
+
 			// eslint-disable-next-line no-await-in-loop
 			const foundMessage = await foundChannel.messages.fetch(messageId)
 			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
 				continue
+
 			const embed = {
+				color: '2f3136',
 				author: {
 					name: `${foundMessage.member.displayName} (ID ${foundMessage.member.id})`,
 					icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
 				},
-				description: foundMessage.cleanContent,
-				fields: [
+				fields: [],
+				footer: {
+					text: `Message posté le ${convertDate(foundMessage.createdAt)}`,
+				},
+			}
+
+			const description = `${foundMessage.cleanContent}\n[Aller au message](${foundMessage.url}) - ${foundMessage.channel}`
+			if (description.length < 2048) {
+				embed.description = description
+			} else {
+				embed.description = foundMessage.cleanContent
+				embed.fields.push(
 					{
-						name: 'Auteur',
-						value: foundMessage.member,
+						name: 'Message',
+						value: `[Aller au message](${foundMessage.url})`,
 						inline: true,
 					},
 					{
@@ -95,44 +108,33 @@ module.exports = async (client, message) => {
 						value: foundMessage.channel,
 						inline: true,
 					},
-					{
-						name: 'Message',
-						value: `[Aller au message](${foundMessage.url})`,
-						inline: true,
-					},
-				],
-				footer: {
-					text: `Date: ${convertDate(foundMessage.createdAt)}`,
-				},
+				)
 			}
+
 			if (foundMessage.editedAt)
-				embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
+				embed.footer.text += ` et modifié le ${convertDate(foundMessage.editedAt)}`
+
 			if (message.author !== foundMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
 				embed.footer.text += `\nCité par ${message.member.displayName} (ID ${
 					message.author.id
 				}) le ${convertDate(message.createdAt)}`
 			}
+
 			const attachments = foundMessage.attachments
-			if (attachments.size)
-				if (attachments.size === 1) {
-					const file = attachments.first()
-					if (isImage(file.name)) embed.image = { url: file.url }
-					else
-						embed.fields.push({
-							name: file.filename,
-							value: file.url,
-							inline: true,
-						})
-				} else {
-					attachments.forEach(attachement =>
-						embed.fields.push({
-							name: attachement.name,
-							value: attachement.url,
-							inline: true,
-						}),
-					)
-				}
+			if (attachments.size === 1 && isImage(attachments.first().name))
+				embed.image = { url: attachments.first().url }
+			else
+				attachments.forEach(attachment => {
+					const attachmentNameSplited = attachment.name.split('.')
+					const attachmentType = attachmentNameSplited.pop()
+					embed.fields.push({
+						name: `Fichier .${attachmentType}`,
+						value: `[${attachmentNameSplited.join('.')}](${attachment.url})`,
+						inline: true,
+					})
+				})
+
 			message.channel.send({ embed })
 			sentMessages += 1
 		}
