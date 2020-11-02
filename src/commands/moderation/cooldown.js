@@ -13,7 +13,7 @@ module.exports = {
 		// Valeurs par défaut :
 		// slowModeValue = 30 secondes
 		// slowModeTime = 5 minutes
-		const [slowModeValue = 30, slowModeTime = 5 * 60] = args.map(arg => parseInt(arg, 10))
+		const [slowModeTime = 5 * 60, slowModeValue = 30] = args.map(arg => parseInt(arg, 10))
 
 		// Si slowModeValue === 0 on supprime le slowmode
 		if (slowModeValue === 0) {
