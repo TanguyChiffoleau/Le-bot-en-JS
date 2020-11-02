@@ -85,49 +85,47 @@ module.exports = async (client, message) => {
 	// Partie attachements (fichiers, images...)
 	const messageAttachments = []
 	const attachments = message.attachments
-	if (attachments.size > 0) {
-		const [imageAttachments, otherAttachments] = attachments.partition(attachment =>
-			isImage(attachment.name),
-		)
+	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
 
-		// Partie image
-		// Étant donné que les données sont supprimées de discord
-		// avant de recevoir l'event, il est possible de récupérer
-		// les images via les proxy car elles resent disponibles quelques
-		// temps après la suppression du message
-		if (imageAttachments.size > 0)
-			if (imageAttachments.size === 1) {
-				const image = imageAttachments.first()
-				logEmbed.image = {
-					url: `attachment://${image.name}`,
-				}
-				const buffer = await getLinkBuffer(image.proxyURL)
-				const messageAttachment = new MessageAttachment(buffer, image.name)
-				messageAttachments.push(messageAttachment)
-			} else {
-				for (const [, attachment] of imageAttachments) {
-					// eslint-disable-next-line no-await-in-loop
-					const buffer = await getLinkBuffer(attachment.proxyURL)
-					const messageAttachment = new MessageAttachment(buffer, attachment.name)
-					messageAttachments.push(messageAttachment)
-				}
-			}
+	const [imageAttachments, otherAttachments] = attachments.partition(attachment =>
+		isImage(attachment.name),
+	)
 
-		// Partie fichiers
-		// Étant donné que les données sont supprimées de discord
-		// avant de recevoir l'event, il est impossible de récupérer
-		// les données pour pouvoir les logs
-		// TODO : trouver une solution
-		if (otherAttachments.size > 0)
-			for (const [, attachment] of otherAttachments) {
-				const attachmentNameSplited = attachment.name.split('.')
-				const attachmentType = attachmentNameSplited.pop()
-				logEmbed.fields.push({
-					name: `Fichier ${attachmentType}`,
-					value: attachmentNameSplited,
-					inline: true,
-				})
-			}
+	// Partie image
+	// Étant donné que les données sont supprimées de discord
+	// avant de recevoir l'event, il est possible de récupérer
+	// les images via les proxy car elles resent disponibles quelques
+	// temps après la suppression du message
+	if (imageAttachments.size === 1) {
+		const image = imageAttachments.first()
+		logEmbed.image = {
+			url: `attachment://${image.name}`,
+		}
+		const buffer = await getLinkBuffer(image.proxyURL)
+		const messageAttachment = new MessageAttachment(buffer, image.name)
+		messageAttachments.push(messageAttachment)
+	} else {
+		for (const [, attachment] of imageAttachments) {
+			// eslint-disable-next-line no-await-in-loop
+			const buffer = await getLinkBuffer(attachment.proxyURL)
+			const messageAttachment = new MessageAttachment(buffer, attachment.name)
+			messageAttachments.push(messageAttachment)
+		}
+	}
+
+	// Partie fichiers
+	// Étant donné que les données sont supprimées de discord
+	// avant de recevoir l'event, il est impossible de récupérer
+	// les données pour pouvoir les logs
+	// TODO : trouver une solution
+	for (const [, attachment] of otherAttachments) {
+		const attachmentNameSplited = attachment.name.split('.')
+		const attachmentType = attachmentNameSplited.pop()
+		logEmbed.fields.push({
+			name: `Fichier ${attachmentType}`,
+			value: attachmentNameSplited,
+			inline: true,
+		})
 	}
 
 	return logsChannel.send({ files: messageAttachments, embed: logEmbed })
