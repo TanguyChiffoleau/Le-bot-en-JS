@@ -68,7 +68,7 @@ module.exports = {
 
 			await logsChannel.send({
 				embed: {
-					color: '311B92',
+					color: '0000ff',
 					author: {
 						name: `${message.member.displayName} (ID ${message.member.id})`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
@@ -81,14 +81,14 @@ module.exports = {
 			for (const description of splitedDescriptions)
 				await logsChannel.send({
 					embed: {
-						color: '311B92',
+						color: '0000ff',
 						description: description,
 					},
 				})
 
 			return logsChannel.send({
 				embed: {
-					color: '311B92',
+					color: '0000ff',
 					description: lastDescription,
 					fields: [
 						{
@@ -114,7 +114,7 @@ module.exports = {
 		// Si les messages tiennent dans un seul embed
 		return logsChannel.send({
 			embed: {
-				color: '311B92',
+				color: '0000ff',
 				author: {
 					name: `${message.member.displayName} (ID ${message.member.id})`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
