@@ -66,4 +66,9 @@ module.exports = {
 
 		return total.join(' ')
 	},
+
+	isImage: fileName => {
+		const format = fileName.split('.').pop().toLowerCase()
+		return Boolean(format.match(/png|jpeg|jpg|gif|webp/))
+	},
 }

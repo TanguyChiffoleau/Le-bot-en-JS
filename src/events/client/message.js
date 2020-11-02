@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 const { Collection } = require('discord.js')
-const { convertDate } = require('../../util/util')
+const { convertDate, isImage } = require('../../util/util')
 
 module.exports = async (client, message) => {
 	if (
@@ -117,8 +117,7 @@ module.exports = async (client, message) => {
 			if (attachments.size)
 				if (attachments.size === 1) {
 					const file = attachments.first()
-					const format = file.name.split('.').pop().toLowerCase()
-					if (format.match(/png|jpeg|jpg|gif|webp/)) embed.image = { url: file.url }
+					if (isImage(file.name)) embed.image = { url: file.url }
 					else
 						embed.fields.push({
 							name: file.filename,

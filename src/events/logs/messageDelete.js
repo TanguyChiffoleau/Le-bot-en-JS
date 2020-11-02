@@ -1,15 +1,10 @@
-const { convertDate, pluralizeWithoutQuantity: pluralize } = require('../../util/util')
+const { convertDate, pluralizeWithoutQuantity: pluralize, isImage } = require('../../util/util')
 const { MessageAttachment, Util } = require('discord.js')
 const bent = require('bent')
 
 const getLinkBuffer = url => {
 	const getBuffer = bent('buffer')
 	return getBuffer(url)
-}
-
-const isImage = fileName => {
-	const format = fileName.split('.').pop().toLowerCase()
-	return Boolean(format.match(/png|jpeg|jpg|gif|webp/))
 }
 
 module.exports = async (client, message) => {
