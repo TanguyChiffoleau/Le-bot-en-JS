@@ -124,7 +124,7 @@ module.exports = async (client, message) => {
 		const attachmentType = attachmentNameSplited.pop()
 		logEmbed.fields.push({
 			name: `Fichier ${attachmentType}`,
-			value: attachmentNameSplited,
+			value: attachmentNameSplited.join('.'),
 			inline: true,
 		})
 	}
