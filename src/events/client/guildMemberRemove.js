@@ -24,6 +24,17 @@ module.exports = (client, guildMember) => {
 					value: guildMember,
 					inline: true,
 				},
+				{
+					name: 'Serveur rejoint le',
+					value: convertDate(guildMember.joinedAt),
+					inline: true,
+				},
+				{
+					name: 'Était sur le serveur depuis',
+					value: diffDate(guildMember.joinedAt),
+					inline: true,
+				},
+				{
 					name: 'Date de création du compte',
 					value: convertDate(guildMember.user.createdAt),
 					inline: true,
