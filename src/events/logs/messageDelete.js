@@ -67,7 +67,7 @@ module.exports = async (client, message) => {
 		logEmbed.color = 'fc3c3c'
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
-			text: `Supprimé par: ${executor.tag}\nDate de suppression: ${convertDate(new Date())}`,
+			text: `Date de suppression: ${convertDate(new Date())}\nSupprimé par ${executor.tag}`,
 		}
 	} else {
 		logEmbed.color = '00FF00'
@@ -87,6 +87,7 @@ module.exports = async (client, message) => {
 	const attachments = message.attachments
 	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
 
+	// Séparation des images et des autres fichiers
 	const [imageAttachments, otherAttachments] = attachments.partition(attachment =>
 		isImage(attachment.name),
 	)
