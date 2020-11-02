@@ -109,7 +109,7 @@ module.exports = async (client, message) => {
 				embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
 			if (message.author !== foundMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
-				embed.footer.text += `\nCité par ${message.author.tag} (ID ${
+				embed.footer.text += `\nCité par ${message.member.displayName} (ID ${
 					message.author.id
 				}) le ${convertDate(message.createdAt)}`
 			}
@@ -125,11 +125,6 @@ module.exports = async (client, message) => {
 							inline: true,
 						})
 				} else {
-					embed.fields.push({
-						name: '\u200b',
-						value: '\u200b',
-						inline: true,
-					})
 					attachments.forEach(attachement =>
 						embed.fields.push({
 							name: attachement.name,
