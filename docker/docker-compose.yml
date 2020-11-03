@@ -12,4 +12,4 @@ services:
         environment:
             NODE_ENV: production
         volumes:
-            - ../config/:/config/
+            - ../config/reactionRoleConfig.json:/config/reactionRoleConfig.json
