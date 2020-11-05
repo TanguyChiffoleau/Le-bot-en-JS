@@ -64,7 +64,7 @@ module.exports = async (client, message) => {
 		// Partie citation
 		const regexGlobal = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18}))(?!>)/g
 		const regex = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18}))(?!>)/
-		const matches = message.cleanContent.match(regexGlobal)
+		const matches = message.content.replace(/^> .*$/gm, "").match(regexGlobal)
 		if (!matches) return
 
 		let sentMessages = 0
