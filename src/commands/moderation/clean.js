@@ -8,7 +8,7 @@ const { Util } = require('discord.js')
 
 module.exports = {
 	name: 'clean',
-	description: 'Supprime un nombre de de messages donné dans le channel',
+	description: 'Supprime un nombre de messages donné dans le channel',
 	aliases: ['cl'],
 	isEnabled: true,
 	needArguments: true,
