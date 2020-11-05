@@ -63,13 +63,13 @@ module.exports = async (client, message) => {
 	} else {
 		// Partie citation
 		const regexGlobal = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/g
-		const regex = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/
+		const regex = /https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/
 		const matches = message.cleanContent.match(regexGlobal)
 		if (!matches) return
 
 		let sentMessages = 0
 		for (const match of matches) {
-			const [, , , guildId, channelId, messageId] = regex.exec(match)
+			const [, guildId, channelId, messageId] = regex.exec(match)
 			if (guildId !== client.config.guildID) continue
 
 			const foundChannel = message.guild.channels.cache.get(channelId)
