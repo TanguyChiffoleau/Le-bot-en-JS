@@ -36,7 +36,7 @@ module.exports = {
 		if (deletedMessages.size === 1) return message.reply('aucun message supprimé 😕')
 
 		// Réponse pour l'utilisateur
-		message.reply(
+		message.channel.send(
 			`${deletedMessages.size} ${pluralize('message', deletedMessages.size)} ${pluralize(
 				'supprimé',
 				deletedMessages.size,
@@ -68,11 +68,12 @@ module.exports = {
 
 			await logsChannel.send({
 				embed: {
-					color: '311B92',
+					color: '0000ff',
 					author: {
-						name: 'Clean',
+						name: `${message.member.displayName} (ID ${message.member.id})`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
+					title: 'Clean',
 					description: firstDescription,
 				},
 			})
@@ -80,24 +81,24 @@ module.exports = {
 			for (const description of splitedDescriptions)
 				await logsChannel.send({
 					embed: {
-						color: '311B92',
+						color: '0000ff',
 						description: description,
 					},
 				})
 
 			return logsChannel.send({
 				embed: {
-					color: '311B92',
+					color: '0000ff',
 					description: lastDescription,
 					fields: [
 						{
-							name: 'Exécuté par',
-							value: message.member,
+							name: 'Channel',
+							value: message.channel,
 							inline: true,
 						},
 						{
-							name: 'Channel',
-							value: message.channel,
+							name: 'Exécuté par',
+							value: message.member,
 							inline: true,
 						},
 						{
@@ -113,21 +114,22 @@ module.exports = {
 		// Si les messages tiennent dans un seul embed
 		return logsChannel.send({
 			embed: {
-				color: '311B92',
+				color: '0000ff',
 				author: {
-					name: 'Clean',
+					name: `${message.member.displayName} (ID ${message.member.id})`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
+				title: 'Clean',
 				description: text,
 				fields: [
 					{
-						name: 'Exécuté par',
-						value: message.member,
+						name: 'Channel',
+						value: message.channel,
 						inline: true,
 					},
 					{
-						name: 'Channel',
-						value: message.channel,
+						name: 'Exécuté par',
+						value: message.member,
 						inline: true,
 					},
 					{

@@ -23,10 +23,7 @@ module.exports = {
 			.padStart(4, '0')} ${date
 			.getHours()
 			.toString()
-			.padStart(2, '0')}:${date
-			.getMinutes()
-			.toString()
-			.padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
+			.padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`,
 
 	convertDateToHours: date =>
 		`${date.getHours().toString().padStart(2, '0')}:${date
@@ -65,5 +62,10 @@ module.exports = {
 		if (seconds) total.push(pluralize('seconde', seconds))
 
 		return total.join(' ')
+	},
+
+	isImage: fileName => {
+		const format = fileName.split('.').pop().toLowerCase()
+		return Boolean(format.match(/png|jpeg|jpg|gif|webp/))
 	},
 }
