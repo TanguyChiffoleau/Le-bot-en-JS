@@ -31,6 +31,7 @@ module.exports = {
 			client.cache = {
 				deleteMessagesID: new Set(),
 			}
+			client.commandsCategories = new Map()
 
 			return client
 		},
@@ -43,6 +44,14 @@ module.exports = {
 		commandsDir.forEach(async commandCategory => {
 			const commands = (await readdir(`./src/commands/${commandCategory}`)).filter(file =>
 				file.endsWith('.js'),
+			)
+			client.commandsCategories.set(
+				commandCategory,
+				commands.map(commandName => {
+					const commandArr = commandName.split('.')
+					commandArr.pop()
+					return commandArr.join('.')
+				}),
 			)
 			commands.forEach(commandFile => {
 				const command = require(`../commands/${commandCategory}/${commandFile}`)
