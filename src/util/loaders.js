@@ -28,8 +28,9 @@ module.exports = {
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 				logsChannelID: process.env.LOGS_CHANNEL,
 			}
-			client.cache = {}
-			client.cache.deleteMessagesID = new Set()
+			client.cache = {
+				deleteMessagesID: new Set(),
+			}
 
 			return client
 		},
