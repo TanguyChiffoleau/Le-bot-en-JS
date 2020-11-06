@@ -4,6 +4,10 @@ module.exports = {
 	name: 'whois',
 	description: 'Donne des infos sur soit ou un autre utilisateur',
 	aliases: [],
+	usage: {
+		arguments: '[id|mention]',
+		informations: null,
+	},
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,

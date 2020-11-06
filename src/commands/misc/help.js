@@ -1,9 +1,14 @@
+const { escapeMarkdown } = require('discord.js').Util
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
 module.exports = {
 	name: 'help',
 	description: 'Affiche les commandes fixes du bot',
 	aliases: ['aide'],
+	usage: {
+		arguments: '[commande]',
+		informations: null,
+	},
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
@@ -33,7 +38,9 @@ module.exports = {
 		}
 
 		const chosenCommand = args[0]
-		const command = client.commands.get(chosenCommand)
+		const command =
+			client.commands.get(chosenCommand) ||
+			client.commands.find(({ aliases }) => aliases.includes(chosenCommand))
 		if (!command) return message.reply(`je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`)
 
 		const properties = [
@@ -60,36 +67,44 @@ module.exports = {
 			],
 		]
 
-		return message.channel.send({
-			embed: {
-				title: command.name,
-				color: 'ff8000',
-				description: command.description,
-				fields: [
-					{
-						name: 'Propriétés',
-						value: properties.reduce(
-							(acc, [property, traduction]) =>
-								`${acc}> ${
-									command[property] ? traduction.true : traduction.false
-								}\n`,
+		const embed = {
+			title: command.name,
+			color: 'ff8000',
+			description: command.description,
+			fields: [
+				{
+					name: 'Propriétés',
+					value: properties.reduce(
+						(acc, [property, traduction]) =>
+							`${acc}> ${command[property] ? traduction.true : traduction.false}\n`,
+						'',
+					),
+				},
+				{
+					name: 'Permissions nécessaires',
+					value:
+						command.requirePermissions.reduce(
+							(acc, permission) => `${acc}> \`${permission}\`\n`,
 							'',
-						),
-					},
-					{
-						name: 'Aliases',
-						value: command.aliases.reduce((acc, alias) => `${acc}> \`${alias}\`\n`, ''),
-					},
-					{
-						name: 'Permissions nécessaires',
-						value:
-							command.requirePermissions.reduce(
-								(acc, permission) => `${acc}> \`${permission}\`\n`,
-								'',
-							) || 'Ne nécessite aucune permission',
-					},
-				],
-			},
-		})
+						) || 'Ne nécessite aucune permission',
+				},
+			],
+		}
+
+		if (command.aliases.length > 0)
+			embed.fields.push({
+				name: 'Aliases',
+				value: command.aliases.reduce((acc, alias) => `${acc}> \`${alias}\`\n`, ''),
+			})
+
+		if (command.usage)
+			embed.fields.push({
+				name: 'Utilisation',
+				value: `${escapeMarkdown(command.usage.arguments)}${
+					command.usage.informations ? `\n_(${command.usage.informations})_` : ''
+				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
+			})
+
+		return message.channel.send({ embed })
 	},
 }

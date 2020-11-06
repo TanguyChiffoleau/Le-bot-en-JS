@@ -10,6 +10,10 @@ module.exports = {
 	name: 'clean',
 	description: 'Supprime un nombre de messages donné dans le channel',
 	aliases: ['cl'],
+	usage: {
+		arguments: '<nombre_messages_à_supprimer>',
+		informations: 'Valeur comprise entre 1 et 99',
+	},
 	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,

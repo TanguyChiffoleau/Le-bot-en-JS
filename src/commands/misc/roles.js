@@ -4,6 +4,10 @@ module.exports = {
 	name: 'roles',
 	description: 'Affiche le nombre de membres pour chaque rôle',
 	aliases: ['rôles', 'rôle', 'role'],
+	usage: {
+		arguments: '[all]',
+		informations: `"all" correspond à l'affichage de tous les rôles, même ceux qui n'apparaissent pas à droite`,
+	},
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,

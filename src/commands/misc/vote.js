@@ -4,6 +4,10 @@ module.exports = {
 	name: 'vote',
 	description: 'Créer un embed avec la proposition et des émojis pour voter',
 	aliases: [],
+	usage: {
+		arguments: '<texte>',
+		informations: null,
+	},
 	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,

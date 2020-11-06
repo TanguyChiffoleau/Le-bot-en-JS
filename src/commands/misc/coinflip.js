@@ -2,6 +2,7 @@ module.exports = {
 	name: 'coinflip',
 	description: 'Coinflip! (pile ou face)',
 	aliases: ['cf'],
+	usage: null,
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,

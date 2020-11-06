@@ -5,6 +5,11 @@ module.exports = {
 	name: 'cooldown',
 	description: 'Active le mode lent sur le channel',
 	aliases: ['cd'],
+	usage: {
+		arguments: '[durée_du_cooldown] [valeur_du_cooldown]',
+		informations:
+			'Les valeurs sont en secondes. Valeurs par défaut : durée = 5x60, valeur = 30',
+	},
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
