@@ -1,4 +1,4 @@
-const { convertDate, diffDate } = require('../../util/util')
+const { convertDate, diffDate, modifyWrongUsernames } = require('../../util/util')
 
 module.exports = async (client, guildMember) => {
 	if (
@@ -8,12 +8,7 @@ module.exports = async (client, guildMember) => {
 	)
 		return
 
-	if (
-		guildMember.displayName.match(
-			/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/,
-		)
-	)
-		guildMember.edit({ nick: 'Change ton pseudo' })
+	modifyWrongUsernames(guildMember)
 
 	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return

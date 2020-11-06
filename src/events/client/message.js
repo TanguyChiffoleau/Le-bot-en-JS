@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 const { Collection } = require('discord.js')
-const { convertDate, isImage } = require('../../util/util')
+const { modifyWrongUsernames, convertDate, isImage } = require('../../util/util')
 
 module.exports = async (client, message) => {
 	if (
@@ -8,6 +8,8 @@ module.exports = async (client, message) => {
 		(message.guild && (message.guild.id !== client.config.guildID || !message.guild.available))
 	)
 		return
+
+	modifyWrongUsernames(message.member)
 
 	if (message.content.startsWith(client.config.prefix)) {
 		const args = message.content.slice(client.config.prefix.length).split(/ +/)

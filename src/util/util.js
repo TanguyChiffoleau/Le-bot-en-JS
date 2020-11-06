@@ -68,4 +68,13 @@ module.exports = {
 		const format = fileName.split('.').pop().toLowerCase()
 		return Boolean(format.match(/png|jpeg|jpg|gif|webp/))
 	},
+
+	modifyWrongUsernames: guildMember => {
+		if (
+			guildMember.displayName.match(
+				/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/,
+			)
+		)
+			return guildMember.edit({ nick: 'Change ton pseudo' })
+	},
 }
