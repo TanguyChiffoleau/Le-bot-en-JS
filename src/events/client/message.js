@@ -76,7 +76,7 @@ module.exports = async (client, message) => {
 			if (!foundChannel) continue
 
 			// eslint-disable-next-line no-await-in-loop
-			const foundMessage = await foundChannel.messages.fetch(messageId)
+			const foundMessage = await foundChannel.messages.fetch(messageId).catch(() => null)
 			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
 				continue
 
