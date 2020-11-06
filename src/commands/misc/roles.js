@@ -14,7 +14,7 @@ module.exports = {
 			title: 'Rôles',
 			description: '',
 			footer: {
-				texte:
+				text:
 					'Seuls les grades affichés séparément et avec au moins un membre sont comptabilisés.',
 			},
 		}
