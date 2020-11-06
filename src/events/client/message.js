@@ -62,95 +62,82 @@ module.exports = async (client, message) => {
 		}
 	} else {
 		// Partie citation
-		const regexGlobal = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/g
-		const regex = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/
-		const matches = message.cleanContent.match(regexGlobal)
-		if (!matches) return
+		const splitted = message.content.split('\n');
+		const contentsSplitted = [];
+		for (splitContent of splitted) {
+			const regex = /https:\/\/(canary\.)?discord(app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18})/g;
+			if (!splitContent.match(regex))
+				continue;
 
-		let sentMessages = 0
-		for (const match of matches) {
-			const [, , , guildId, channelId, messageId] = regex.exec(match)
-			if (guildId !== client.config.guildID) continue
-
-			const foundChannel = message.guild.channels.cache.find(
-				channel => channel.id === channelId,
-			)
-			if (!foundChannel) continue
-			// eslint-disable-next-line no-await-in-loop
-			const foundMessage = await foundChannel.messages.fetch(messageId)
-			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
-				continue
-			const embed = {
-				author: {
-					name: 'Citation',
-					icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
-				},
-				description: foundMessage.cleanContent,
-				fields: [
-					{
-						name: 'Auteur',
-						value: foundMessage.member,
-						inline: true,
-					},
-					{
-						name: 'Channel',
-						value: foundMessage.channel,
-						inline: true,
-					},
-					{
-						name: 'Message',
-						value: `[Aller au message](${foundMessage.url})`,
-						inline: true,
-					},
-				],
-				footer: {
-					text: `Date: ${convertDate(foundMessage.createdAt)}`,
-				},
-			}
-			if (foundMessage.editedAt)
-				embed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`
-			if (message.author !== foundMessage.author) {
-				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
-				embed.footer.text += `\nCité par ${message.author.tag} (ID ${
-					message.author.id
-				}) le ${convertDate(message.createdAt)}`
-			}
-			const attachments = foundMessage.attachments
-			if (attachments.size)
-				if (attachments.size === 1) {
-					const file = attachments.first()
-					const format = file.name.split('.').pop().toLowerCase()
-					if (format.match(/png|jpeg|jpg|gif|webp/)) embed.image = { url: file.url }
-					else
-						embed.fields.push({
-							name: file.filename,
-							value: file.url,
-							inline: true,
-						})
-				} else {
-					embed.fields.push({
-						name: '\u200b',
-						value: '\u200b',
-						inline: true,
-					})
-					attachments.forEach(attachement =>
-						embed.fields.push({
-							name: attachement.name,
-							value: attachement.url,
-							inline: true,
-						}),
-					)
-				}
-			message.channel.send({ embed })
-			sentMessages += 1
+			const matches = regex.exec(splitContent.match(regex));
+			contentsSplitted.push({
+				citation: splitContent.startsWith('> ') ? true : false,
+				content: splitContent,
+				link: splitContent.match(regex) ? {
+					guildId: matches[3],
+					channelId: matches[4],
+					messageId: matches[5]
+				} : false
+			});
 		}
 
-		if (
-			!message.cleanContent.replace(regexGlobal, '').trim() &&
-			sentMessages === matches.length
-		) {
-			client.cache.deleteMessagesID.add(message.id)
-			return message.delete()
+		for ({ citation, content, link } of contentsSplitted) {
+			const { guildId, channelId, messageId } = link;
+
+			if (citation) continue;
+			if (!link) continue;
+
+			if (guildId !== client.config.guildID) continue;
+
+			const foundChannel = message.guild.channels.cache.find(channel => channel.id === channelId);
+			if (!foundChannel) continue;
+
+			const foundMessage = await foundChannel.messages.fetch(messageId);
+			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size)) continue;
+
+			const messageEmbed = {
+				author: { name: 'Citation', icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }) },
+				description: foundMessage.cleanContent,
+				fields: [{
+					name: 'Auteur',
+					value: foundMessage.member,
+					inline: true,
+				}, {
+					name: 'Channel',
+					value: foundMessage.channel,
+					inline: true,
+				}, {
+					name: 'Message',
+					value: `[Aller au message](${foundMessage.url})`,
+					inline: true
+				}
+				],
+				footer: { text: `Date: ${convertDate(foundMessage.createdAt)}` }
+			}
+
+			if (foundMessage.editedAt)
+				messageEmbed.footer.text += ` (Dernier edit: ${convertDate(foundMessage.editedAt)})`;
+
+			if (message.author !== foundMessage.author) {
+				messageEmbed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true });
+				messageEmbed.footer.text += `\nCité par ${message.author.tag} (ID ${message.author.id}) le ${convertDate(message.createdAt)}`;
+			}
+
+			const attachments = foundMessage.attachments;
+			if (attachments.size) {
+				if (attachments.size === 1) {
+					const file = attachments.first();
+					const format = file.name.split('.').pop().toLowerCase();
+					if (format.match(/png|jpeg|jpg|gif|webp/))
+						messageEmbed.image = { url: file.url };
+					else
+						messageEmbed.fields.push({ name: file.filename, value: file.url, inline: true });
+				} else {
+					messageEmbed.fields.push({ name: '\u200b', value: '\u200b', inline: true });
+					attachments.forEach(attachement => messageEmbed.fields.push({ name: attachement.name, value: attachement.url, inline: true }));
+				}
+			}
+			message.channel.send({ embed: messageEmbed });
 		}
 	}
 }
