@@ -119,7 +119,8 @@ L'application est capable de tourner sous plusieurs environnements :
 Vous pouvez télécharger le code de l'application sur votre machine
 
 -   en [clonant le repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
--   ou en téléchargeant le code source 
+-   ou en téléchargeant le code source
+
 ![télécharger le code source](./doc/images/download.png)
 
 </details>
