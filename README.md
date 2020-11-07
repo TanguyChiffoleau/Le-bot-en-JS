@@ -25,7 +25,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu primairement et s
 
 ## Fonctionnalités
 
-blabla
+TO BE DONE
 
 ## Setup en production
 
@@ -119,7 +119,8 @@ L'application est capable de tourner sous plusieurs environnements :
 Vous pouvez télécharger le code de l'application sur votre machine
 
 -   en [clonant le repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
--   ou en téléchargeant le code source ![télcharger le code source](./doc/images/download.png 'Télcharger le code source')
+-   ou en téléchargeant le code source 
+![télécharger le code source](./doc/images/download.pngdoc/images/download.png)
 
 </details>
 
