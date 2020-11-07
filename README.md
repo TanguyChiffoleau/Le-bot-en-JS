@@ -17,7 +17,7 @@
 
 ## À propos
 
-Le-bot-en-JS est un bot discord open-source codé en JS conçu primairement et spécialement pour le serveur discord **Entraide Informatique - Capet & CTRL-F**.
+Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et spécialement pour le serveur discord **Entraide Informatique - Capet & CTRL-F**.
 
 [![Discord entraide](https://img.shields.io/discord/475253577288253440?color=%237289DA&logo=discord&logoColor=white)](https://www.discord.gg/informatique)
 
