@@ -10,13 +10,7 @@
 - [Table des matières](#table-des-matières)
 - [À propos](#à-propos)
 - [Commandes](#commandes)
-	- [Divers](#divers)
-	- [Modération](#modération)
 - [Fonctionnalités](#fonctionnalités)
-	- [Logs](#logs)
-	- [Renommage des utilisateurs à pseudo incorrect](#renommage-des-utilisateurs-à-pseudo-incorrect)
-	- [Citations](#citations)
-	- [Système de report](#système-de-report)
 - [Setup en production](#setup-en-production)
 - [Ressources](#ressources)
 - [Contribuer](#contribuer)
@@ -30,9 +24,13 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu primairement et s
 
 ## Commandes
 
-> Pour avoir toutes les informations sur une commande, utliser la commande `<prefix>help <commande>`. Exemple : !help coinflip.
+> Pour avoir toutes les informations sur une commande, utliser la commande `<prefix>help <commande>`.
+>
+> Exemple : `!help coinflip`.
 
-### Divers
+
+<details id="divers">
+<summary><b>Divers</b></summary>
 
 | Commande | Description                                                 |
 | -------- | ----------------------------------------------------------- |
@@ -44,33 +42,49 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu primairement et s
 | votes    | Créer un embed avec la proposition et des émojis pour voter |
 | whois    | Donne des infos sur soit ou un autre utilisateur            |
 
-### Modération
+</details>
+
+<details id="moderation">
+<summary><b>Modération</b></summary>
 
 | Commande | Description                                          |
 | -------- | ---------------------------------------------------- |
 | clean    | Supprime un nombre de messages donné dans le channel |
 | cooldown | Active le mode lent sur le channel                   |
 
+</details>
 
 ## Fonctionnalités
 
-### Logs
+<details id="logs">
+<summary><b>Logs</b></summary>
 
 - Join/leave des membres : TO BE DONE (ne pas oublier les screenshots/gifs)
 - Messages supprimés : TO BE DONE (ne pas oublier les screenshots/gifs)
 
-### Renommage des utilisateurs à pseudo incorrect
+</details>
+
+<details id="rename">
+<summary><b>Renommage des utilisateurs à pseudo incorrect</b></summary>
 
 - Déclenché lors des events suivants : un utilisateur rejoint les serveur, un utilisateur envoie un message, un utilisateur est modifié et lorsque le pseudo matche le regex `/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/`
 - Renomme en "Change ton pseudo"
 
-### Citations
+</details>
+
+<details id="citations">
+<summary><b>Citations</b></summary>
 
 TO BE DONE (ne pas oublier les screenshots/gifs)
 
-### Système de report
+</details>
+
+<details id="report">
+<summary><b>Système de report</b></summary>
 
 TO BE DONE (ne pas oublier les screenshots/gifs)
+
+</details>
 
 ## Setup en production
 
@@ -78,8 +92,8 @@ L'application est capable de tourner sous plusieurs environnements :
 
 -   n'importe quel environnement avec Node.js d'installé
 -   dans un container Docker via
-    -   le CLI
     -   Docker Compose
+    -   le CLI
 
 <details id="classique">
 <summary><b>Setup "classique" avec Node.js</b></summary>
@@ -135,7 +149,7 @@ L'application est capable de tourner sous plusieurs environnements :
 	> │   ├── bot.env
 	> │   └── reactionRoleConfig.json
 	> └── docker
-	> 	└── docker-compose.yml
+	> 	  └── docker-compose.yml
 	> ```
 
 #### Lancement de l'application
@@ -153,6 +167,46 @@ L'application est capable de tourner sous plusieurs environnements :
 -   Vous pouvez utiliser la commande `docker-compose -f ./docker/docker-compose.yml stop` pour stopper le container. Pour le supprimer, utilisez la commande `docker-compose -f ./docker/docker-compose.yml down`.
 
 </details>
+
+<!-- <details>
+<summary id="docker"><b>Setup avec Docker</b></summary>
+
+#### Prérequis
+
+1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) d'installé.
+
+	> Utilisez la commandes `docker -v` pour vérifier que l'application soit bien installé.
+
+2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
+
+3. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+
+	> Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
+
+	> La structure des dossiers et fichiers devrait ressembler à ça :
+	>
+	> ```
+	> .
+	> ├── config
+	> │   ├── bot.env
+	> │   └── reactionRoleConfig.json
+	> └── docker
+	> 	  └── docker-compose.yml
+	> ```
+
+#### Lancement de l'application
+
+-   Vous pouvez utiliser les commandes `docker pull tanguychiffoleau/le-bot-en-js:latest` puis `docker run --env NODE_ENV=production --env-file config/bot.env --volume /config/:/config/ --restart on-failure -d tanguychiffoleau/le-bot-en-js:latest` pour lancer l'application.
+
+	> docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
+
+	> Pour plus d'infos sur les technologies liées à Docker utilisées ici, vous pouvez consulter leur [documentation](https://docs.docker.com/reference/) ou leur [manuel](https://docs.docker.com/engine/).
+
+#### Arrêt de l'application
+
+-   Vous pouvez utiliser la commande `docker-compose -f ./docker/docker-compose.yml stop` pour stopper le container. Pour le supprimer, utilisez la commande `docker-compose -f ./docker/docker-compose.yml down`.
+
+</details> -->
 
 ## Ressources
 
