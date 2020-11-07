@@ -7,16 +7,19 @@
 
 ## Table des matières
 
-- [Le-bot-en-JS](#le-bot-en-js)
-	- [Table des matières](#table-des-matières)
-	- [À propos](#à-propos)
-	- [Commandes](#commandes)
-		- [Divers](#divers)
-		- [Modération](#modération)
-	- [Fonctionnalités](#fonctionnalités)
-	- [Setup en production](#setup-en-production)
-	- [Ressources](#ressources)
-	- [Contribuer](#contribuer)
+- [Table des matières](#table-des-matières)
+- [À propos](#à-propos)
+- [Commandes](#commandes)
+	- [Divers](#divers)
+	- [Modération](#modération)
+- [Fonctionnalités](#fonctionnalités)
+	- [Logs](#logs)
+	- [Renommage des utilisateurs à pseudo incorrect](#renommage-des-utilisateurs-à-pseudo-incorrect)
+	- [Citations](#citations)
+	- [Système de report](#système-de-report)
+- [Setup en production](#setup-en-production)
+- [Ressources](#ressources)
+- [Contribuer](#contribuer)
 
 ## À propos
 
@@ -51,7 +54,23 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu primairement et s
 
 ## Fonctionnalités
 
-TO BE DONE
+### Logs
+
+- Join/leave des membres : TO BE DONE (ne pas oublier les screenshots/gifs)
+- Messages supprimés : TO BE DONE (ne pas oublier les screenshots/gifs)
+
+### Renommage des utilisateurs à pseudo incorrect
+
+- Déclenché lors des events suivants : un utilisateur rejoint les serveur, un utilisateur envoie un message, un utilisateur est modifié et lorsque le pseudo matche le regex `/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/`
+- Renomme en "Change ton pseudo"
+
+### Citations
+
+TO BE DONE (ne pas oublier les screenshots/gifs)
+
+### Système de report
+
+TO BE DONE (ne pas oublier les screenshots/gifs)
 
 ## Setup en production
 
