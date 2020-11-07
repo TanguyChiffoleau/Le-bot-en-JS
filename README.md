@@ -10,6 +10,9 @@
 - [Le-bot-en-JS](#le-bot-en-js)
 	- [Table des matières](#table-des-matières)
 	- [À propos](#à-propos)
+	- [Commandes](#commandes)
+		- [Divers](#divers)
+		- [Modération](#modération)
 	- [Fonctionnalités](#fonctionnalités)
 	- [Setup en production](#setup-en-production)
 	- [Ressources](#ressources)
@@ -20,6 +23,30 @@
 Le-bot-en-JS est un bot discord open-source codé en JS conçu primairement et spécialement pour le serveur discord **Entraide Informatique - Capet & CTRL-F**.
 
 [![Discord entraide](https://img.shields.io/discord/475253577288253440?color=%237289DA&logo=discord&logoColor=white)](https://www.discord.gg/informatique)
+
+
+## Commandes
+
+> Pour avoir toutes les informations sur une commande, utliser la commande `<prefix>help <commande>`. Exemple : !help coinflip.
+
+### Divers
+
+| Commande | Description                                                 |
+| -------- | ----------------------------------------------------------- |
+| coinflip | Coinflip! (pile ou face)                                    |
+| help     | Affiche les commandes fixes du bot                          |
+| infos    | Donne quelques infos sur le bot                             |
+| ping     | Donne le ping de l'API ainsi que du bot                     |
+| roles    | Affiche le nombre de membres pour chaque rôle               |
+| votes    | Créer un embed avec la proposition et des émojis pour voter |
+| whois    | Donne des infos sur soit ou un autre utilisateur            |
+
+### Modération
+
+| Commande | Description                                          |
+| -------- | ---------------------------------------------------- |
+| clean    | Supprime un nombre de messages donné dans le channel |
+| cooldown | Active le mode lent sur le channel                   |
 
 
 ## Fonctionnalités
