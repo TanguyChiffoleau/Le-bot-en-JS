@@ -8,13 +8,12 @@
 ## Table des matières
 
 - [Le-bot-en-JS](#le-bot-en-js)
-  - [Table des matières](#table-des-matières)
-  - [À propos](#à-propos)
-  - [Fonctionnalités](#fonctionnalités)
-  - [Setup en production](#setup-en-production)
-  - [Ressources](#ressources)
-  - [Contribuer](#contribuer)
-
+	- [Table des matières](#table-des-matières)
+	- [À propos](#à-propos)
+	- [Fonctionnalités](#fonctionnalités)
+	- [Setup en production](#setup-en-production)
+	- [Ressources](#ressources)
+	- [Contribuer](#contribuer)
 
 ## À propos
 
@@ -43,15 +42,15 @@ L'application est capable de tourner sous plusieurs environnements :
 
 1. Il est nécessaire d'avoir [Node.js](https://nodejs.org/fr/) 12.0.0 ou plus récent d'installé sur votre machine.
 
-    > Utilisez la commande `node -v` pour vous assurez que Node est bien installé et que sa version est suffisante.
+	> Utilisez la commande `node -v` pour vous assurez que Node est bien installé et que sa version est suffisante.
 
-    > À titre indicatif, l'application tourne sous Node.js v14.15.0 en production.
+	> À titre indicatif, l'application tourne sous Node.js v14.15.0 en production.
 
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
 3. Il faut au préalable installer les dépendences de l'application avant de la lancer celle-ci en utilisant la commande `npm i`.
 
-    > Toutes les dépendences vont être installés, y compris celles prévus pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
+	> Toutes les dépendences vont être installés, y compris celles prévus pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
 
 4. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
@@ -59,7 +58,7 @@ L'application est capable de tourner sous plusieurs environnements :
 
 -   Vous pouvez utiliser `npm start` pour lancer l'application.
 
-    > Vous pouvez utiliser un gestionnaire d'application comme [PM2](https://pm2.keymetrics.io/) pour faciliter la gestion de l'application. [Tuto](https://discordjs.guide/improving-dev-environment/pm2.html)
+	> Vous pouvez utiliser un gestionnaire d'application comme [PM2](https://pm2.keymetrics.io/) pour faciliter la gestion de l'application. [Tuto](https://discordjs.guide/improving-dev-environment/pm2.html)
 
 #### Arrêt de l'application
 
@@ -74,34 +73,34 @@ L'application est capable de tourner sous plusieurs environnements :
 
 1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) ainsi que [Docker Compose](https://docs.docker.com/compose/install/) d'installé.
 
-    > Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installés.
+	> Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installés.
 
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
 3. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-    > Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
+	> Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
 
-    > La structure des dossiers et fichiers devrait ressembler à ça :
-    >
-    > ```
-    > .
-    > ├── config
-    > │   ├── bot.env
-    > │   └── reactionRoleConfig.json
-    > └── docker
-    > 	└── docker-compose.yml
-    > ```
+	> La structure des dossiers et fichiers devrait ressembler à ça :
+	>
+	> ```
+	> .
+	> ├── config
+	> │   ├── bot.env
+	> │   └── reactionRoleConfig.json
+	> └── docker
+	> 	└── docker-compose.yml
+	> ```
 
 #### Lancement de l'application
 
 -   Vous pouvez utiliser les commandes `docker pull tanguychiffoleau/le-bot-en-js:latest` puis `docker-compose -f ./docker/docker-compose.yml up -d` pour lancer l'application.
 
-    > docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
+	> docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
 
-    > docker-compose va lancer le container avec les règles définies dans `docker-compose.yml`.
+	> docker-compose va lancer le container avec les règles définies dans `docker-compose.yml`.
 
-    > Pour plus d'infos sur les technologies liées à Docker utilisées ici, vous pouvez consulter leur [documentation](https://docs.docker.com/reference/) ou leur [manuel](https://docs.docker.com/engine/).
+	> Pour plus d'infos sur les technologies liées à Docker utilisées ici, vous pouvez consulter leur [documentation](https://docs.docker.com/reference/) ou leur [manuel](https://docs.docker.com/engine/).
 
 #### Arrêt de l'application
 
@@ -130,7 +129,7 @@ Vous pouvez télécharger le code de l'application sur votre machine
 
 Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 
-> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut activer le [mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
 #### Fichier bot.env
 
@@ -142,6 +141,58 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | LEAVE_JOIN_CHANNEL_ID | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
 | REPORT_CHANNEL        | ID du channel sur lequel les messages de signalement seront postés                                               |
 | LOGS_CHANNEL          | ID du channel sur lequel les messages de logs seront postés                                                      |
+
+</details>
+
+</details>
+
+<details id='reaction'>
+<summary><b>Fonctionnement du sytème de réaction/rôles</b></summary>
+
+#### Fonctionnement et avantages
+
+- Le système permet de lier une réaction sur un message avec un rôle. Concrètement, un utilisateur qui clique sur la réaction A va recevoir le rôle A, et si il décoche cette réaction, il perd le rôle.
+- Ce système permet d'accorder une expérience personnalisée pour les utilisateurs du serveur. Lorsqu'un serveur propose beaucoup de channels, il devient difficile de naviguer à travers celui-ci, d'autant plus que certains channels peuvent ne pas intéresserttous les utilisateurs. Les utilisateurs souscrivent aux fonctionnalités offertes par un rôle donné, peut importe la fonctionnalité derrière.
+
+#### Configuration
+
+- Voici l'exemple donné dans [bot.example.env](config/bot.example.env)
+
+```js
+[
+	// Message n°1
+	{
+		"messageId": "123456789123456789", // ID du message
+		"channelId": "123456789123456789", // ID du channel du message
+		"emojiRoleMap": {
+			// Émoji unicode en clé et ID du rôle en valeur
+			"💸": "123456789123456789", 
+			"🔧": "123456789123456789"
+		}
+	},
+
+	// Message n°2
+	{
+		"messageId": "987654321987654321", // ID du message
+		"channelId": "987654321987654321", // ID du channel du message
+		"emojiRoleMap": {
+			// ID de l'émoji custom en clé et ID du rôle en valeur
+			"987654321987654322": "987654321987654321",
+			"987654321987654321": "987654321987654321"
+		}
+	}
+]
+```
+
+- Pour récupérer les IDs des messages et des channels, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+- Pour les émojis :
+  - unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`.
+
+	![emoji_unicode](doc/gifs/emoji_unicode.gif)
+
+  - personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`.
+
+	![emoji_custom](doc/gifs/emoji_custom.gif)
 
 </details>
 
