@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+
+services:
+
+    bot:
+        build:
+            context: ../
+            dockerfile: ./docker/Dockerfile
+        restart: on-failure
+        env_file: 
+            - ../config/bot.env
+        environment:
+            NODE_ENV: production
+        volumes:
+            - ../config/reactionRoleConfig.json:/app/config/reactionRoleConfig.json

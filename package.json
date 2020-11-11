@@ -7,7 +7,9 @@
 		"start": "node .",
 		"test": "eslint src && prettier --check src/**/*.js",
 		"docker-start": "docker-compose -f ./docker/docker-compose.yml up -d --build",
-		"docker-stop": "docker-compose -f ./docker/docker-compose.yml down"
+		"docker-stop": "docker-compose -f ./docker/docker-compose.yml down",
+		"docker-compose-build-start": "docker-compose -f ./docker/docker-compose-build.yml up -d --build",
+		"docker-compose-build-stop": "docker-compose -f ./docker/docker-compose-build.yml down"
 	},
 	"repository": {
 		"type": "git",
