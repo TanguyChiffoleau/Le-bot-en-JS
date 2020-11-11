@@ -1,9 +1,9 @@
-FROM node:14.15.0
-
+FROM node:14.15.0-alpine
 ENV NODE_ENV=production
+WORKDIR /app/
+
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
-
-RUN npm i
-
-CMD npm start
+CMD node .
