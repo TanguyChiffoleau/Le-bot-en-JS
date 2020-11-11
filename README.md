@@ -10,8 +10,16 @@
 - [Table des matières](#table-des-matières)
 - [À propos](#à-propos)
 - [Commandes](#commandes)
+	- [Divers](#divers)
+	- [Modération](#modération)
 - [Fonctionnalités](#fonctionnalités)
+	- [Logs](#logs)
+	- [Rename des utilisateurs à pseudo incorrect](#rename-des-utilisateurs-à-pseudo-incorrect)
+	- [Citations](#citations)
+	- [Système de report](#système-de-report)
 - [Setup en production](#setup-en-production)
+	- [Node.js](#nodejs)
+	- [Docker container](#docker-container)
 - [Ressources](#ressources)
 - [Contribuer](#contribuer)
 
@@ -29,8 +37,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 > Exemple : `!help coinflip`.
 
 
-<details id="divers">
-<summary><b>Divers</b></summary>
+### Divers
 
 | Commande | Description                                                 |
 | -------- | ----------------------------------------------------------- |
@@ -42,49 +49,33 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 | votes    | Créer un embed avec la proposition et des émojis pour voter |
 | whois    | Donne des infos sur soit ou un autre utilisateur            |
 
-</details>
-
-<details id="moderation">
-<summary><b>Modération</b></summary>
+### Modération
 
 | Commande | Description                                          |
 | -------- | ---------------------------------------------------- |
 | clean    | Supprime un nombre de messages donné dans le channel |
 | cooldown | Active le mode lent sur le channel                   |
 
-</details>
 
 ## Fonctionnalités
 
-<details id="logs">
-<summary><b>Logs</b></summary>
+### Logs
 
 - Join/leave des membres : TO BE DONE (ne pas oublier les screenshots/gifs)
 - Messages supprimés : TO BE DONE (ne pas oublier les screenshots/gifs)
 
-</details>
-
-<details id="rename">
-<summary><b>Renommage des utilisateurs à pseudo incorrect</b></summary>
+### Rename des utilisateurs à pseudo incorrect
 
 - Déclenché lors des events suivants : un utilisateur rejoint les serveur, un utilisateur envoie un message, un utilisateur est modifié et lorsque le pseudo matche le regex `/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/`
 - Renomme en "Change ton pseudo"
 
-</details>
-
-<details id="citations">
-<summary><b>Citations</b></summary>
+### Citations
 
 TO BE DONE (ne pas oublier les screenshots/gifs)
 
-</details>
-
-<details id="report">
-<summary><b>Système de report</b></summary>
+### Système de report
 
 TO BE DONE (ne pas oublier les screenshots/gifs)
-
-</details>
 
 ## Setup en production
 
@@ -94,6 +85,8 @@ L'application est capable de tourner sous plusieurs environnements :
 -   dans un container Docker via
     -   Docker Compose
     -   le CLI
+
+### Node.js
 
 <details id="classique">
 <summary><b>Setup "classique" avec Node.js</b></summary>
@@ -126,6 +119,8 @@ L'application est capable de tourner sous plusieurs environnements :
 
 </details>
 
+### Docker container
+
 <details>
 <summary id="compose"><b>Setup avec Docker Compose</b></summary>
 
@@ -138,6 +133,8 @@ L'application est capable de tourner sous plusieurs environnements :
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
 3. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+
+4. Renommer le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifier le fichier pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
 	> Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
 
@@ -247,52 +244,52 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 </details>
 
 <details id='reaction'>
-<summary><b>Fonctionnement du sytème de réaction/rôles</b></summary>
+<summary><b>Configuration du sytème de réaction/rôles</b></summary>
 
-#### Fonctionnement et avantages
+- Voici l'exemple donné dans [reactionRoleConfig.example.json](config/reactionRoleConfig.example.json)
 
-- Le système permet de lier une réaction sur un message avec un rôle. Concrètement, un utilisateur qui clique sur la réaction A va recevoir le rôle A, et si il décoche cette réaction, il perd le rôle.
-- Ce système permet d'accorder une expérience personnalisée pour les utilisateurs du serveur. Lorsqu'un serveur propose beaucoup de channels, il devient difficile de naviguer à travers celui-ci, d'autant plus que certains channels peuvent ne pas intéresserttous les utilisateurs. Les utilisateurs souscrivent aux fonctionnalités offertes par un rôle donné, peut importe la fonctionnalité derrière.
+	```js
+	[
+		// Message n°1
+		{
+			"messageId": "123456789123456789", // ID du message
+			"channelId": "123456789123456789", // ID du channel du message
+			"emojiRoleMap": {
+				// Émoji unicode en clé et ID du rôle en valeur
+				"💸": "123456789123456789", 
+				"🔧": "123456789123456789"
+			}
+		},
 
-#### Configuration
-
-- Voici l'exemple donné dans [bot.example.env](config/bot.example.env)
-
-```js
-[
-	// Message n°1
-	{
-		"messageId": "123456789123456789", // ID du message
-		"channelId": "123456789123456789", // ID du channel du message
-		"emojiRoleMap": {
-			// Émoji unicode en clé et ID du rôle en valeur
-			"💸": "123456789123456789", 
-			"🔧": "123456789123456789"
+		// Message n°2
+		{
+			"messageId": "987654321987654321", // ID du message
+			"channelId": "987654321987654321", // ID du channel du message
+			"emojiRoleMap": {
+				// ID de l'émoji custom en clé et ID du rôle en valeur
+				"987654321987654322": "987654321987654321",
+				"987654321987654321": "987654321987654321"
+			}
 		}
-	},
+	]
+	```
 
-	// Message n°2
-	{
-		"messageId": "987654321987654321", // ID du message
-		"channelId": "987654321987654321", // ID du channel du message
-		"emojiRoleMap": {
-			// ID de l'émoji custom en clé et ID du rôle en valeur
-			"987654321987654322": "987654321987654321",
-			"987654321987654321": "987654321987654321"
-		}
-	}
-]
-```
+> Pour désactiver le système, le fichier doit être composé d'un array **vide**
+> 
+> ```js
+> []
+> ```
 
-- Pour récupérer les IDs des messages et des channels, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
-- Pour les émojis :
-  - unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`.
+> Pour récupérer les IDs des messages et des channels, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
-	![emoji_unicode](doc/gifs/emoji_unicode.gif)
-
-  - personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`.
-
-	![emoji_custom](doc/gifs/emoji_custom.gif)
+> Pour les émojis :
+>  - unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`.
+>
+>	![emoji_unicode](doc/gifs/emoji_unicode.gif)
+>
+>  - personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`.
+>
+>	![emoji_custom](doc/gifs/emoji_custom.gif)
 
 </details>
 
