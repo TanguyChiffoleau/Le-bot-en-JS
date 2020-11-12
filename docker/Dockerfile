@@ -5,5 +5,5 @@ WORKDIR /app/
 COPY package.json package-lock.json ./
 RUN npm ci
 
-COPY . .
+COPY src/ src/
 CMD node .
