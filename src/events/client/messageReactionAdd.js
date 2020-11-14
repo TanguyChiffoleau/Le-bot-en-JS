@@ -53,7 +53,7 @@ module.exports = async (client, messageReaction, user) => {
 						editLogReport.color = 'ff8200'
 						editLogReport.fields.push({
 							name: '2nd signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						})
 						break
@@ -61,7 +61,7 @@ module.exports = async (client, messageReaction, user) => {
 						editLogReport.color = 'ff6600'
 						editLogReport.fields.push({
 							name: '3ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						})
 						break
@@ -69,7 +69,7 @@ module.exports = async (client, messageReaction, user) => {
 						editLogReport.color = 'ff3200'
 						editLogReport.fields.push({
 							name: '4ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						})
 						client.cache.deleteMessagesID.add(messageReaction.message.id)
@@ -127,7 +127,7 @@ module.exports = async (client, messageReaction, user) => {
 						},
 						{
 							name: '2nd signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						},
 					)
@@ -172,7 +172,7 @@ module.exports = async (client, messageReaction, user) => {
 						},
 						{
 							name: '4ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						},
 					)
