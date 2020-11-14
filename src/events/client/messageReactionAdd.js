@@ -14,6 +14,7 @@ module.exports = async (client, messageReaction, user) => {
 	)
 		return
 
+	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
 		const rule = client.reactionRoleMap.get(message.id)
 		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
@@ -23,9 +24,11 @@ module.exports = async (client, messageReaction, user) => {
 	}
 
 	switch (emoji.name) {
+		// Si c'est un signalement (report)
 		case '🚨': {
 			if (message.author.bot || !message.guild) return
 
+			// On ne peut pas report un message posté pour soit-même
 			if (message.author === user) return messageReaction.users.remove(user)
 
 			const reportChannel = message.guild.channels.cache.get(client.config.reportChannelID)

@@ -5,6 +5,7 @@ const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
 
 module.exports = {
 	client: {
+		// Création du client et de ses propriétés
 		prepare: () => {
 			const client = new Client({
 				partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION'],
@@ -29,16 +30,21 @@ module.exports = {
 				logsChannelID: process.env.LOGS_CHANNEL,
 			}
 			client.cache = {
+				// Messages supprimés par la bot pour ne pas
+				// les log lors de l'event "messageDelete"
 				deleteMessagesID: new Set(),
 			}
+			// Map utilisé pour la commande "roles"
 			client.commandsCategories = new Map()
 
 			return client
 		},
 
+		// Connecte le client en utilisant le token
 		login: client => client.login(process.env.DISCORD_TOKEN),
 	},
 
+	// Chargement des commandes
 	commands: async client => {
 		const commandsDir = await readdir('./src/commands')
 		commandsDir.forEach(async commandCategory => {
@@ -60,6 +66,7 @@ module.exports = {
 		})
 	},
 
+	// Chargement des events
 	events: async client => {
 		const eventsDir = await readdir('./src/events')
 		eventsDir.forEach(async eventCategory => {
@@ -74,6 +81,8 @@ module.exports = {
 		})
 	},
 
+	// Lecture et en place du système de réactions
+	// puis ajout des émojis (peut prendre du temps)
 	reactionManager: async client => {
 		client.reactionRoleMap = new Map()
 		for (const reactionRole of reactionRoleConfig) {

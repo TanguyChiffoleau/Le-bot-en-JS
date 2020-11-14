@@ -5,6 +5,8 @@ const {
 	reactionManager: reactionManagerLoader,
 } = require('./util/loaders')
 
+// Chargement des variables d'environnement si l'environnement
+// n'est pas "production"
 if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv')
 	dotenv.config({ path: './config/bot.env' })

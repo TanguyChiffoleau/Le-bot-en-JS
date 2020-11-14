@@ -11,6 +11,7 @@ module.exports = async (client, message) => {
 
 	modifyWrongUsernames(message.member)
 
+	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {
 		const args = message.content.slice(client.config.prefix.length).split(/ +/)
 		const commandName = args.shift().toLowerCase()
@@ -39,6 +40,7 @@ module.exports = async (client, message) => {
 		timestamps.set(message.author.id, now)
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
 
+		// Rejets de la commandes
 		if (command.needArguments && !args.length)
 			return message.reply("tu n'as pas donné d'argument(s) 😕")
 
@@ -53,6 +55,7 @@ module.exports = async (client, message) => {
 		)
 			return message.reply("tu n'as pas les permissions d'effectuer cette commande 😕")
 
+		// Exécution de la commande
 		try {
 			message.channel.startTyping()
 			await command.execute(client, message, args)
@@ -62,10 +65,14 @@ module.exports = async (client, message) => {
 			message.reply('il y a eu une erreur en exécutant la commande 😬')
 			console.error(error)
 		}
-	} else if (message.guild) {
+
 		// Partie citation
+	} else if (message.guild) {
+		// Regex pour match les liens discord
 		const regexGlobal = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18}))(?!>)/g
 		const regex = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{16,18})\/(\d{16,18})\/(\d{16,18}))(?!>)/
+
+		// Suppression des lignes en citations, pour ne pas afficher la citation
 		const matches = message.content.replace(/^> .*$/gm, '').match(regexGlobal)
 		if (!matches) return
 
@@ -75,10 +82,10 @@ module.exports = async (client, message) => {
 				// ou sur un channel n'existant pas sur la guild
 				matches
 					.reduce((acc, match) => {
-			const [, guildId, channelId, messageId] = regex.exec(match)
+						const [, guildId, channelId, messageId] = regex.exec(match)
 						if (guildId !== client.config.guildID) return acc
 
-			const foundChannel = message.guild.channels.cache.get(channelId)
+						const foundChannel = message.guild.channels.cache.get(channelId)
 						if (!foundChannel) return acc
 
 						acc.push({ messageId, foundChannel })
