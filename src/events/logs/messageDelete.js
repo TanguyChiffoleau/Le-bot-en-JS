@@ -102,17 +102,18 @@ module.exports = async (client, message) => {
 		logEmbed.image = {
 			url: `attachment://${image.name}`,
 		}
-		const buffer = await getLinkBuffer(image.proxyURL)
-		const messageAttachment = new MessageAttachment(buffer, image.name)
-		messageAttachments.push(messageAttachment)
-	} else {
-		for (const [, attachment] of imageAttachments) {
-			// eslint-disable-next-line no-await-in-loop
+	}
+
+	// Fetch en parallèle pour éviter une boucle for of asynchrone
+	// qui induirait un temps plus long
+	// cf : https://www.samjarman.co.nz/blog/promisedotall
+	await Promise.all(
+		imageAttachments.map(async attachment => {
 			const buffer = await getLinkBuffer(attachment.proxyURL)
 			const messageAttachment = new MessageAttachment(buffer, attachment.name)
-			messageAttachments.push(messageAttachment)
-		}
-	}
+			return messageAttachments.push(messageAttachment)
+		}),
+	)
 
 	// Partie fichiers
 	// Étant donné que les données sont supprimées de discord
