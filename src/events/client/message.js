@@ -69,61 +69,88 @@ module.exports = async (client, message) => {
 		const matches = message.content.replace(/^> .*$/gm, '').match(regexGlobal)
 		if (!matches) return
 
-		let sentMessages = 0
-		for (const match of matches) {
+		const validMessages = (
+			await Promise.all(
+				// Filtre les liens mennant vers une autre guild
+				// ou sur un channel n'existant pas sur la guild
+				matches
+					.reduce((acc, match) => {
 			const [, guildId, channelId, messageId] = regex.exec(match)
-			if (guildId !== client.config.guildID) continue
+						if (guildId !== client.config.guildID) return acc
 
 			const foundChannel = message.guild.channels.cache.get(channelId)
-			if (!foundChannel) continue
+						if (!foundChannel) return acc
 
-			// eslint-disable-next-line no-await-in-loop
-			const foundMessage = await foundChannel.messages.fetch(messageId).catch(() => null)
-			if (!foundMessage || (!foundMessage.cleanContent && !foundMessage.attachments.size))
-				continue
+						acc.push({ messageId, foundChannel })
 
+						return acc
+					}, [])
+					// Fetch du message et retourne de celui-ci s'il existe
+					.map(async ({ messageId, foundChannel }) => {
+						const foundMessage = await foundChannel.messages
+							.fetch(messageId)
+							.catch(() => null)
+						// On ne fait pas la citation si le
+						// message n'a ni contenu écrit ni attachements
+						if (
+							!foundMessage ||
+							(!foundMessage.cleanContent && !foundMessage.attachments.size)
+						)
+							return
+
+						return foundMessage
+					}),
+			)
+		)
+			// Suppression des messages invalides
+			.filter(Boolean)
+
+		const sentMessages = validMessages.map(validMessage => {
 			const embed = {
 				color: '2f3136',
 				author: {
-					name: `${foundMessage.member.displayName} (ID ${foundMessage.member.id})`,
-					icon_url: foundMessage.author.displayAvatarURL({ dynamic: true }),
+					name: `${validMessage.member.displayName} (ID ${validMessage.member.id})`,
+					icon_url: validMessage.author.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [],
 				footer: {
-					text: `Message posté le ${convertDate(foundMessage.createdAt)}`,
+					text: `Message posté le ${convertDate(validMessage.createdAt)}`,
 				},
 			}
 
-			const description = `${foundMessage.cleanContent}\n[Aller au message](${foundMessage.url}) - ${foundMessage.channel}`
-			if (description.length < 2048) {
-				embed.description = description
-			} else {
-				embed.description = foundMessage.cleanContent
+			const description = `${validMessage.cleanContent}\n[Aller au message](${validMessage.url}) - ${validMessage.channel}`
+			// Si la description dépasse la limite
+			// autorisée, les liens sont contenus dans des fields
+			if (description.length > 2048) {
+				embed.description = validMessage.cleanContent
 				embed.fields.push(
 					{
 						name: 'Message',
-						value: `[Aller au message](${foundMessage.url})`,
+						value: `[Aller au message](${validMessage.url})`,
 						inline: true,
 					},
 					{
 						name: 'Channel',
-						value: foundMessage.channel,
+						value: validMessage.channel,
 						inline: true,
 					},
 				)
+			} else {
+				embed.description = description
 			}
 
-			if (foundMessage.editedAt)
-				embed.footer.text += ` et modifié le ${convertDate(foundMessage.editedAt)}`
+			if (validMessage.editedAt)
+				embed.footer.text += ` et modifié le ${convertDate(validMessage.editedAt)}`
 
-			if (message.author !== foundMessage.author) {
+			if (message.author !== validMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
 				embed.footer.text += `\nCité par ${message.member.displayName} (ID ${
 					message.author.id
 				}) le ${convertDate(message.createdAt)}`
 			}
 
-			const attachments = foundMessage.attachments
+			// Partie pour gérer les attachements
+			const attachments = validMessage.attachments
 			if (attachments.size === 1 && isImage(attachments.first().name))
 				embed.image = { url: attachments.first().url }
 			else
@@ -137,13 +164,14 @@ module.exports = async (client, message) => {
 					})
 				})
 
-			message.channel.send({ embed })
-			sentMessages += 1
-		}
+			return message.channel.send({ embed })
+		})
 
+		// Si le message ne contenais que un(des) lien(s),
+		// on supprime le message, ne laissant que les embeds
 		if (
 			!message.cleanContent.replace(regexGlobal, '').trim() &&
-			sentMessages === matches.length
+			sentMessages.length === matches.length
 		) {
 			client.cache.deleteMessagesID.add(message.id)
 			return message.delete()
