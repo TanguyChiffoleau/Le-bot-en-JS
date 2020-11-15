@@ -2,7 +2,6 @@ const {
 	events: eventsLoader,
 	commands: commandsLoader,
 	client: clientLoader,
-	reactionManager: reactionManagerLoader,
 } = require('./util/loaders')
 
 // Chargement des variables d'environnement si l'environnement
@@ -21,8 +20,6 @@ const run = async () => {
 	await eventsLoader(client)
 
 	await clientLoader.login(client)
-
-	await reactionManagerLoader(client)
 
 	console.log('Setup finished')
 }
