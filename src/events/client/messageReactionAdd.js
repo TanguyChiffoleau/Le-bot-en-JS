@@ -36,12 +36,16 @@ module.exports = async (client, messageReaction, user) => {
 
 			const fetchedMessages = await reportChannel.messages.fetch()
 
+			// Recherche si un report a déjà été posté
 			const logReport = fetchedMessages
 				.filter(msg => msg.embeds)
 				.find(msg => msg.embeds[0].fields.find(field => field.value.includes(message.id)))
 
+			// Si un report a déjà été posté
 			if (logReport) {
 				const logReportEmbed = logReport.embeds[0]
+
+				// On return si l'utilisateur a déjà report ce message
 				if (logReportEmbed.fields.some(field => field.value.includes(user.id))) return
 
 				const editLogReport = {
@@ -51,6 +55,8 @@ module.exports = async (client, messageReaction, user) => {
 					footer: logReportEmbed.footer,
 				}
 
+				// On ajoute un field en fonction
+				// du nombre de report qu'il y a déjà
 				switch (logReportEmbed.fields.length - 3) {
 					case 1:
 						editLogReport.color = 'ff8200'
@@ -79,13 +85,14 @@ module.exports = async (client, messageReaction, user) => {
 						messageReaction.message.delete()
 						break
 					default:
-						client.cache.deleteMessagesID.add(messageReaction.message.id)
-						messageReaction.message.delete()
 						break
 				}
+
+				// Edit de l'embed
 				return logReport.edit({ embed: editLogReport })
 			}
 
+			// Si il n'a pas de report déjà posté
 			const sendLogReport = {
 				author: {
 					name: 'Nouveau signalement',
@@ -183,11 +190,10 @@ module.exports = async (client, messageReaction, user) => {
 					messageReaction.message.delete()
 					break
 				default:
-					client.cache.deleteMessagesID.add(messageReaction.message.id)
-					messageReaction.message.delete()
 					break
 			}
 
+			// Envoie de l'embed
 			return reportChannel.send({ embed: sendLogReport })
 		}
 

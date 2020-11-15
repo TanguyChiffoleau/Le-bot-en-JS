@@ -1,5 +1,6 @@
 const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
+const { removeFileExtension } = require('./util')
 
 module.exports = {
 	client: {
@@ -44,8 +45,12 @@ module.exports = {
 
 	// Chargement des commandes
 	commands: async client => {
+		// Dossier des commandes
 		const commandsDir = await readdir('./src/commands')
+
+		// Pour chaque catégorie de commandes
 		commandsDir.forEach(async commandCategory => {
+			// Acquisition des commandes
 			const commands = (await readdir(`./src/commands/${commandCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
@@ -64,14 +69,20 @@ module.exports = {
 
 	// Chargement des events
 	events: async client => {
+		// Dossier des events
 		const eventsDir = await readdir('./src/events')
+
+		// Pour chaque catégorie d'events
 		eventsDir.forEach(async eventCategory => {
+			// Acquisition des events
 			const events = (await readdir(`./src/events/${eventCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
+
+			// Pour chaque event, on l'acquérit et on le charge
 			events.forEach(eventFile => {
 				const event = require(`../events/${eventCategory}/${eventFile}`)
-				const eventName = eventFile.split('.')[0]
+				const eventName = removeFileExtension(eventFile)
 				client.on(eventName, event.bind(null, client))
 			})
 		})

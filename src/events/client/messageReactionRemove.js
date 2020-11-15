@@ -12,6 +12,7 @@ module.exports = async (client, messageReaction, user) => {
 	)
 		return
 
+	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
 		const rule = client.reactionRoleMap.get(message.id)
 		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
