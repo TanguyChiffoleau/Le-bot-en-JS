@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-operators */
 const pluralize = (word, quantity, isAlwaysPlural = false) => {
 	if (quantity === 0) return ''
-	else if (isAlwaysPlural) return `${quantity} ${word}s`
+	else if (isAlwaysPlural) return `${quantity} ${word}`
 	return `${quantity} ${word}${quantity > 1 ? 's' : ''}`
 }
 
@@ -41,7 +41,7 @@ module.exports = {
 
 		const total = []
 		if (years) total.push(pluralize('année', years))
-		if (months) total.push(pluralize('moi', months, true))
+		if (months) total.push(pluralize('mois', months, true))
 		if (days) total.push(pluralize('jour', days))
 		if (hours) total.push(pluralize('heure', hours))
 		if (minutes) total.push(pluralize('minute', minutes))
@@ -76,5 +76,10 @@ module.exports = {
 			)
 		)
 			return guildMember.edit({ nick: 'Change ton pseudo' })
+	},
+	removeFileExtension: fileName => {
+		const fileArray = fileName.split('.')
+		fileArray.pop()
+		return fileArray.join('.')
 	},
 }

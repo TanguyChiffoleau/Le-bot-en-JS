@@ -188,8 +188,7 @@ module.exports = async (client, messageReaction, user) => {
 					break
 			}
 
-			reportChannel.send({ embed: sendLogReport })
-			break
+			return reportChannel.send({ embed: sendLogReport })
 		}
 
 		default:

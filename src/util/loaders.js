@@ -49,14 +49,12 @@ module.exports = {
 			const commands = (await readdir(`./src/commands/${commandCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
-			client.commandsCategories.set(
-				commandCategory,
-				commands.map(commandName => {
-					const commandArr = commandName.split('.')
-					commandArr.pop()
-					return commandArr.join('.')
-				}),
-			)
+
+			// Ajout dans la map utilisée pour la commande "roles"
+			client.commandsCategories.set(commandCategory, commands.map(removeFileExtension))
+
+			// Pour chaque commande, on l'acquérit et on
+			// l'ajoute dans la map des commandes
 			commands.forEach(commandFile => {
 				const command = require(`../commands/${commandCategory}/${commandFile}`)
 				if (command.isEnabled) client.commands.set(command.name, command)

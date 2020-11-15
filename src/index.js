@@ -9,7 +9,6 @@ const {
 if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv')
 	dotenv.config({ path: './config/bot.env' })
-	dotenv.config({ path: './config/database.env' })
 }
 
 const run = async () => {

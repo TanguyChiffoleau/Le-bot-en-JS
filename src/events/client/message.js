@@ -1,4 +1,3 @@
-/* eslint-disable no-continue */
 const { Collection } = require('discord.js')
 const { modifyWrongUsernames, convertDate, isImage } = require('../../util/util')
 
