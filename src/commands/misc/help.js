@@ -17,14 +17,14 @@ module.exports = {
 		if (args.length === 0) {
 			const fields = []
 			client.commandsCategories.forEach((commandsNames, category) => {
-				const allo = commandsNames.reduce((acc, commandName) => {
+				const commandsDescription = commandsNames.reduce((acc, commandName) => {
 					const command = client.commands.get(commandName)
 					return `${acc}- \`${commandName}\`: ${command.description}.\n`
 				}, '')
 
 				fields.push({
 					name: capitalize(category),
-					value: allo,
+					value: commandsDescription,
 				})
 			})
 
@@ -76,7 +76,7 @@ module.exports = {
 					name: 'Propriétés',
 					value: properties.reduce(
 						(acc, [property, traduction]) =>
-							`${acc}> ${command[property] ? traduction.true : traduction.false}\n`,
+							`${acc}> ${traduction[command[property]]}\n`,
 						'',
 					),
 				},
