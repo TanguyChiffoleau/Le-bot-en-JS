@@ -14,5 +14,5 @@ module.exports = async client => {
 
 		for (const emoji of Object.keys(reactionRole.emojiRoleMap)) await message.react(emoji)
 	}
-	console.log('Startup finished')
+	console.log('Startup finished !')
 }
