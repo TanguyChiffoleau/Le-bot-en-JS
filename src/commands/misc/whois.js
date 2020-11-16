@@ -18,7 +18,7 @@ module.exports = {
 		if (args.length === 0) {
 			member = message.member
 		} else {
-			const matches = args[0].match(/^<@!?(\d+)>$|^(\d{16,18})$/)
+			const matches = args[0].match(/^<@!?(\d{17,19})>$|^(\d{17,19})$/)
 			if (!matches) return message.reply("je n'ai pas trouvé de mention ou d'ID valable 😕")
 
 			const targetID = matches[1] || matches[2]
