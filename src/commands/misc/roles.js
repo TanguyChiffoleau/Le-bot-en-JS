@@ -23,9 +23,7 @@ module.exports = {
 			},
 		}
 
-		const roles = message.guild.roles.cache
-			.filter(role => role.members.size > 0)
-			.sort((roleA, roleB) => roleB.members.size - roleA.members.size)
+		const roles = message.guild.roles.cache.filter(role => role.members.size > 0)
 
 		const rolesHoist = roles.filter(role => role.hoist)
 
@@ -35,7 +33,9 @@ module.exports = {
 		)
 
 		if (args[0] === 'all') {
-			const rolesWithoutHoist = roles.filter(role => !role.hoist)
+			const rolesWithoutHoist = roles
+				.filter(role => !role.hoist)
+				.sort((roleA, roleB) => roleB.members.size - roleA.members.size)
 
 			embed.description += rolesWithoutHoist.reduce(
 				(acc, role) => `${acc}${role} : ${pluralize('membre', role.members.size)}\n`,
