@@ -4,6 +4,10 @@ module.exports = {
 	name: 'roles',
 	description: 'Affiche le nombre de membres pour chaque rôle',
 	aliases: ['rôles', 'rôle', 'role'],
+	usage: {
+		arguments: '[all]',
+		informations: `"all" correspond à l'affichage de tous les rôles, même ceux qui n'apparaissent pas à droite`,
+	},
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
@@ -14,12 +18,14 @@ module.exports = {
 			title: 'Rôles',
 			description: '',
 			footer: {
-				texte:
+				text:
 					'Seuls les grades affichés séparément et avec au moins un membre sont comptabilisés.',
 			},
 		}
 
-		const roles = message.guild.roles.cache.filter(role => role.members.size > 0)
+		const roles = message.guild.roles.cache
+			.filter(role => role.members.size > 0)
+			.sort((roleA, roleB) => roleB.members.size - roleA.members.size)
 
 		const rolesHoist = roles.filter(role => role.hoist)
 

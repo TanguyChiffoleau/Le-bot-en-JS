@@ -1,6 +1,6 @@
-const { convertDate, diffDate } = require('../../util/util')
+const { convertDate, diffDate, modifyWrongUsernames } = require('../../util/util')
 
-module.exports = async (client, guildMember) => {
+module.exports = (client, guildMember) => {
 	if (
 		guildMember.user.bot ||
 		guildMember.guild.id !== client.config.guildID ||
@@ -8,29 +8,24 @@ module.exports = async (client, guildMember) => {
 	)
 		return
 
-	if (
-		guildMember.displayName.match(
-			/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/,
-		)
-	)
-		guildMember.edit({ nick: 'Change ton pseudo' })
+	modifyWrongUsernames(guildMember)
 
-	const leaveJoinChannel = guildMember.guild.channels.cache.find(
-		channel => channel.id === client.config.leaveJoinChannelID,
-	)
+	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
-
-	await guildMember.fetch()
 
 	return leaveJoinChannel.send({
 		embed: {
 			color: '57C92A',
 			author: {
-				name: `${guildMember.user.tag} (ID ${guildMember.id})`,
+				name: `${guildMember.displayName} (ID ${guildMember.id})`,
 				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 			},
-			description: `<@${guildMember.id}>`,
 			fields: [
+				{
+					name: 'Mention',
+					value: guildMember,
+					inline: true,
+				},
 				{
 					name: 'Date de création du compte',
 					value: convertDate(guildMember.user.createdAt),

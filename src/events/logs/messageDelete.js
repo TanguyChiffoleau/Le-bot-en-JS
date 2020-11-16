@@ -1,9 +1,15 @@
-const { convertDate } = require('../../util/util')
+const { convertDate, pluralizeWithoutQuantity: isImage } = require('../../util/util')
+const { MessageAttachment, Util } = require('discord.js')
+const bent = require('bent')
+
+const getLinkBuffer = url => {
+	const getBuffer = bent('buffer')
+	return getBuffer(url)
+}
 
 module.exports = async (client, message) => {
-	if (message.partial) return
-
 	if (
+		message.partial ||
 		message.author.bot ||
 		!message.guild ||
 		message.guild.id !== client.config.guildID ||
@@ -11,22 +17,22 @@ module.exports = async (client, message) => {
 	)
 		return
 
-	const logsChannel = message.guild.channels.cache.find(
-		channel => channel.id === client.config.logsChannelID,
-	)
-
+	// Acquisition du channel pour les logs
+	const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
 	if (!logsChannel) return
 
-	const fetchedLogs = await message.guild.fetchAuditLogs({ type: 'MESSAGE_DELETE', limit: 1 })
+	// Fetch du message supprimé
+	const fetchedLog = (
+		await message.guild.fetchAuditLogs({
+			type: 'MESSAGE_DELETE',
+			limit: 1,
+		})
+	).entries.first()
+	if (!fetchedLog) return
 
-	const deletionLog = fetchedLogs.entries.first()
-
-	if (!deletionLog) return
-
-	const { executor, target, extra } = deletionLog
-
-	const embed = {
+	const logEmbed = {
 		author: {
+			name: `${message.member.displayName} (ID ${message.member.id})`,
 			icon_url: message.author.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
@@ -48,40 +54,81 @@ module.exports = async (client, message) => {
 		],
 	}
 
+	const { executor, target, extra } = fetchedLog
+
+	// Détermination si le message a été supprimé par
+	// celui qui l'a posté ou par un modérateur
 	if (
 		extra.channel.id === message.channel.id &&
 		target.id === message.author.id &&
-		deletionLog.createdTimestamp > Date.now() - 5000 &&
+		fetchedLog.createdTimestamp > Date.now() - 5000 &&
 		extra.count >= 1
 	) {
-		embed.color = 'fc3c3c'
-		embed.footer = {
+		logEmbed.color = 'fc3c3c'
+		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
-			text: `Supprimé par: ${executor.tag}\nDate de suppression: ${convertDate(new Date())}`,
+			text: `Date de suppression: ${convertDate(new Date())}\nSupprimé par ${executor.tag}`,
 		}
 	} else {
-		embed.color = '00FF00'
-		embed.footer = {
+		logEmbed.color = '00FF00'
+		logEmbed.footer = {
 			text: `Date de suppression: ${convertDate(new Date())}`,
 		}
 	}
 
-	const title = []
-
-	if (message.cleanContent) {
-		title.push('Message')
-		embed.description = `\`\`\`\n${message.cleanContent.replace(/`{3}/g, "'''")}\`\`\``
+	// Partie contenu écrit du message
+	if (message.content) {
+		const escapedCleanContent = Util.escapeCodeBlock(message.cleanContent)
+		logEmbed.description = `\`\`\`\n${escapedCleanContent}\`\`\``
 	}
 
-	const { attachements } = message
-	if (attachements.size > 0)
-		if (attachements.size === 1) {
-			const file = attachements.first()
-			const format = file.name.split('.').pop().toLowerCase()
-			if (format.match(/png|jpeg|jpg|gif|webp/)) title.push('Image')
-			else title.push('Attachement')
-		}
+	// Partie attachements (fichiers, images...)
+	const messageAttachments = []
+	const attachments = message.attachments
+	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
 
-	embed.author.name = `${title.join(' + ')} supprimé${title.length > 1 ? 's' : ''}`
-	return logsChannel.send({ embed })
+	// Séparation des images et des autres fichiers
+	const [imageAttachments, otherAttachments] = attachments.partition(attachment =>
+		isImage(attachment.name),
+	)
+
+	// Partie image
+	// Étant donné que les données sont supprimées de discord
+	// avant de recevoir l'event, il est possible de récupérer
+	// les images via les proxy car elles resent disponibles quelques
+	// temps après la suppression du message
+	if (imageAttachments.size === 1) {
+		const image = imageAttachments.first()
+		logEmbed.image = {
+			url: `attachment://${image.name}`,
+		}
+	}
+
+	// Fetch en parallèle pour éviter une boucle for of asynchrone
+	// qui induirait un temps plus long
+	// cf : https://www.samjarman.co.nz/blog/promisedotall
+	await Promise.all(
+		imageAttachments.map(async attachment => {
+			const buffer = await getLinkBuffer(attachment.proxyURL)
+			const messageAttachment = new MessageAttachment(buffer, attachment.name)
+			return messageAttachments.push(messageAttachment)
+		}),
+	)
+
+	// Partie fichiers
+	// Étant donné que les données sont supprimées de discord
+	// avant de recevoir l'event, il est impossible de récupérer
+	// les données pour pouvoir les logs
+	// TODO : trouver une solution
+	for (const [, attachment] of otherAttachments) {
+		const attachmentNameSplited = attachment.name.split('.')
+		const attachmentType = attachmentNameSplited.pop()
+		logEmbed.fields.push({
+			name: `Fichier ${attachmentType}`,
+			value: attachmentNameSplited.join('.'),
+			inline: true,
+		})
+	}
+
+	return logsChannel.send({ files: messageAttachments, embed: logEmbed })
 }

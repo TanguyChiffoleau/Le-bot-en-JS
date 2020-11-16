@@ -4,6 +4,10 @@ module.exports = {
 	name: 'vote',
 	description: 'Créer un embed avec la proposition et des émojis pour voter',
 	aliases: [],
+	usage: {
+		arguments: '<texte>',
+		informations: null,
+	},
 	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,
@@ -15,7 +19,7 @@ module.exports = {
 			embed: {
 				color: '00FF00',
 				author: {
-					name: message.author.tag,
+					name: `${message.member.displayName} (ID ${message.member.id})`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
 				title: 'Nouveau vote',

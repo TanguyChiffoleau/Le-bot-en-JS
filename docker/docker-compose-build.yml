@@ -5,7 +5,9 @@ services:
 services:
 
     bot:
-        image: tanguychiffoleau/le-bot-en-js:latest
+        build:
+            context: ../
+            dockerfile: ./docker/Dockerfile
         restart: on-failure
         env_file: 
             - ../config/bot.env

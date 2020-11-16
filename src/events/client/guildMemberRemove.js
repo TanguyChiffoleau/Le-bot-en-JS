@@ -8,19 +8,32 @@ module.exports = (client, guildMember) => {
 	)
 		return
 
-	const leaveJoinChannel = guildMember.guild.channels.cache.find(
-		channel => channel.id === client.config.leaveJoinChannelID,
-	)
+	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
 
 	return leaveJoinChannel.send({
 		embed: {
 			color: 'C9572A',
 			author: {
-				name: `${guildMember.user.tag} (ID ${guildMember.id})`,
+				name: `${guildMember.displayName} (ID ${guildMember.id})`,
 				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 			},
 			fields: [
+				{
+					name: 'Mention',
+					value: guildMember,
+					inline: true,
+				},
+				{
+					name: 'Serveur rejoint le',
+					value: convertDate(guildMember.joinedAt),
+					inline: true,
+				},
+				{
+					name: 'Était sur le serveur depuis',
+					value: diffDate(guildMember.joinedAt),
+					inline: true,
+				},
 				{
 					name: 'Date de création du compte',
 					value: convertDate(guildMember.user.createdAt),

@@ -5,6 +5,11 @@ module.exports = {
 	name: 'cooldown',
 	description: 'Active le mode lent sur le channel',
 	aliases: ['cd'],
+	usage: {
+		arguments: '[durée_du_cooldown] [valeur_du_cooldown]',
+		informations:
+			'Les valeurs sont en secondes. Valeurs par défaut : durée = 5x60, valeur = 30',
+	},
 	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
@@ -13,7 +18,7 @@ module.exports = {
 		// Valeurs par défaut :
 		// slowModeValue = 30 secondes
 		// slowModeTime = 5 minutes
-		const [slowModeValue = 30, slowModeTime = 5 * 60] = args.map(arg => parseInt(arg, 10))
+		const [slowModeTime = 5 * 60, slowModeValue = 30] = args.map(arg => parseInt(arg, 10))
 
 		// Si slowModeValue === 0 on supprime le slowmode
 		if (slowModeValue === 0) {
