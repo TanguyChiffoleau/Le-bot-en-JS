@@ -16,7 +16,7 @@
 		"url": "git+https://github.com/TanguyChiffoleau/Le-bot-en-JS.git"
 	},
 	"author": "Tanguy Chiffoleau",
-	"license": "MIT License",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/TanguyChiffoleau/Le-bot-en-JS/issues"
 	},
