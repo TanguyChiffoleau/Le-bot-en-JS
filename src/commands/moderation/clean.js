@@ -11,16 +11,17 @@ module.exports = {
 	description: 'Supprime un nombre de messages donné dans le channel',
 	aliases: ['cl'],
 	usage: {
-		arguments: '<nombre_messages_à_supprimer>',
-		informations: 'Valeur comprise entre 1 et 99',
+		arguments: '<nombre_messages_à_supprimer> [silent|s]',
+		informations:
+			'Valeur comprise entre 1 et 99. Silent : supprime le message de confirmation après 4 secondes, défaut : false',
 	},
 	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
-	execute: async (client, message, args) => {
+	execute: async (client, message, [number, silent = false]) => {
 		// Acquisition du nombre de messages à supprimer
-		const chosenNumber = parseInt(args[0], 10)
+		const chosenNumber = parseInt(number, 10)
 		if (!chosenNumber) return message.reply("tu n'as pas donné un nombre 😕")
 		if (chosenNumber < 1 || chosenNumber > 99)
 			return message.reply("tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕")
@@ -30,24 +31,32 @@ module.exports = {
 		const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
 		if (!logsChannel) return message.reply("il n'y a pas de channel pour log l'action 😕")
 
-		// Acquisition et filtrage des messages épinglés
+		// Acquisition des messages et filtrage des épinglés
 		const fetchedMessages = (
 			await message.channel.messages.fetch({ limit: numberUsed })
 		).filter(fetchedMessage => !fetchedMessage.pinned)
 
 		// Suppression des messages
 		const deletedMessages = await message.channel.bulkDelete(fetchedMessages, true)
-		if (deletedMessages.size === 1) return message.reply('aucun message supprimé 😕')
+		// Exclusion du message de la commande
+		deletedMessages.delete(message.id)
+		if (deletedMessages.size === 0) return message.reply('aucun message supprimé 😕')
 
 		// Réponse pour l'utilisateur
-		message.channel.send(
-			`${deletedMessages.size} ${pluralize('message', deletedMessages.size)} ${pluralize(
+		const { size: nbDeletedMessages } = deletedMessages
+		const confirmationMessage = await message.channel.send(
+			`${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
 				'supprimé',
-				deletedMessages.size,
+				nbDeletedMessages,
 			)} 👌`,
 		)
 
-		// Partie logs //
+		// Suppression du message après 4 secondes
+		// si l'argument "silent" est vrai
+		if (silent && (silent === 's' || silent === 'silent'))
+			confirmationMessage.delete({ timeout: 4 * 1000 })
+
+		// Partie logs
 		// Tri décroissant en fonction de l'heure à laquelle le message a été
 		// posté pour avoir une lecture du haut vers le bas comme sur discord
 		const text = deletedMessages
@@ -60,7 +69,7 @@ module.exports = {
 				'',
 			)
 
-		// Envoie plusieurs embeds si il ne tient pas dans un seul embed
+		// Envoie plusieurs embeds si les logs ne tient pas dans un seul embed
 		if (text.length > 2048) {
 			// Séparation des messages pour 3 embeds :
 			// 1er : titre + 1ère partie des messages
