@@ -109,7 +109,9 @@ module.exports = async (client, message) => {
 	// cf : https://www.samjarman.co.nz/blog/promisedotall
 	await Promise.all(
 		imageAttachments.map(async attachment => {
-			const buffer = await getLinkBuffer(attachment.proxyURL)
+			const buffer = await getLinkBuffer(attachment.proxyURL).catch(null)
+			if (!buffer) return
+
 			const messageAttachment = new MessageAttachment(buffer, attachment.name)
 			return messageAttachments.push(messageAttachment)
 		}),
