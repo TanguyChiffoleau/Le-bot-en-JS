@@ -83,7 +83,6 @@ module.exports = async (client, message) => {
 	}
 
 	// Partie attachements (fichiers, images...)
-	const messageAttachments = []
 	const attachments = message.attachments
 	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
 
@@ -107,13 +106,20 @@ module.exports = async (client, message) => {
 	// Fetch en parallèle pour éviter une boucle for of asynchrone
 	// qui induirait un temps plus long
 	// cf : https://www.samjarman.co.nz/blog/promisedotall
+	const messageAttachments = []
 	await Promise.all(
 		imageAttachments.map(async attachment => {
 			const buffer = await getLinkBuffer(attachment.proxyURL).catch(null)
-			if (!buffer) return
+			if (!buffer) {
+				const { name, type } = getFileInfos(attachment.name)
+				return logEmbed.fields.push({
+					name: `Fichier ${type}`,
+					value: name,
+					inline: true,
+				})
+			}
 
-			const messageAttachment = new MessageAttachment(buffer, attachment.name)
-			return messageAttachments.push(messageAttachment)
+			return messageAttachments.push(new MessageAttachment(buffer, attachment.name))
 		}),
 	)
 
