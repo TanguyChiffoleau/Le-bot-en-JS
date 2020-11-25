@@ -1,4 +1,4 @@
-const { convertDate, pluralizeWithoutQuantity: isImage } = require('../../util/util')
+const { convertDate, isImage, getFileInfos } = require('../../util/util')
 const { MessageAttachment, Util } = require('discord.js')
 const bent = require('bent')
 
@@ -83,7 +83,6 @@ module.exports = async (client, message) => {
 	}
 
 	// Partie attachements (fichiers, images...)
-	const messageAttachments = []
 	const attachments = message.attachments
 	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
 
@@ -107,13 +106,20 @@ module.exports = async (client, message) => {
 	// Fetch en parallèle pour éviter une boucle for of asynchrone
 	// qui induirait un temps plus long
 	// cf : https://www.samjarman.co.nz/blog/promisedotall
+	const messageAttachments = []
 	await Promise.all(
 		imageAttachments.map(async attachment => {
 			const buffer = await getLinkBuffer(attachment.proxyURL).catch(null)
-			if (!buffer) return
+			if (!buffer) {
+				const { name, type } = getFileInfos(attachment.name)
+				return logEmbed.fields.push({
+					name: `Fichier ${type}`,
+					value: name,
+					inline: true,
+				})
+			}
 
-			const messageAttachment = new MessageAttachment(buffer, attachment.name)
-			return messageAttachments.push(messageAttachment)
+			return messageAttachments.push(new MessageAttachment(buffer, attachment.name))
 		}),
 	)
 
@@ -123,11 +129,10 @@ module.exports = async (client, message) => {
 	// les données pour pouvoir les logs
 	// TODO : trouver une solution
 	for (const [, attachment] of otherAttachments) {
-		const attachmentNameSplited = attachment.name.split('.')
-		const attachmentType = attachmentNameSplited.pop()
-		logEmbed.fields.push({
-			name: `Fichier ${attachmentType}`,
-			value: attachmentNameSplited.join('.'),
+		const { name, type } = getFileInfos(attachment.name)
+		return logEmbed.fields.push({
+			name: `Fichier ${type}`,
+			value: name,
 			inline: true,
 		})
 	}

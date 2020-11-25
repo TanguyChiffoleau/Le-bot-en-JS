@@ -151,4 +151,19 @@ module.exports = {
 		fileArray.pop()
 		return fileArray.join('.')
 	},
+
+	/**
+	 * Retourne le type du fichier et son nom
+	 * @param {string} file nom du fichier
+	 * @returns nom et type du fichier
+	 * @example getFileInfos(fichier.exemple.pdf) => { name: 'fichier.exemple', type: 'pdf'}
+	 */
+	getFileInfos: file => {
+		const fileNameSplited = file.split('.')
+		const filetType = fileNameSplited.pop()
+		return {
+			name: fileNameSplited.join('.'),
+			type: filetType,
+		}
+	},
 }
