@@ -15,13 +15,8 @@ module.exports = {
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
 	execute: async (client, message, args) => {
-		// Valeurs par défaut :
-		// slowModeValue = 30 secondes
-		// slowModeTime = 5 minutes
-		const [slowModeTime = 5 * 60, slowModeValue = 30] = args.map(arg => parseInt(arg, 10))
-
-		// Si slowModeValue === 0 on supprime le slowmode
-		if (slowModeValue === 0) {
+		// Supprime le cooldown avec l'argument "clear"
+		if (args[0] === 'clear') {
 			if (message.channel.rateLimitPerUser > 0) {
 				await message.channel.setRateLimitPerUser(0)
 				return message.channel.send('Slowmode désactivé 👌')
@@ -29,6 +24,11 @@ module.exports = {
 
 			return message.channel.send("Ce channel n'est pas en slowmode 😕")
 		}
+
+		// Valeurs par défaut :
+		// slowModeValue = 30 secondes
+		// slowModeTime = 5 minutes
+		const [slowModeTime = 5 * 60, slowModeValue = 30] = args.map(arg => parseInt(arg, 10))
 
 		if (message.channel.rateLimitPerUser > 0)
 			return message.channel.send('Ce channel est déjà en slowmode 😕')
@@ -42,7 +42,9 @@ module.exports = {
 
 		message.channel.stopTyping()
 		await wait(slowModeTime * 1000)
-		await message.channel.setRateLimitPerUser(0)
-		return message.channel.send('Slowmode désactivé 👌')
+		if (message.channel.rateLimitPerUser > 0) {
+			await message.channel.setRateLimitPerUser(0)
+			return message.channel.send('Slowmode désactivé 👌')
+		}
 	},
 }
