@@ -8,7 +8,9 @@ module.exports = async (client, message) => {
 	)
 		return
 
-	modifyWrongUsernames(message.member)
+	// Si le message vient d'une guild, on vérifie
+	// si le pseudo respecte bien les règles
+	if (message.member) modifyWrongUsernames(message.member)
 
 	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {
