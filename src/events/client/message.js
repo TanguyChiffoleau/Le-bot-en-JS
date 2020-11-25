@@ -1,5 +1,5 @@
 const { Collection } = require('discord.js')
-const { modifyWrongUsernames, convertDate, isImage } = require('../../util/util')
+const { modifyWrongUsernames, convertDate, isImage, getFileInfos } = require('../../util/util')
 
 module.exports = async (client, message) => {
 	if (
@@ -161,11 +161,10 @@ module.exports = async (client, message) => {
 				embed.image = { url: attachments.first().url }
 			else
 				attachments.forEach(attachment => {
-					const attachmentNameSplited = attachment.name.split('.')
-					const attachmentType = attachmentNameSplited.pop()
+					const { name, type } = getFileInfos(attachment.name)
 					embed.fields.push({
-						name: `Fichier .${attachmentType}`,
-						value: `[${attachmentNameSplited.join('.')}](${attachment.url})`,
+						name: `Fichier ${type}`,
+						value: `[${name}](${attachment.url})`,
 						inline: true,
 					})
 				})

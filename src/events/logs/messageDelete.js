@@ -1,4 +1,4 @@
-const { convertDate, pluralizeWithoutQuantity: isImage } = require('../../util/util')
+const { convertDate, isImage, getFileInfos } = require('../../util/util')
 const { MessageAttachment, Util } = require('discord.js')
 const bent = require('bent')
 
@@ -123,11 +123,10 @@ module.exports = async (client, message) => {
 	// les données pour pouvoir les logs
 	// TODO : trouver une solution
 	for (const [, attachment] of otherAttachments) {
-		const attachmentNameSplited = attachment.name.split('.')
-		const attachmentType = attachmentNameSplited.pop()
-		logEmbed.fields.push({
-			name: `Fichier ${attachmentType}`,
-			value: attachmentNameSplited.join('.'),
+		const { name, type } = getFileInfos(attachment.name)
+		return logEmbed.fields.push({
+			name: `Fichier ${type}`,
+			value: name,
 			inline: true,
 		})
 	}
