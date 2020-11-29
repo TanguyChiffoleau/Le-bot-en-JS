@@ -109,7 +109,7 @@ module.exports = async (client, message) => {
 	const messageAttachments = []
 	await Promise.all(
 		imageAttachments.map(async attachment => {
-			const buffer = await getLinkBuffer(attachment.proxyURL).catch(null)
+			const buffer = await getLinkBuffer(attachment.proxyURL).catch(() => null)
 			if (!buffer) {
 				const { name, type } = getFileInfos(attachment.name)
 				return logEmbed.fields.push({
