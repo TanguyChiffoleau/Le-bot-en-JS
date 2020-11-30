@@ -18,7 +18,6 @@ module.exports = {
 			},
 		],
 	},
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
 	requirePermissions: [],

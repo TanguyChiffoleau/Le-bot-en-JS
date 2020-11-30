@@ -9,7 +9,6 @@ module.exports = {
 		arguments: '[commande]',
 		informations: null,
 	},
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
 	requirePermissions: [],
@@ -44,13 +43,6 @@ module.exports = {
 		if (!command) return message.reply(`je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`)
 
 		const properties = [
-			[
-				'isEnabled',
-				{
-					true: 'La commande est activée',
-					false: 'La commande est désactivée',
-				},
-			],
 			[
 				'needArguments',
 				{

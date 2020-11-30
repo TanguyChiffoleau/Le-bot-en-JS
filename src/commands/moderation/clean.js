@@ -26,7 +26,6 @@ module.exports = {
 			},
 		],
 	},
-	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],

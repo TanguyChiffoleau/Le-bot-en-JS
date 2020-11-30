@@ -62,7 +62,7 @@ module.exports = {
 			// l'ajoute dans la map des commandes
 			commands.forEach(commandFile => {
 				const command = require(`../commands/${commandCategory}/${commandFile}`)
-				if (command.isEnabled) client.commands.set(command.name, command)
+				client.commands.set(command.name, command)
 			})
 		})
 	},

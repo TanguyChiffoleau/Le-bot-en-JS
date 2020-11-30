@@ -3,7 +3,6 @@ module.exports = {
 	description: "Donne le ping de l'API ainsi que du bot",
 	aliases: ['pong'],
 	usage: null,
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
 	requirePermissions: [],

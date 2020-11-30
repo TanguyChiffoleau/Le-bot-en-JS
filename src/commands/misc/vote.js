@@ -9,7 +9,6 @@ module.exports = {
 		informations: null,
 		examples: [],
 	},
-	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: [],
