@@ -7,6 +7,7 @@ module.exports = {
 	usage: {
 		arguments: '<texte>',
 		informations: null,
+		examples: [],
 	},
 	isEnabled: true,
 	needArguments: true,

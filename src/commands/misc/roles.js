@@ -7,6 +7,16 @@ module.exports = {
 	usage: {
 		arguments: '[all]',
 		informations: `"all" correspond à l'affichage de tous les rôles, même ceux qui n'apparaissent pas à droite`,
+		exemples: [
+			{
+				command: 'roles',
+				explaination: 'affiche les rôles qui apparaissent séparément à droite',
+			},
+			{
+				command: 'roles all',
+				explaination: "affiche tous les rôles, même ceux qui n'apparaissent pas à droite",
+			},
+		],
 	},
 	isEnabled: true,
 	needArguments: false,

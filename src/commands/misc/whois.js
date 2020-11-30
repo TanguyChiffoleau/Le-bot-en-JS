@@ -7,6 +7,16 @@ module.exports = {
 	usage: {
 		arguments: '[id|mention]',
 		informations: null,
+		examples: [
+			{
+				command: 'whois 208328464216883200',
+				explaination: null,
+			},
+			{
+				command: 'whois @Tanguy#3760',
+				explaination: null,
+			},
+		],
 	},
 	isEnabled: true,
 	needArguments: false,
