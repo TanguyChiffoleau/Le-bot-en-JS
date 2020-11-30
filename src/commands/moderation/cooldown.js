@@ -9,8 +9,21 @@ module.exports = {
 		arguments: '[clear] | [durée_du_cooldown] [valeur_du_cooldown]',
 		informations:
 			'Les valeurs sont en secondes. Valeurs par défaut : durée = 5x60, valeur = 30',
+		examples: [
+			{
+				command: 'cooldown clear',
+				explaination: 'supprime le cooldown du channel',
+			},
+			{
+				command: 'cooldown 20',
+				explaination: 'cooldown de 30 secondes pendant 20 secondes',
+			},
+			{
+				command: 'cooldown 20 50',
+				explaination: 'cooldown de 50 secondes pendant 20 secondes',
+			},
+		],
 	},
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],

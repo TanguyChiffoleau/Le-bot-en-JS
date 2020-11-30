@@ -9,7 +9,6 @@ module.exports = {
 		arguments: '[commande]',
 		informations: null,
 	},
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
 	requirePermissions: [],
@@ -44,13 +43,6 @@ module.exports = {
 		if (!command) return message.reply(`je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`)
 
 		const properties = [
-			[
-				'isEnabled',
-				{
-					true: 'La commande est activée',
-					false: 'La commande est désactivée',
-				},
-			],
 			[
 				'needArguments',
 				{
@@ -97,13 +89,25 @@ module.exports = {
 				value: command.aliases.reduce((acc, alias) => `${acc}> \`${alias}\`\n`, ''),
 			})
 
-		if (command.usage)
+		if (command.usage) {
 			embed.fields.push({
 				name: 'Utilisation',
-				value: `${escapeMarkdown(command.usage.arguments)}${
+				value: `${command.name} ${escapeMarkdown(command.usage.arguments)}${
 					command.usage.informations ? `\n_(${command.usage.informations})_` : ''
 				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
 			})
+
+			embed.fields.push({
+				name: 'Exemples',
+				value: command.usage.examples.reduce(
+					(acc, exemple) =>
+						`${acc}> \`${exemple.command}\` ${
+							exemple.explaination ? `⟶ ${exemple.explaination}` : ''
+						}\n`,
+					'',
+				),
+			})
+		}
 
 		return message.channel.send({ embed })
 	},

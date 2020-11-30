@@ -14,8 +14,18 @@ module.exports = {
 		arguments: '<nombre_messages_à_supprimer> [silent|s]',
 		informations:
 			'Valeur comprise entre 1 et 99. Silent : supprime le message de confirmation après 4 secondes, défaut : false',
+		examples: [
+			{
+				command: 'clean 10',
+				explaination: 'supprime les 10 derniers messages',
+			},
+			{
+				command: 'cooldown 10 silent (= cooldown 10 s)',
+				explaination:
+					'supprime les 10 derniers messages puis supprime le message de confirmation 4 secondes plus tard',
+			},
+		],
 	},
-	isEnabled: true,
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
