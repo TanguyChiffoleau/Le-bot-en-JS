@@ -97,16 +97,17 @@ module.exports = {
 				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
 			})
 
-			embed.fields.push({
-				name: 'Exemples',
-				value: command.usage.examples.reduce(
-					(acc, exemple) =>
-						`${acc}> \`${exemple.command}\` ${
-							exemple.explaination ? `⟶ ${exemple.explaination}` : ''
-						}\n`,
-					'',
-				),
-			})
+			if (command.usage.examples.length > 0)
+				embed.fields.push({
+					name: 'Exemples',
+					value: command.usage.examples.reduce(
+						(acc, exemple) =>
+							`${acc}> \`${exemple.command}\` ${
+								exemple.explaination ? `⟶ ${exemple.explaination}` : ''
+							}\n`,
+						'',
+					),
+				})
 		}
 
 		return message.channel.send({ embed })
