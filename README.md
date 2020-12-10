@@ -61,7 +61,9 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 ### Logs
 
-- Join/leave des membres : TO BE DONE (ne pas oublier les screenshots/gifs)
+- Join/leave des membres :
+  ![Exemple de join](./doc/images/user_join.png)
+  ![Exemple de leave](./doc/images/user_leave.png)
 - Messages supprimés : TO BE DONE (ne pas oublier les screenshots/gifs)
 
 ### Rename des utilisateurs à pseudo incorrect
@@ -71,11 +73,17 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 ### Citations
 
-TO BE DONE (ne pas oublier les screenshots/gifs)
+- Poste un embed avec le contenu d'un message lorsqu'un lien pointant vers un message discord du serveur est reçu.
+
+![Exemples de citations](./doc/images/citations.png)
 
 ### Système de report
 
-TO BE DONE (ne pas oublier les screenshots/gifs)
+- Poste un embed avec des informations sur le message signalé et sur le(s) signalement(s) :
+  - contenu/channel/date et lien vers le message
+  - auteurs 
+
+![Exemple d'un message signalé](./doc/images/report.png)
 
 ## Setup en production
 
