@@ -98,7 +98,7 @@ module.exports = async (client, messageReaction, user) => {
 					name: 'Nouveau signalement',
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
-				description: `**Contenu du message**\n${message.cleanContent}`,
+				description: `**Contenu du message**\n${message.content}`,
 				fields: [
 					{
 						name: 'Auteur',

@@ -102,7 +102,7 @@ module.exports = async (client, message) => {
 						// message n'a ni contenu écrit ni attachements
 						if (
 							!foundMessage ||
-							(!foundMessage.cleanContent && !foundMessage.attachments.size)
+							(!foundMessage.content && !foundMessage.attachments.size)
 						)
 							return
 
@@ -126,11 +126,11 @@ module.exports = async (client, message) => {
 				},
 			}
 
-			const description = `${validMessage.cleanContent}\n[Aller au message](${validMessage.url}) - ${validMessage.channel}`
+			const description = `${validMessage.content}\n[Aller au message](${validMessage.url}) - ${validMessage.channel}`
 			// Si la description dépasse la limite
 			// autorisée, les liens sont contenus dans des fields
 			if (description.length > 2048) {
-				embed.description = validMessage.cleanContent
+				embed.description = validMessage.content
 				embed.fields.push(
 					{
 						name: 'Message',
@@ -177,7 +177,7 @@ module.exports = async (client, message) => {
 		// Si le message ne contenais que un(des) lien(s),
 		// on supprime le message, ne laissant que les embeds
 		if (
-			!message.cleanContent.replace(regexGlobal, '').trim() &&
+			!message.content.replace(regexGlobal, '').trim() &&
 			sentMessages.length === matches.length
 		) {
 			client.cache.deleteMessagesID.add(message.id)
