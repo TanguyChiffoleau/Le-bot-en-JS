@@ -78,8 +78,8 @@ module.exports = async (client, message) => {
 
 	// Partie contenu écrit du message
 	if (message.content) {
-		const escapedCleanContent = Util.escapeCodeBlock(message.cleanContent)
-		logEmbed.description = `\`\`\`\n${escapedCleanContent}\`\`\``
+		const escapedcontent = Util.escapeCodeBlock(message.content)
+		logEmbed.description = `\`\`\`\n${escapedcontent}\`\`\``
 	}
 
 	// Partie attachements (fichiers, images...)
