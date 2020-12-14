@@ -4,7 +4,22 @@ services:
 
 services:
 
+    postgres-database:
+            image: postgres:13.1-alpine
+            restart: always
+            env_file:
+                - ../config/database.env
+            environment:
+                PGDATA: /var/lib/postgresql/data
+            volumes:
+                - ../pgdata/:/var/lib/postgresql/data
+            container_name: postgres-database
+            ports:
+                - 5432:5432
+
     bot:
+        depends_on:
+            - postgres-database
         image: tanguychiffoleau/le-bot-en-js:latest
         restart: on-failure
         env_file: 
@@ -13,3 +28,4 @@ services:
             NODE_ENV: production
         volumes:
             - ../config/reactionRoleConfig.json:/config/reactionRoleConfig.json
+        container_name: bot-app
