@@ -13,8 +13,10 @@ module.exports = {
 	guildOnly: true,
 	requirePermissions: [],
 	execute: async (client, message, args) => {
+		// Suppression du message
 		message.delete()
 
+		// Envoie du message de vote
 		const sentMessage = await message.channel.send({
 			embed: {
 				color: '00FF00',
@@ -29,6 +31,8 @@ module.exports = {
 				},
 			},
 		})
+
+		// Ajout des réactions pour voter
 		await sentMessage.react('✅')
 		await sentMessage.react('🤷')
 		return sentMessage.react('❌')
