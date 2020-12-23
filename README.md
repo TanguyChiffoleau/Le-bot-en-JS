@@ -18,8 +18,8 @@
 	- [Citations](#citations)
 	- [Système de report](#système-de-report)
 - [Setup en production](#setup-en-production)
-	- [Node.js](#nodejs)
-	- [Docker container](#docker-container)
+	- [Setup avec Node.js](#setup-avec-nodejs)
+	- [Setup dans un container avec Docker et Docker Compose](#setup-dans-un-container-avec-docker-et-docker-compose)
 - [Ressources](#ressources)
 - [Contribuer](#contribuer)
 
@@ -93,10 +93,7 @@ L'application est capable de tourner sous plusieurs environnements :
 -   n'importe quel environnement avec Node.js d'installé
 -   dans un container Docker avec Docker Compose
 
-### Node.js
-
-<details id="classique">
-<summary><b>Setup "classique" avec Node.js</b></summary>
+### Setup avec Node.js
 
 #### Prérequis
 
@@ -114,22 +111,16 @@ L'application est capable de tourner sous plusieurs environnements :
 
 4. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-#### Lancement de l'application
+#### Lancement et arrêt de l'application
 
 -   Vous pouvez utiliser `npm start` pour lancer l'application.
 
-	> Vous pouvez utiliser un gestionnaire d'application comme [PM2](https://pm2.keymetrics.io/) pour faciliter la gestion de l'application. [Tuto](https://discordjs.guide/improving-dev-environment/pm2.html)
+-   Vous pouvez utiliser la combinaison de touches Ctrl+C ou fermer la fenêtre de commandes pour tuer l'application.
 
-#### Arrêt de l'application
+> Vous pouvez utiliser un gestionnaire d'application comme [PM2](https://pm2.keymetrics.io/) pour faciliter la gestion de l'application. _cf. [ Managing your bot process with PM2](https://discordjs.guide/improving-dev-environment/pm2.html)_
 
--   Vous pouvez utiliser la combinaison de touches Ctrl+C pour tuer l'application.
 
-</details>
-
-### Docker container
-
-<details>
-<summary id="compose"><b>Setup avec Docker Compose</b></summary>
+### Setup dans un container avec Docker et Docker Compose
 
 #### Prérequis
 
@@ -146,11 +137,12 @@ L'application est capable de tourner sous plusieurs environnements :
 	touch docker-compose.yml
 	```
 
-1. Configurez le fichier `bot.env` en ajoutant les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+   - Configurez le fichier `bot.env` en ajoutant les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-2. Configurez le fichier `reactionRoleConfig.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
 
-3. Copiez le fichier de configuration pour `docker-compose` se situant dans [docker/docker-compose.yml](docker/docker-compose.yml)
+   - Configurez le fichier `reactionRoleConfig.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
+
+   - Copiez le contenu du fichier [docker/docker-compose.yml](docker/docker-compose.yml) dans le fichier du même emplacement sur votre machine. Il correspond au fichier de configuration pour `docker-compose`.
 
 > La structure des dossiers et fichiers devrait ressembler à ça :
 > ```
@@ -175,8 +167,6 @@ L'application est capable de tourner sous plusieurs environnements :
 #### Arrêt de l'application
 
 -   Vous pouvez utiliser la commande `docker-compose -f ./docker/docker-compose.yml stop` pour stopper le container. Pour le supprimer, utilisez la commande `docker-compose -f ./docker/docker-compose.yml down`.
-
-</details>
 
 <!-- <details>
 <summary id="docker"><b>Setup avec Docker</b></summary>
