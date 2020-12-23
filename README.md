@@ -1,7 +1,6 @@
 # Le-bot-en-JS
 
 [![Release](https://img.shields.io/github/v/release/TanguyChiffoleau/Le-bot-en-JS?include_prereleases)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)
-[![Version](https://img.shields.io/github/package-json/v/TanguyChiffoleau/Le-bot-en-JS)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/blob/master/package.json)
 [![Discord.js version](https://img.shields.io/github/package-json/dependency-version/TanguyChiffoleau/Le-bot-en-JS/discord.js)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/blob/146c5cc906dfc667edffe384e225e4dab689bd0a/package.json#L23)
 [![Node.js CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/workflows/Node.js%20CI/badge.svg?branch=master&event=push)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions?query=workflow%3A%22Node.js+CI%22+event%3Apush)
 
