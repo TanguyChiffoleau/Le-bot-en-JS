@@ -90,9 +90,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 L'application est capable de tourner sous plusieurs environnements :
 
 -   n'importe quel environnement avec Node.js d'installé
--   dans un container Docker via
-    -   Docker Compose
-    -   le CLI
+-   dans un container Docker avec Docker Compose
 
 ### Node.js
 
@@ -135,37 +133,43 @@ L'application est capable de tourner sous plusieurs environnements :
 #### Prérequis
 
 1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) ainsi que [Docker Compose](https://docs.docker.com/compose/install/) d'installé.
-
 	> Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installés.
 
-2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
+2. Créez les fichiers `bot.env` et `reactionRoleConfig.json` dans le dossier `config` ainsi que le fichier `docker-compose.yml` dans le dossier `docker` :
+	```bash
+	mdkir config
+	cd config
+	touch bot.env reactionRoleConfig.json
+	cd ..
+	mkdir docker
+	touch docker-compose.yml
+	```
 
-3. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+1. Configurez le fichier `bot.env` en ajoutant les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-4. Renommer le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifier le fichier pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+2. Configurez le fichier `reactionRoleConfig.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
 
-	> Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
+3. Copiez le fichier de configuration pour `docker-compose` se situant dans [docker/docker-compose.yml](docker/docker-compose.yml)
 
-	> La structure des dossiers et fichiers devrait ressembler à ça :
-	>
-	> ```
-	> .
-	> ├── config
-	> │   ├── bot.env
-	> │   └── reactionRoleConfig.json
-	> └── docker
-	> 	  └── docker-compose.yml
-	> ```
+> La structure des dossiers et fichiers devrait ressembler à ça :
+> ```
+> .
+> ├── config
+> │   ├── bot.env
+> │   └── reactionRoleConfig.json
+> └── docker
+> 	  └── docker-compose.yml
+> ```
 
 #### Lancement de l'application
 
 -   Vous pouvez utiliser les commandes `docker pull tanguychiffoleau/le-bot-en-js:latest` puis `docker-compose -f ./docker/docker-compose.yml up -d` pour lancer l'application.
 
-	> docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
+> docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
 
-	> docker-compose va lancer le container avec les règles définies dans `docker-compose.yml`.
+> docker-compose va lancer le container avec les règles définies dans `docker-compose.yml`.
 
-	> Pour plus d'infos sur les technologies liées à Docker utilisées ici, vous pouvez consulter leur [documentation](https://docs.docker.com/reference/) ou leur [manuel](https://docs.docker.com/engine/).
+> Pour plus d'infos sur les technologies liées à Docker utilisées ici, vous pouvez consulter leur [documentation](https://docs.docker.com/reference/) ou leur [manuel](https://docs.docker.com/engine/).
 
 #### Arrêt de l'application
 
@@ -234,9 +238,17 @@ Vous pouvez télécharger le code de l'application sur votre machine
 
 Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 
-> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
-
 #### Fichier bot.env
+
+> Exemple disponible [ici](config/bot.example.env) :
+> ```env
+> DISCORD_TOKEN="DISCORD-SECRET-BOT-TOKEN"
+> PREFIX="!"
+> GUILD_ID="123456789012345678"
+> LEAVE_JOIN_CHANNEL_ID="123456789012345678"
+> REPORT_CHANNEL="123456789012345678"
+> LOGS_CHANNEL="123456789012345678"
+> ```
 
 | Variable              | Description                                                                                                      |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -247,6 +259,8 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | REPORT_CHANNEL        | ID du channel sur lequel les messages de signalement seront postés                                               |
 | LOGS_CHANNEL          | ID du channel sur lequel les messages de logs seront postés                                                      |
 
+> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+
 </details>
 
 </details>
@@ -254,50 +268,46 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 <details id='reaction'>
 <summary><b>Configuration du sytème de réaction/rôles</b></summary>
 
-- Voici l'exemple donné dans [reactionRoleConfig.example.json](config/reactionRoleConfig.example.json)
+#### Fichier reactionRoleConfig.json
 
-	```js
-	[
-		// Message n°1
-		{
-			"messageId": "123456789123456789", // ID du message
-			"channelId": "123456789123456789", // ID du channel du message
-			"emojiRoleMap": {
-				// Émoji unicode en clé et ID du rôle en valeur
-				"💸": "123456789123456789", 
-				"🔧": "123456789123456789"
-			}
-		},
-
-		// Message n°2
-		{
-			"messageId": "987654321987654321", // ID du message
-			"channelId": "987654321987654321", // ID du channel du message
-			"emojiRoleMap": {
-				// ID de l'émoji custom en clé et ID du rôle en valeur
-				"987654321987654322": "987654321987654321",
-				"987654321987654321": "987654321987654321"
-			}
-		}
-	]
-	```
-
-> Pour désactiver le système, le fichier doit être composé d'un array **vide**
+> Exemple disponible [ici](config/reactionRoleConfig.example.json) :
+> ```js
+> [
+> 	// Message n°1
+> 	{
+> 		"channelId": "123456789123456789", // ID du channel du message
+> 		"messageId": "123456789123456789", // ID du message
+> 		"emojiRoleMap": {
+> 			// Émoji unicode en clé et ID du rôle en valeur
+> 			"💸": "123456789123456789", 
+> 			"🔧": "123456789123456789"
+> 		}
+> 	},
 > 
+> 	// Message n°2
+> 	{
+> 		"channelId": "987654321987654321", // ID du channel du message
+> 		"messageId": "123456789123456789", // ID du message
+> 		"emojiRoleMap": {
+> 			// ID de l'émoji custom en clé et ID du rôle en valeur
+> 			"987654321987654322": "987654321987654321",
+> 			"987654321987654321": "987654321987654321"
+> 		}
+> 	}
+> ]
+> ```
+
+> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+
+> Pour désactiver le système, le fichier doit être composé d'un tableau (array) **vide** :
 > ```js
 > []
 > ```
 
-> Pour récupérer les IDs des messages et des channels, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+-  Pour récupérer les émojis :
+   - unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`. ![emoji_unicode](doc/gifs/emoji_unicode.gif)
 
-> Pour les émojis :
->  - unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`.
->
->	![emoji_unicode](doc/gifs/emoji_unicode.gif)
->
->  - personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`.
->
->	![emoji_custom](doc/gifs/emoji_custom.gif)
+   - personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`. ![emoji_custom](doc/gifs/emoji_custom.gif)
 
 </details>
 
