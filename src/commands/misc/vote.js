@@ -14,6 +14,7 @@ module.exports = {
 	requirePermissions: [],
 	execute: async (client, message, args) => {
 		// Suppression du message
+		client.cache.deleteMessagesID.add(message.id)
 		message.delete()
 
 		// Envoie du message de vote
