@@ -11,9 +11,14 @@ module.exports = {
 	requirePermissions: ['MANAGE_MESSAGES'],
 	execute: async (client, message, args) => {
 		const [nameRaw, ...contenuArr] = args
-		if (contenuArr.length < 1) return message.reply("tu n'as pas donné de contenu 😕")
-
 		const name = nameRaw.toLowerCase()
+		if (contenuArr.length < 1) return message.reply("tu n'as pas donné de contenu 😕")
+		if (
+			client.commands.get(name) ||
+			client.commands.find(({ aliases }) => aliases.includes(name))
+		)
+			return message.reply('cette commande existe déjà 😕')
+
 		const contenu = contenuArr.join(' ')
 		const author_id = message.author.id
 		const timestamp = message.createdAt.toISOString()
