@@ -20,31 +20,31 @@ module.exports = {
 
 		const pool = getPool()
 
-		const { rowCount } = await pool
-			.query(
+		try {
+			await pool.query(
 				sql`INSERT INTO "Custom commands" (name, texte, author_id, created_at) VALUES (${name}, ${contenu}, ${author_id}, ${timestamp})`,
 			)
-			.catch(error => {
-				if (error instanceof UniqueIntegrityConstraintViolationError)
-					return message.reply('cette commande existe déjà 😕')
-				throw error
-			})
-
-		if (rowCount === 1) {
-			client.cache.deleteMessagesID.add(message.id)
-			message.delete()
-
-			return message.reply({
-				embed: {
-					color: '00ff00',
-					author: {
-						name: `${message.member.displayName} (ID ${message.member.id})`,
-						icon_url: message.author.displayAvatarURL({ dynamic: true }),
-					},
-					title: `Commande **${name}** créée avec succès 👌`,
-					description: contenu,
-				},
-			})
+		} catch (error) {
+			if (error instanceof UniqueIntegrityConstraintViolationError)
+				return message.reply('cette commande existe déjà 😕')
+			throw error
 		}
+
+		// Suppression du message
+		client.cache.deleteMessagesID.add(message.id)
+		message.delete()
+
+		// Et envoie de l'embed récapitulatif
+		return message.channel.send({
+			embed: {
+				color: '00ff00',
+				author: {
+					name: `${message.member.displayName} (ID ${message.member.id})`,
+					icon_url: message.author.displayAvatarURL({ dynamic: true }),
+				},
+				title: `Commande **${name}** créée avec succès 👌`,
+				description: contenu,
+			},
+		})
 	},
 }
