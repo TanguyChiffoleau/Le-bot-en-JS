@@ -12,26 +12,30 @@ module.exports = {
 	execute: async (client, message, args) => {
 		const [nameRaw, ...contenuArr] = args
 		const name = nameRaw.toLowerCase()
-		if (contenuArr.length < 1) return message.reply("tu n'as pas donné de contenu 😕")
+		const contenu = contenuArr.join(' ')
+		const author_id = message.author.id
+		const timestamp = message.createdAt.toISOString()
+
+		// On return si il n'y a pas de contenu
+		if (!contenu) return message.reply("tu n'as pas donné de contenu 😕")
+		// ou si la commande existe déjà dans les commandes principales
 		if (
 			client.commands.get(name) ||
 			client.commands.find(({ aliases }) => aliases.includes(name))
 		)
 			return message.reply('cette commande existe déjà 😕')
 
-		const contenu = contenuArr.join(' ')
-		const author_id = message.author.id
-		const timestamp = message.createdAt.toISOString()
-
-		const pool = getPool()
-
 		try {
-			await pool.query(
+			// Query pour ajouter la commande
+			await getPool().query(
 				sql`INSERT INTO "Custom commands" (name, texte, author_id, created_at) VALUES (${name}, ${contenu}, ${author_id}, ${timestamp})`,
 			)
 		} catch (error) {
+			// Si la commande existe déjà
 			if (error instanceof UniqueIntegrityConstraintViolationError)
 				return message.reply('cette commande existe déjà 😕')
+
+			// Sinon erreur
 			throw error
 		}
 
