@@ -1,19 +1,22 @@
-const { Pool } = require('pg')
+const { createPool } = require('slonik')
 
 if (process.env.NODE_ENV !== 'production') {
 	const dotenv = require('dotenv')
 	dotenv.config({ path: './config/database.env' })
 }
 
-const pool = new Pool({
-	host: process.env.POSTGRES_HOST,
-	port: process.env.POSTGRES_PORT,
-	database: process.env.POSTGRES_DATABASE,
-	user: process.env.POSTGRES_USER,
-	password: process.env.POSTGRES_PASSWORD,
-})
+const {
+	POSTGRES_USER,
+	POSTGRES_PASSWORD,
+	POSTGRES_HOST,
+	POSTGRES_PORT,
+	POSTGRES_DATABASE,
+} = process.env
+
+const pool = createPool(
+	`postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}`,
+)
 
 module.exports = {
-	query: query => pool.query(query),
-	end: () => pool.end(),
+	getPool: () => pool,
 }

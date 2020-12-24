@@ -1,4 +1,5 @@
-const { query } = require('../../util/database')
+const { sql } = require('slonik')
+const { getPool } = require('../../util/database')
 
 module.exports = {
 	name: 'test',
@@ -9,7 +10,10 @@ module.exports = {
 	guildOnly: false,
 	requirePermissions: [],
 	execute: async (client, message) => {
-		const { rows: res } = await query('SELECT * FROM "Custom commands"')
+		const pool = getPool()
+
+		const res = await pool.any(sql`SELECT * FROM "Custom commands"`)
+
 		console.table(res)
 		return message.channel.send('check console')
 	},
