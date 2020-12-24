@@ -5,7 +5,17 @@ module.exports = {
 	name: 'newcommand',
 	description: 'Créé une commande',
 	aliases: ['nouvellecommande', 'newcommande'],
-	usage: null,
+	usage: {
+		arguments: '<nom_commande> <texte de la commande>',
+		informations: null,
+		examples: [
+			{
+				command: 'newcommand ma_commande ceci est ma commande',
+				explaination:
+					'créé la commande de nom `ma_commande` et avec comme texte "ceci est ma commande"',
+			},
+		],
+	},
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
