@@ -1,4 +1,5 @@
 const { escapeMarkdown } = require('discord.js').Util
+const { pluralizeWithoutQuantity } = require('../../util/util')
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
 module.exports = {
@@ -106,7 +107,7 @@ module.exports = {
 			// Ajout des exemples
 			if (command.usage.examples.length > 0)
 				embed.fields.push({
-					name: 'Exemples',
+					name: pluralizeWithoutQuantity('Exemple', command.usage.examples.length),
 					value: command.usage.examples.reduce(
 						(acc, exemple) =>
 							`${acc}> \`${exemple.command}\` ${
