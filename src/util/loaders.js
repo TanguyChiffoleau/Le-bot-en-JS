@@ -1,6 +1,8 @@
 const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
 const { removeFileExtension } = require('./util')
+const { getPool } = require('./database')
+const { sql } = require('slonik')
 
 module.exports = {
 	client: {
@@ -64,6 +66,13 @@ module.exports = {
 				const command = require(`../commands/${commandCategory}/${commandFile}`)
 				client.commands.set(command.name, command)
 			})
+		})
+	},
+
+	customCommands: async client => {
+		const res = await getPool().any(sql`SELECT * FROM "Custom commands"`)
+		res.forEach(command => {
+			client.commands.set(command.name, command)
 		})
 	},
 

@@ -2,6 +2,7 @@ const {
 	events: eventsLoader,
 	commands: commandsLoader,
 	client: clientLoader,
+	customCommands: customCommandsLoader,
 } = require('./util/loaders')
 
 // Chargement des variables d'environnement si l'environnement
@@ -14,9 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 const run = async () => {
 	const client = clientLoader.prepare()
 
-	await commandsLoader(client)
-
-	await eventsLoader(client)
+	await Promise.all([commandsLoader(client), eventsLoader(client), customCommandsLoader(client)])
 
 	await clientLoader.login(client)
 

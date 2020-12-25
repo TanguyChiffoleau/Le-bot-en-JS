@@ -37,9 +37,12 @@ module.exports = {
 
 		try {
 			// Query pour ajouter la commande
-			await getPool().query(
-				sql`INSERT INTO "Custom commands" (name, texte, author_id, created_at) VALUES (${name}, ${contenu}, ${author_id}, ${timestamp})`,
+			const command = await getPool().one(
+				sql`INSERT INTO "Custom commands" (name, text, author_id, created_at) VALUES (${name}, ${contenu}, ${author_id}, ${timestamp}) RETURNING *`,
 			)
+
+			// Ajout de la commande
+			client.commands.set(name, command)
 		} catch (error) {
 			// Si la commande existe déjà
 			if (error instanceof UniqueIntegrityConstraintViolationError)
