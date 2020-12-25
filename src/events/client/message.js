@@ -1,5 +1,7 @@
 const { Collection } = require('discord.js')
 const { modifyWrongUsernames, convertDate, isImage, getFileInfos } = require('../../util/util')
+const { getPool } = require('../../util/database')
+const { sql } = require('slonik')
 
 module.exports = async (client, message) => {
 	if (
@@ -41,6 +43,17 @@ module.exports = async (client, message) => {
 		timestamps.set(message.author.id, now)
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
 
+		// Si c'est une command custom
+		if (command.id) {
+			message.channel.startTyping()
+			await message.channel.send(command.texte)
+			message.channel.stopTyping(true)
+			return getPool().query(
+				sql`UPDATE "Custom commands" SET utilisations= utilisations + 1 WHERE id = ${command.id}`,
+			)
+		}
+
+		// Sinon c'est une commande classique
 		// Rejets de la commandes
 		if (command.needArguments && !args.length)
 			return message.reply("tu n'as pas donné d'argument(s) 😕")
