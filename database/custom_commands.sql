@@ -9,5 +9,5 @@ CREATE TABLE "Custom commands"(
 	"last_modified_by" TIMESTAMP NULL,
 	"uses" INTEGER NOT NULL DEFAULT 0,
 	"categories" TEXT[] NULL,
-	"tags" TEXT[] NULL
+	"aliases" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[]
 );
