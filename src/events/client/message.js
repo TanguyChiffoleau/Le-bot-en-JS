@@ -49,7 +49,7 @@ module.exports = async (client, message) => {
 			await message.channel.send(command.texte)
 			message.channel.stopTyping(true)
 			return getPool().query(
-				sql`UPDATE "Custom commands" SET utilisations= utilisations + 1 WHERE id = ${command.id}`,
+				sql`UPDATE custom_commands SET utilisations= utilisations + 1 WHERE id = ${command.id}`,
 			)
 		}
 

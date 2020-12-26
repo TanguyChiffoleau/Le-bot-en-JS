@@ -70,7 +70,7 @@ module.exports = {
 	},
 
 	customCommands: async client => {
-		const res = await getPool().any(sql`SELECT * FROM "Custom commands"`)
+		const res = await getPool().any(sql`SELECT * FROM custom_commands`)
 		res.forEach(command => {
 			client.commands.set(command.name, command)
 		})

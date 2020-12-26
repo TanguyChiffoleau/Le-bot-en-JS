@@ -1,4 +1,4 @@
-CREATE TABLE "Custom commands"(
+CREATE TABLE custom_commands (
 	"id" SERIAL PRIMARY KEY,
 	"name" TEXT UNIQUE NOT NULL,
 
