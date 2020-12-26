@@ -46,7 +46,7 @@ module.exports = async (client, message) => {
 		// Si c'est une command custom
 		if (command.id) {
 			message.channel.startTyping()
-			await message.channel.send(command.texte)
+			await message.channel.send(command.text)
 			message.channel.stopTyping(true)
 			return getPool().query(
 				sql`UPDATE custom_commands SET utilisations= utilisations + 1 WHERE id = ${command.id}`,
