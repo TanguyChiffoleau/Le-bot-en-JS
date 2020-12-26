@@ -8,6 +8,6 @@ CREATE TABLE custom_commands (
 	"last_modified_at" TIMESTAMP NULL,
 	"last_modified_by" TIMESTAMP NULL,
 	"uses" INTEGER NOT NULL DEFAULT 0,
-	"categories" TEXT[] NULL,
+	"categories" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
 	"aliases" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[]
 );
