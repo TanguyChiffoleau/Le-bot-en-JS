@@ -1,4 +1,4 @@
-const { sql, UniqueIntegrityConstraintViolationError } = require('slonik')
+const { sql } = require('slonik')
 const { getPool } = require('../../util/database')
 
 module.exports = {
@@ -35,28 +35,19 @@ module.exports = {
 		)
 			return message.reply('cette commande existe déjà 😕')
 
-		try {
-			// Query pour ajouter la commande
-			const command = await getPool().one(
+		// Query pour ajouter la commande
+		const command = await getPool().one(
 			sql`INSERT INTO custom_commands (name, content, author_id, created_at) VALUES (${name}, ${content}, ${author_id}, ${timestamp}) RETURNING *`,
-			)
+		)
 
-			// Ajout de la commande
-			client.commands.set(name, command)
-		} catch (error) {
-			// Si la commande existe déjà
-			if (error instanceof UniqueIntegrityConstraintViolationError)
-				return message.reply('cette commande existe déjà 😕')
+		// Ajout de la commande
+		client.commands.set(command.name, command)
 
-			// Sinon erreur
-			throw error
-		}
-
-		// Suppression du message
+		// Si il n'y a pas d'erreurs, suppression du message
 		client.cache.deleteMessagesID.add(message.id)
 		message.delete()
 
-		// Et envoie de l'embed récapitulatif
+		// et envoie de l'embed récapitulatif
 		return message.channel.send({
 			embed: {
 				color: '00ff00',
