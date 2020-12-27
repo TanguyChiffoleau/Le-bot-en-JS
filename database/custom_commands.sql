@@ -2,7 +2,7 @@ CREATE TABLE custom_commands (
 	"id" SERIAL PRIMARY KEY,
 	"name" TEXT UNIQUE NOT NULL,
 
-	"text" TEXT NOT NULL,
+	"content" TEXT NOT NULL,
 	"author_id" TEXT NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
 	"last_modified_at" TIMESTAMP NULL,

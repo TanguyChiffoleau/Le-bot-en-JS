@@ -20,14 +20,14 @@ module.exports = {
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
 	execute: async (client, message, args) => {
-		const [nameRaw, ...contenuArr] = args
+		const [nameRaw, ...contentArr] = args
 		const name = nameRaw.toLowerCase()
-		const contenu = contenuArr.join(' ')
+		const content = contentArr.join(' ')
 		const author_id = message.author.id
 		const timestamp = message.createdAt.toISOString()
 
 		// On return si il n'y a pas de contenu
-		if (!contenu) return message.reply("tu n'as pas donné de contenu 😕")
+		if (!content) return message.reply("tu n'as pas donné de contenu 😕")
 		// ou si la commande existe déjà dans les commandes principales
 		if (
 			client.commands.get(name) ||
@@ -38,7 +38,7 @@ module.exports = {
 		try {
 			// Query pour ajouter la commande
 			const command = await getPool().one(
-				sql`INSERT INTO custom_commands (name, text, author_id, created_at) VALUES (${name}, ${contenu}, ${author_id}, ${timestamp}) RETURNING *`,
+			sql`INSERT INTO custom_commands (name, content, author_id, created_at) VALUES (${name}, ${content}, ${author_id}, ${timestamp}) RETURNING *`,
 			)
 
 			// Ajout de la commande
@@ -65,7 +65,7 @@ module.exports = {
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
 				title: `Commande **${name}** créée avec succès 👌`,
-				description: contenu,
+				description: command.content,
 			},
 		})
 	},
