@@ -26,14 +26,15 @@ module.exports = {
 		const author_id = message.author.id
 		const timestamp = message.createdAt.toISOString()
 
-		// On return si il n'y a pas de contenu
-		if (!content) return message.reply("tu n'as pas donné de contenu 😕")
-		// ou si la commande existe déjà dans les commandes principales
+		// On return si la commande existe déjà
 		if (
 			client.commands.get(name) ||
 			client.commands.find(({ aliases }) => aliases.includes(name))
 		)
 			return message.reply('cette commande existe déjà 😕')
+
+		// ou s'il n'y a pas de contenu
+		if (!content) return message.reply("tu n'as pas donné de contenu 😕")
 
 		// Query pour ajouter la commande
 		const command = await getPool().one(
@@ -43,7 +44,7 @@ module.exports = {
 		// Ajout de la commande
 		client.commands.set(command.name, command)
 
-		// Si il n'y a pas d'erreurs, suppression du message
+		// Suppression du message
 		client.cache.deleteMessagesID.add(message.id)
 		message.delete()
 
@@ -55,7 +56,7 @@ module.exports = {
 					name: `${message.member.displayName} (ID ${message.member.id})`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
-				title: `Commande **${name}** créée avec succès 👌`,
+				title: `Commande **${command.name}** créée avec succès 👌`,
 				description: command.content,
 			},
 		})
