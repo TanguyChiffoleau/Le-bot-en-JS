@@ -12,9 +12,13 @@ module.exports = {
 	execute: async (client, message) => {
 		const pool = getPool()
 
-		const res = await pool.any(sql`SELECT * FROM "Custom commands"`)
+		const start = new Date()
 
-		console.table(res)
-		return message.channel.send('check console')
+		const res = await pool.any(
+			sql`EXPLAIN ANALYZE SELECT * FROM custom_commands WHERE name = 'test1'`,
+		)
+		const time = new Date() - start
+
+		return message.reply(`${time} ms | ${res[2]['QUERY PLAN']}, ${res[3]['QUERY PLAN']}`)
 	},
 }
