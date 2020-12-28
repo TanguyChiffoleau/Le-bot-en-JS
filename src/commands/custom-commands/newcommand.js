@@ -37,7 +37,7 @@ module.exports = {
 
 		// Query pour ajouter la commande
 		const command = await getPool().one(
-			sql`INSERT INTO custom_commands (name, content, author_id, created_at) VALUES (${name}, ${content}, ${author_id}, ${timestamp}) RETURNING *`,
+			sql`INSERT INTO custom_commands (name, content, author_id, created_at) VALUES (${name}, ${content}, ${author_id}, ${timestamp}) RETURNING *;`,
 		)
 
 		// Ajout de la commande

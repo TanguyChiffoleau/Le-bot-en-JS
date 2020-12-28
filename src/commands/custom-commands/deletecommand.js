@@ -30,7 +30,7 @@ module.exports = {
 		if (!command.id) return message.reply('tu ne peux pas supprimer une commande principale 😕')
 
 		// Suppression de la commande dans la BDD
-		await getPool().query(sql`DELETE FROM custom_commands WHERE id = ${command.id}`)
+		await getPool().query(sql`DELETE FROM custom_commands WHERE id = ${command.id};`)
 
 		// Suppression commande
 		client.commands.delete(command.name)

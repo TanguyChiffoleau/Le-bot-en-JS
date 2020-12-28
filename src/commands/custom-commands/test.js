@@ -15,7 +15,7 @@ module.exports = {
 		const start = new Date()
 
 		const res = await pool.any(
-			sql`EXPLAIN ANALYZE SELECT * FROM custom_commands WHERE name = 'test1'`,
+			sql`EXPLAIN ANALYZE SELECT * FROM custom_commands WHERE name = 'test1';`,
 		)
 		const time = new Date() - start
 
