@@ -235,7 +235,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > Exemple disponible [ici](config/bot.example.env) :
 > ```env
 > DISCORD_TOKEN="DISCORD-SECRET-BOT-TOKEN"
-> PREFIX="!"
+> COMMANDS_PREFIX="!"
 > GUILD_ID="123456789012345678"
 > LEAVE_JOIN_CHANNEL_ID="123456789012345678"
 > REPORT_CHANNEL="123456789012345678"
@@ -245,7 +245,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | Variable              | Description                                                                                                      |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | DISCORD_TOKEN         | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token) |
-| PREFIX                | Préfixe utilisé pour intéragir avec le bot                                                                       |
+| COMMANDS_PREFIX                | Préfixe utilisé pour intéragir avec le bot                                                                       |
 | GUILD_ID              | ID du serveur (= guild) sur lequel le bot est utilisé                                                            |
 | LEAVE_JOIN_CHANNEL_ID | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
 | REPORT_CHANNEL        | ID du channel sur lequel les messages de signalement seront postés                                               |
