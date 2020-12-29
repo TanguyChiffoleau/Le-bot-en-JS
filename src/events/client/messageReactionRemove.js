@@ -14,8 +14,8 @@ module.exports = async (client, messageReaction, user) => {
 
 	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
-		const rule = client.reactionRoleMap.get(message.id)
-		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
+		const emojiRoleMap = client.reactionRoleMap.get(message.id)
+		const roleID = emojiRoleMap[emoji.id || emoji.name]
 		const guildMember = await message.guild.members.fetch(user)
 
 		return guildMember.roles.remove(roleID)

@@ -7,12 +7,21 @@ module.exports = async client => {
 	// Lecture et en place du système de réactions
 	// puis ajout des émojis (peut prendre du temps)
 	client.reactionRoleMap = new Map()
-	for (const reactionRole of reactionRoleConfig) {
-		client.reactionRoleMap.set(reactionRole.messageId, reactionRole)
-		const channel = await client.channels.fetch(reactionRole.channelId)
-		const message = await channel.messages.fetch(reactionRole.messageId)
 
-		for (const emoji of Object.keys(reactionRole.emojiRoleMap)) await message.react(emoji)
+	// Pour chaque channel
+	for (const { channelID, messageArray } of reactionRoleConfig) {
+		// Fetch du channel
+		const channel = await client.channels.fetch(channelID)
+		// Pour chaque message/réactions
+		for (const { messageID, emojiRoleMap } of messageArray) {
+			// Ajout dans la map pour être utilisé dans les events
+			client.reactionRoleMap.set(messageID, emojiRoleMap)
+			// Fetch du message
+			const message = await channel.messages.fetch(messageID)
+			// Ajout des émojis sur le message
+			for (const emoji of Object.keys(emojiRoleMap)) await message.react(emoji)
+		}
 	}
+
 	console.log('Startup finished !')
 }
