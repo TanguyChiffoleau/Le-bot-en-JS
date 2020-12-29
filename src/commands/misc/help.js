@@ -1,4 +1,5 @@
 const { escapeMarkdown } = require('discord.js').Util
+const { pluralizeWithoutQuantity } = require('../../util/util')
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
 module.exports = {
@@ -9,22 +10,22 @@ module.exports = {
 		arguments: '[commande]',
 		informations: null,
 	},
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
 	requirePermissions: [],
 	execute: (client, message, args) => {
+		// Si aucun argument, on montre la liste des commandes principales
 		if (args.length === 0) {
 			const fields = []
 			client.commandsCategories.forEach((commandsNames, category) => {
-				const allo = commandsNames.reduce((acc, commandName) => {
+				const commandsDescription = commandsNames.reduce((acc, commandName) => {
 					const command = client.commands.get(commandName)
 					return `${acc}- \`${commandName}\`: ${command.description}.\n`
 				}, '')
 
 				fields.push({
 					name: capitalize(category),
-					value: allo,
+					value: commandsDescription,
 				})
 			})
 
@@ -37,20 +38,15 @@ module.exports = {
 			})
 		}
 
+		// Acquisition de la commande
 		const chosenCommand = args[0]
 		const command =
 			client.commands.get(chosenCommand) ||
 			client.commands.find(({ aliases }) => aliases.includes(chosenCommand))
 		if (!command) return message.reply(`je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`)
 
+		// Fait l'intérmédiaire entre la propriété et sa traduction en langage
 		const properties = [
-			[
-				'isEnabled',
-				{
-					true: 'La commande est activée',
-					false: 'La commande est désactivée',
-				},
-			],
 			[
 				'needArguments',
 				{
@@ -67,6 +63,7 @@ module.exports = {
 			],
 		]
 
+		// Création de l'embed avec les propriétés toujours présentes
 		const embed = {
 			title: command.name,
 			color: 'ff8000',
@@ -76,7 +73,7 @@ module.exports = {
 					name: 'Propriétés',
 					value: properties.reduce(
 						(acc, [property, traduction]) =>
-							`${acc}> ${command[property] ? traduction.true : traduction.false}\n`,
+							`${acc}> ${traduction[command[property]]}\n`,
 						'',
 					),
 				},
@@ -91,19 +88,35 @@ module.exports = {
 			],
 		}
 
+		// Ajout des aliases
 		if (command.aliases.length > 0)
 			embed.fields.push({
 				name: 'Aliases',
 				value: command.aliases.reduce((acc, alias) => `${acc}> \`${alias}\`\n`, ''),
 			})
 
-		if (command.usage)
+		// Ajout de l'usage pour la commande
+		if (command.usage) {
 			embed.fields.push({
 				name: 'Utilisation',
-				value: `${escapeMarkdown(command.usage.arguments)}${
+				value: `${command.name} ${escapeMarkdown(command.usage.arguments)}${
 					command.usage.informations ? `\n_(${command.usage.informations})_` : ''
 				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
 			})
+
+			// Ajout des exemples
+			if (command.usage.examples.length > 0)
+				embed.fields.push({
+					name: pluralizeWithoutQuantity('Exemple', command.usage.examples.length),
+					value: command.usage.examples.reduce(
+						(acc, exemple) =>
+							`${acc}> \`${exemple.command}\` ${
+								exemple.explaination ? `⟶ ${exemple.explaination}` : ''
+							}\n`,
+						'',
+					),
+				})
+		}
 
 		return message.channel.send({ embed })
 	},

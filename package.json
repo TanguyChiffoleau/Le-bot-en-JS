@@ -1,33 +1,35 @@
 {
 	"name": "le-bot-en-js",
-	"version": "0.0.1",
+	"version": "2.0.0",
 	"description": "Le bot discord en JS.",
 	"main": "src/index.js",
 	"scripts": {
 		"start": "node .",
 		"test": "eslint src && prettier --check src/**/*.js",
-		"docker-start": "docker-compose -f ./docker/docker-compose.yml up -d --build",
-		"docker-stop": "docker-compose -f ./docker/docker-compose.yml down"
+		"docker-start": "docker-compose -f ./docker/docker-compose.yml up -d",
+		"docker-stop": "docker-compose -f ./docker/docker-compose.yml down -d",
+		"docker-compose-build-start": "docker-compose -f ./docker/docker-compose-build.yml up -d --build",
+		"docker-compose-build-stop": "docker-compose -f ./docker/docker-compose-build.yml down -d"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/TanguyChiffoleau/Le-bot-en-JS.git"
 	},
 	"author": "Tanguy Chiffoleau",
-	"license": "MIT License",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/TanguyChiffoleau/Le-bot-en-JS/issues"
 	},
 	"homepage": "https://github.com/TanguyChiffoleau/Le-bot-en-JS#readme",
 	"dependencies": {
 		"bent": "^7.3.12",
-		"discord.js": "^12.4.1"
+		"discord.js": "^12.5.1"
 	},
 	"devDependencies": {
 		"dotenv": "^8.2.0",
-		"eslint": "^7.12.1",
-		"eslint-config-prettier": "^6.14.0",
-		"eslint-plugin-prettier": "^3.1.4",
-		"prettier": "^2.1.2"
+		"eslint": "^7.16.0",
+		"eslint-config-prettier": "^6.15.0",
+		"eslint-plugin-prettier": "^3.3.0",
+		"prettier": "^2.2.1"
 	}
 }

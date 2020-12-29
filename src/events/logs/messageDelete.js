@@ -1,4 +1,4 @@
-const { convertDate, pluralizeWithoutQuantity: isImage } = require('../../util/util')
+const { convertDate, isImage, getFileInfos } = require('../../util/util')
 const { MessageAttachment, Util } = require('discord.js')
 const bent = require('bent')
 
@@ -78,12 +78,11 @@ module.exports = async (client, message) => {
 
 	// Partie contenu écrit du message
 	if (message.content) {
-		const escapedCleanContent = Util.escapeCodeBlock(message.cleanContent)
-		logEmbed.description = `\`\`\`\n${escapedCleanContent}\`\`\``
+		const escapedcontent = Util.escapeCodeBlock(message.content)
+		logEmbed.description = `\`\`\`\n${escapedcontent}\`\`\``
 	}
 
 	// Partie attachements (fichiers, images...)
-	const messageAttachments = []
 	const attachments = message.attachments
 	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
 
@@ -102,17 +101,27 @@ module.exports = async (client, message) => {
 		logEmbed.image = {
 			url: `attachment://${image.name}`,
 		}
-		const buffer = await getLinkBuffer(image.proxyURL)
-		const messageAttachment = new MessageAttachment(buffer, image.name)
-		messageAttachments.push(messageAttachment)
-	} else {
-		for (const [, attachment] of imageAttachments) {
-			// eslint-disable-next-line no-await-in-loop
-			const buffer = await getLinkBuffer(attachment.proxyURL)
-			const messageAttachment = new MessageAttachment(buffer, attachment.name)
-			messageAttachments.push(messageAttachment)
-		}
 	}
+
+	// Fetch en parallèle pour éviter une boucle for of asynchrone
+	// qui induirait un temps plus long
+	// cf : https://www.samjarman.co.nz/blog/promisedotall
+	const messageAttachments = []
+	await Promise.all(
+		imageAttachments.map(async attachment => {
+			const buffer = await getLinkBuffer(attachment.proxyURL).catch(() => null)
+			if (!buffer) {
+				const { name, type } = getFileInfos(attachment.name)
+				return logEmbed.fields.push({
+					name: `Fichier ${type}`,
+					value: name,
+					inline: true,
+				})
+			}
+
+			return messageAttachments.push(new MessageAttachment(buffer, attachment.name))
+		}),
+	)
 
 	// Partie fichiers
 	// Étant donné que les données sont supprimées de discord
@@ -120,11 +129,10 @@ module.exports = async (client, message) => {
 	// les données pour pouvoir les logs
 	// TODO : trouver une solution
 	for (const [, attachment] of otherAttachments) {
-		const attachmentNameSplited = attachment.name.split('.')
-		const attachmentType = attachmentNameSplited.pop()
-		logEmbed.fields.push({
-			name: `Fichier ${attachmentType}`,
-			value: attachmentNameSplited.join('.'),
+		const { name, type } = getFileInfos(attachment.name)
+		return logEmbed.fields.push({
+			name: `Fichier ${type}`,
+			value: name,
 			inline: true,
 		})
 	}

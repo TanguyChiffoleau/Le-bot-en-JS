@@ -1,10 +1,10 @@
-/* eslint-disable no-await-in-loop */
 const { readdir } = require('fs').promises
 const { Client, Collection } = require('discord.js')
-const reactionRoleConfig = require('../../config/reactionRoleConfig.json')
+const { removeFileExtension } = require('./util')
 
 module.exports = {
 	client: {
+		// Création du client et de ses propriétés
 		prepare: () => {
 			const client = new Client({
 				partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION'],
@@ -22,66 +22,70 @@ module.exports = {
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
-				prefix: process.env.PREFIX,
+				prefix: process.env.COMMANDS_PREFIX,
 				guildID: process.env.GUILD_ID,
 				reportChannelID: process.env.REPORT_CHANNEL,
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 				logsChannelID: process.env.LOGS_CHANNEL,
 			}
 			client.cache = {
+				// Messages supprimés par la bot pour ne pas
+				// les log lors de l'event "messageDelete"
 				deleteMessagesID: new Set(),
 			}
+			// Map utilisé pour la commande "roles"
 			client.commandsCategories = new Map()
 
 			return client
 		},
 
-		login: client => client.login(process.env.DISCORD_TOKEN),
+		// Connecte le client en utilisant la
+		// variable d'environnement DISCORD_TOKEN
+		login: client => client.login(),
 	},
 
+	// Chargement des commandes
 	commands: async client => {
+		// Dossier des commandes
 		const commandsDir = await readdir('./src/commands')
+
+		// Pour chaque catégorie de commandes
 		commandsDir.forEach(async commandCategory => {
+			// Acquisition des commandes
 			const commands = (await readdir(`./src/commands/${commandCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
-			client.commandsCategories.set(
-				commandCategory,
-				commands.map(commandName => {
-					const commandArr = commandName.split('.')
-					commandArr.pop()
-					return commandArr.join('.')
-				}),
-			)
+
+			// Ajout dans la map utilisée pour la commande "roles"
+			client.commandsCategories.set(commandCategory, commands.map(removeFileExtension))
+
+			// Pour chaque commande, on l'acquérit et on
+			// l'ajoute dans la map des commandes
 			commands.forEach(commandFile => {
 				const command = require(`../commands/${commandCategory}/${commandFile}`)
-				if (command.isEnabled) client.commands.set(command.name, command)
+				client.commands.set(command.name, command)
 			})
 		})
 	},
 
+	// Chargement des events
 	events: async client => {
+		// Dossier des events
 		const eventsDir = await readdir('./src/events')
+
+		// Pour chaque catégorie d'events
 		eventsDir.forEach(async eventCategory => {
+			// Acquisition des events
 			const events = (await readdir(`./src/events/${eventCategory}`)).filter(file =>
 				file.endsWith('.js'),
 			)
+
+			// Pour chaque event, on l'acquérit et on le charge
 			events.forEach(eventFile => {
 				const event = require(`../events/${eventCategory}/${eventFile}`)
-				const eventName = eventFile.split('.')[0]
+				const eventName = removeFileExtension(eventFile)
 				client.on(eventName, event.bind(null, client))
 			})
 		})
-	},
-
-	reactionManager: async client => {
-		client.reactionRoleMap = new Map()
-		for (const reactionRole of reactionRoleConfig) {
-			client.reactionRoleMap.set(reactionRole.messageId, reactionRole)
-			const channel = await client.channels.fetch(reactionRole.channelId)
-			const message = await channel.messages.fetch(reactionRole.messageId)
-
-			for (const emoji of Object.keys(reactionRole.emojiRoleMap)) await message.react(emoji)
-		}
 	},
 }

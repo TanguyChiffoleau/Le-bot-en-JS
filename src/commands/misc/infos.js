@@ -6,7 +6,6 @@ module.exports = {
 	description: 'Donne quelques infos sur le bot',
 	aliases: ['info'],
 	usage: null,
-	isEnabled: true,
 	needArguments: false,
 	guildOnly: false,
 	requirePermissions: [],
@@ -15,9 +14,6 @@ module.exports = {
 			embed: {
 				color: '01579B',
 				title: 'Infos',
-				author: {
-					name: client.user.username,
-				},
 				fields: [
 					{
 						name: 'Latence API',

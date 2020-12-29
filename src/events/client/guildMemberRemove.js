@@ -11,43 +11,47 @@ module.exports = (client, guildMember) => {
 	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
 
-	return leaveJoinChannel.send({
-		embed: {
-			color: 'C9572A',
-			author: {
-				name: `${guildMember.displayName} (ID ${guildMember.id})`,
-				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
-			},
-			fields: [
-				{
-					name: 'Mention',
-					value: guildMember,
-					inline: true,
-				},
-				{
-					name: 'Serveur rejoint le',
-					value: convertDate(guildMember.joinedAt),
-					inline: true,
-				},
-				{
-					name: 'Était sur le serveur depuis',
-					value: diffDate(guildMember.joinedAt),
-					inline: true,
-				},
-				{
-					name: 'Date de création du compte',
-					value: convertDate(guildMember.user.createdAt),
-					inline: true,
-				},
-				{
-					name: 'Âge du compte',
-					value: diffDate(guildMember.user.createdAt),
-					inline: true,
-				},
-			],
-			footer: {
-				text: `Un utilisateur a quitté le serveur • ${convertDate(new Date())}`,
-			},
+	const embed = {
+		color: 'C9572A',
+		author: {
+			name: `${guildMember.displayName} (ID ${guildMember.id})`,
+			icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
 		},
-	})
+		fields: [
+			{
+				name: 'Mention',
+				value: guildMember,
+				inline: true,
+			},
+			{
+				name: 'Date de création du compte',
+				value: convertDate(guildMember.user.createdAt),
+				inline: true,
+			},
+			{
+				name: 'Âge du compte',
+				value: diffDate(guildMember.user.createdAt),
+				inline: true,
+			},
+		],
+		footer: {
+			text: `Un utilisateur a quitté le serveur • ${convertDate(new Date())}`,
+		},
+	}
+
+	if (guildMember.joinedAt)
+		embed.fields.push(
+			{
+				name: 'Serveur rejoint le',
+				value: convertDate(guildMember.joinedAt),
+				inline: true,
+			},
+			{
+				name: 'Était sur le serveur depuis',
+				value: diffDate(guildMember.joinedAt),
+				inline: true,
+			},
+		)
+
+	return leaveJoinChannel.send({ embed })
 }

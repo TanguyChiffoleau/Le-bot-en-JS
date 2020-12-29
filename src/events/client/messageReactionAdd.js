@@ -14,6 +14,7 @@ module.exports = async (client, messageReaction, user) => {
 	)
 		return
 
+	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
 		const rule = client.reactionRoleMap.get(message.id)
 		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
@@ -23,9 +24,11 @@ module.exports = async (client, messageReaction, user) => {
 	}
 
 	switch (emoji.name) {
+		// Si c'est un signalement (report)
 		case '🚨': {
 			if (message.author.bot || !message.guild) return
 
+			// On ne peut pas report un message posté pour soit-même
 			if (message.author === user) return messageReaction.users.remove(user)
 
 			const reportChannel = message.guild.channels.cache.get(client.config.reportChannelID)
@@ -33,12 +36,16 @@ module.exports = async (client, messageReaction, user) => {
 
 			const fetchedMessages = await reportChannel.messages.fetch()
 
+			// Recherche si un report a déjà été posté
 			const logReport = fetchedMessages
 				.filter(msg => msg.embeds)
 				.find(msg => msg.embeds[0].fields.find(field => field.value.includes(message.id)))
 
+			// Si un report a déjà été posté
 			if (logReport) {
 				const logReportEmbed = logReport.embeds[0]
+
+				// On return si l'utilisateur a déjà report ce message
 				if (logReportEmbed.fields.some(field => field.value.includes(user.id))) return
 
 				const editLogReport = {
@@ -48,12 +55,14 @@ module.exports = async (client, messageReaction, user) => {
 					footer: logReportEmbed.footer,
 				}
 
+				// On ajoute un field en fonction
+				// du nombre de report qu'il y a déjà
 				switch (logReportEmbed.fields.length - 3) {
 					case 1:
 						editLogReport.color = 'ff8200'
 						editLogReport.fields.push({
 							name: '2nd signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						})
 						break
@@ -61,7 +70,7 @@ module.exports = async (client, messageReaction, user) => {
 						editLogReport.color = 'ff6600'
 						editLogReport.fields.push({
 							name: '3ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						})
 						break
@@ -69,26 +78,27 @@ module.exports = async (client, messageReaction, user) => {
 						editLogReport.color = 'ff3200'
 						editLogReport.fields.push({
 							name: '4ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						})
 						client.cache.deleteMessagesID.add(messageReaction.message.id)
 						messageReaction.message.delete()
 						break
 					default:
-						client.cache.deleteMessagesID.add(messageReaction.message.id)
-						messageReaction.message.delete()
 						break
 				}
+
+				// Edit de l'embed
 				return logReport.edit({ embed: editLogReport })
 			}
 
+			// Si il n'a pas de report déjà posté
 			const sendLogReport = {
 				author: {
 					name: 'Nouveau signalement',
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
-				description: `**Contenu du message**\n${message.cleanContent}`,
+				description: `**Contenu du message**\n${message.content}`,
 				fields: [
 					{
 						name: 'Auteur',
@@ -113,7 +123,7 @@ module.exports = async (client, messageReaction, user) => {
 					sendLogReport.color = 'ffae00'
 					sendLogReport.fields.push({
 						name: '1er signalement',
-						value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+						value: `Signalement de ${user} le ${convertDate(new Date())}`,
 						inline: false,
 					})
 					break
@@ -127,7 +137,7 @@ module.exports = async (client, messageReaction, user) => {
 						},
 						{
 							name: '2nd signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						},
 					)
@@ -147,7 +157,7 @@ module.exports = async (client, messageReaction, user) => {
 						},
 						{
 							name: '3ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						},
 					)
@@ -172,7 +182,7 @@ module.exports = async (client, messageReaction, user) => {
 						},
 						{
 							name: '4ème signalement',
-							value: `Signalement de <@${user.id}> le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDate(new Date())}`,
 							inline: false,
 						},
 					)
@@ -180,13 +190,11 @@ module.exports = async (client, messageReaction, user) => {
 					messageReaction.message.delete()
 					break
 				default:
-					client.cache.deleteMessagesID.add(messageReaction.message.id)
-					messageReaction.message.delete()
 					break
 			}
 
-			reportChannel.send({ embed: sendLogReport })
-			break
+			// Envoie de l'embed
+			return reportChannel.send({ embed: sendLogReport })
 		}
 
 		default:
