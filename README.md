@@ -108,7 +108,9 @@ L'application est capable de tourner sous plusieurs environnements :
 
 	> Toutes les dépendences vont être installés, y compris celles prévus pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
 
-4. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+4. Renommez le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+
+5. Renommez le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifier son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
 #### Lancement et arrêt de l'application
 
