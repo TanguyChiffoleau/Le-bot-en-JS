@@ -14,7 +14,7 @@
 | Variable              | Exemple                                                     | Description                                                                                                      |
 | --------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | DISCORD_TOKEN         | MTk4NjIyNDgzNDcxOTI1MjQ4.Cl2FMQ.ZnCjm1XVW7vRze4b7Cq4se7kKWs | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token) |
-| PREFIX                | !                                                           | Préfixe utilisé pour intéragir avec le bot                                                                       |
+| COMMANDS_PREFIX       | !                                                           | Préfixe utilisé pour intéragir avec le bot                                                                       |
 | GUILD_ID              | 123456789012345678                                          | ID du serveur (= guild) sur lequel le bot est utilisé                                                            |
 | LEAVE_JOIN_CHANNEL_ID | 123456789012345678                                          | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
 | REPORT_CHANNEL        | 123456789012345678                                          | ID du channel sur lequel les messages de signalement seront postés                                               |
