@@ -9,7 +9,7 @@ module.exports = async (client, oldState, newState) => {
 		const channel = await client.channels.cache
 			.get(newState.channelID)
 			.clone({ name: `${member.user.username}'s channel` })
-		member.voice.setChannel(channel)
+		await member.voice.setChannel(channel)
 		user_channel.push(channel.id)
 	}
 	if (
