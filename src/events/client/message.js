@@ -30,12 +30,16 @@ module.exports = async (client, message) => {
 		if (timestamps.has(message.author.id)) {
 			const expirationTime = timestamps.get(message.author.id) + cooldownAmount
 			if (now < expirationTime) {
-				const timeLeft = (expirationTime - now) / 1000
-				return message.reply(
-					`merci d'attendre ${timeLeft.toFixed(
+				const timeLeft = expirationTime - now
+				const sentMessage = await message.reply(
+					`merci d'attendre ${(timeLeft / 1000).toFixed(
 						1,
 					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
 				)
+
+				// Suppression du message
+				client.cache.deleteMessagesID.add(sentMessage.id)
+				return sentMessage.delete({ timeout: timeLeft })
 			}
 		}
 		timestamps.set(message.author.id, now)
