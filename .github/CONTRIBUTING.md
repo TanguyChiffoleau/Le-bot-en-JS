@@ -14,5 +14,5 @@ Pour être prêt à travailler sur le code, suivez les étapes suivantes :
 
 ## Soummettre une pull request
 
-1. **Avant de soummettre une PR**, éxécutez la commande `npm test` pour éxécuter ESLint et assurez que votre codez respecte bien les règles.
+1. **Avant de soumettre une PR**, éxécutez la commande `npm test` pour éxécuter ESLint et assurez que votre codez respecte bien les règles.
 2. [Soummettez votre pull request](https://github.com/TanguyChiffoleau/Le-bot-en-JS/compare) !
