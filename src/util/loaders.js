@@ -22,7 +22,7 @@ module.exports = {
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
-				prefix: process.env.PREFIX,
+				prefix: process.env.COMMANDS_PREFIX,
 				guildID: process.env.GUILD_ID,
 				reportChannelID: process.env.REPORT_CHANNEL,
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
