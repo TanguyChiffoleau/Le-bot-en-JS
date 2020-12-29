@@ -27,6 +27,7 @@ module.exports = {
 				reportChannelID: process.env.REPORT_CHANNEL,
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 				logsChannelID: process.env.LOGS_CHANNEL,
+				voiceCreateCreatorsIDs: process.env.VOICE_CHANNEL_CREATORS.split(',')
 			}
 			client.cache = {
 				// Messages supprimés par la bot pour ne pas
