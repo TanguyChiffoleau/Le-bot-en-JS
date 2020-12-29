@@ -16,6 +16,7 @@ module.exports = {
 						'GUILD_MESSAGES',
 						'GUILD_MESSAGE_REACTIONS',
 						'DIRECT_MESSAGES',
+						'GUILD_VOICE_STATES',
 					],
 				},
 			})
