@@ -1,24 +1,24 @@
 const user_channel = []
-module.exports = async (client, before, after) => {
+module.exports = async (client, oldState, newState) => {
 	if (
-		after.channelID &&
-		before.channelID !== after.channelID &&
-		client.config.voiceCreateCreatorsIDs.includes(after.channelID)
+		newState.channelID &&
+		oldState.channelID !== newState.channelID &&
+		client.config.voiceCreateCreatorsIDs.includes(newState.channelID)
 	) {
-		const member = client.guilds.cache.get(client.config.guildID).members.cache.get(after.id)
+		const member = client.guilds.cache.get(client.config.guildID).members.cache.get(newState.id)
 		const channel = await client.channels.cache
-			.get(after.channelID)
+			.get(newState.channelID)
 			.clone({ name: `${member.user.username}'s channel` })
 		member.voice.setChannel(channel)
 		user_channel.push(channel.id)
 	}
 	if (
-		before.channelID &&
-		before.channel.id !== after.channelID &&
-		user_channel.includes(before.channelID) &&
-		client.channels.cache.get(before.channelID).members.size === 0
+		oldState.channelID &&
+		oldState.channel.id !== newState.channelID &&
+		user_channel.includes(oldState.channelID) &&
+		client.channels.cache.get(oldState.channelID).members.size === 0
 	) {
-		client.channels.cache.get(before.channelID).delete()
-		user_channel.splice(user_channel.indexOf(before.channelID), 1)
+		client.channels.cache.get(oldState.channelID).delete()
+		user_channel.splice(user_channel.indexOf(oldState.channelID), 1)
 	}
 }
