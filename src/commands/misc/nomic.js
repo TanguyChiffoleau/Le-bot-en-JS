@@ -9,9 +9,12 @@ module.exports = {
 	requirePermissions: [],
 	execute: async (client, message) => {
 		if (
+			// Vérifie sur l'utilisateur est dans un channel vocal personnalisé
+			// et si le channel vocal a déjà un no mic
 			client.voiceManager.user_channel.includes(message.member.voice.channelID) &&
 			!(message.member.voice.channelID in client.voiceManager.no_mic)
 		) {
+			// Crée le channel no mic
 			const no_mic_chan = await message.guild.channels.create(
 				client.channels.cache
 					.get(message.member.voice.channelID)
@@ -23,6 +26,7 @@ module.exports = {
 				},
 			)
 
+			// Set up les permissions pour tout les roles modérateurs
 			client.voiceManager.no_mic[message.member.voice.channelID] = no_mic_chan
 			client.config.moderatorsRoleIDs.forEach(id => {
 				no_mic_chan.updateOverwrite(id, {
@@ -43,6 +47,9 @@ module.exports = {
 				})
 			})
 
+			// Set up les permissions pour les membres présents dans le channel
+			// Vérifie au préalable si l'utilisateur n'a pas un role modérateur
+			// pour éviter tout conflit de permissions
 			client.channels.cache.get(message.member.voice.channelID).members.forEach(member => {
 				let set_perm = true
 				// eslint-disable-next-line no-underscore-dangle
@@ -69,6 +76,7 @@ module.exports = {
 					})
 			})
 
+			// Set up les permissions (pas d'accès) pour le role everyone
 			no_mic_chan.updateOverwrite(client.config.guildID, {
 				CREATE_INSTANT_INVITE: false,
 				MANAGE_CHANNELS: false,
