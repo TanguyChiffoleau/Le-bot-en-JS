@@ -25,20 +25,20 @@ module.exports = {
 			client.voiceManager.no_mic[message.member.voice.channelID] = no_mic_chan
 			client.config.moderatorsRoleIDs.forEach(id => {
 				no_mic_chan.updateOverwrite(id, {
+					CREATE_INSTANT_INVITE: false,
+					MANAGE_CHANNELS: true,
+					MANAGE_ROLES: true,
+					MANAGE_WEBHOOKS: true,
 					VIEW_CHANNEL: true,
 					SEND_MESSAGES: true,
+					SEND_TTS_MESSAGES: false,
+					MANAGE_MESSAGES: true,
 					EMBED_LINKS: true,
 					ATTACH_FILES: true,
 					READ_MESSAGE_HISTORY: true,
+					MENTION_EVERYONE: true,
 					USE_EXTERNAL_EMOJIS: true,
 					ADD_REACTIONS: true,
-					MANAGE_CHANNELS: true,
-					MANAGE_WEBHOOKS: true,
-					MANAGE_MESSAGES: true,
-					MENTION_EVERYONE: true,
-					MANAGE_ROLES: true,
-					CREATE_INSTANT_INVITE: false,
-					SEND_TTS_MESSAGES: false,
 				})
 			})
 			client.channels.cache.get(message.member.voice.channelID).members.forEach(member => {
@@ -49,37 +49,37 @@ module.exports = {
 				})
 				if (set_perm)
 					no_mic_chan.updateOverwrite(member.user.id, {
+						CREATE_INSTANT_INVITE: false,
+						MANAGE_CHANNELS: false,
+						MANAGE_ROLES: false,
+						MANAGE_WEBHOOKS: false,
 						VIEW_CHANNEL: true,
 						SEND_MESSAGES: true,
+						SEND_TTS_MESSAGES: false,
+						MANAGE_MESSAGES: false,
 						EMBED_LINKS: true,
 						ATTACH_FILES: true,
 						READ_MESSAGE_HISTORY: true,
+						MENTION_EVERYONE: false,
 						USE_EXTERNAL_EMOJIS: true,
 						ADD_REACTIONS: true,
-						CREATE_INSTANT_INVITE: false,
-						MANAGE_CHANNELS: false,
-						MANAGE_WEBHOOKS: false,
-						SEND_TTS_MESSAGES: false,
-						MANAGE_MESSAGES: false,
-						MENTION_EVERYONE: false,
-						MANAGE_ROLES: false,
 					})
 			})
 			no_mic_chan.updateOverwrite(client.config.guildID, {
+				CREATE_INSTANT_INVITE: false,
+				MANAGE_CHANNELS: false,
+				MANAGE_ROLES: false,
+				MANAGE_WEBHOOKS: false,
 				VIEW_CHANNEL: false,
 				SEND_MESSAGES: false,
+				SEND_TTS_MESSAGES: false,
+				MANAGE_MESSAGES: false,
 				EMBED_LINKS: false,
 				ATTACH_FILES: false,
 				READ_MESSAGE_HISTORY: false,
+				MENTION_EVERYONE: false,
 				USE_EXTERNAL_EMOJIS: false,
 				ADD_REACTIONS: false,
-				CREATE_INSTANT_INVITE: false,
-				MANAGE_CHANNELS: false,
-				MANAGE_WEBHOOKS: false,
-				SEND_TTS_MESSAGES: false,
-				MANAGE_MESSAGES: false,
-				MENTION_EVERYONE: false,
-				MANAGE_ROLES: false,
 			})
 		}
 	},

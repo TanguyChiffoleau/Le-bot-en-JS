@@ -49,20 +49,20 @@ module.exports = async (client, oldState, newState) => {
 		})
 		if (set_perm)
 			await client.voiceManager.no_mic[newState.channelID].updateOverwrite(newState.id, {
+				CREATE_INSTANT_INVITE: false,
+				MANAGE_CHANNELS: false,
+				MANAGE_ROLES: false,
+				MANAGE_WEBHOOKS: false,
 				VIEW_CHANNEL: true,
 				SEND_MESSAGES: true,
+				SEND_TTS_MESSAGES: false,
+				MANAGE_MESSAGES: false,
 				EMBED_LINKS: true,
 				ATTACH_FILES: true,
 				READ_MESSAGE_HISTORY: true,
+				MENTION_EVERYONE: false,
 				USE_EXTERNAL_EMOJIS: true,
 				ADD_REACTIONS: true,
-				CREATE_INSTANT_INVITE: false,
-				MANAGE_CHANNELS: false,
-				MANAGE_WEBHOOKS: false,
-				SEND_TTS_MESSAGES: false,
-				MANAGE_MESSAGES: false,
-				MENTION_EVERYONE: false,
-				MANAGE_ROLES: false,
 			})
 	}
 }
