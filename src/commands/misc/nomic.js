@@ -22,6 +22,7 @@ module.exports = {
 					),
 				},
 			)
+
 			client.voiceManager.no_mic[message.member.voice.channelID] = no_mic_chan
 			client.config.moderatorsRoleIDs.forEach(id => {
 				no_mic_chan.updateOverwrite(id, {
@@ -41,12 +42,14 @@ module.exports = {
 					ADD_REACTIONS: true,
 				})
 			})
+
 			client.channels.cache.get(message.member.voice.channelID).members.forEach(member => {
 				let set_perm = true
 				// eslint-disable-next-line no-underscore-dangle
 				member._roles.forEach(role => {
 					if (client.config.moderatorsRoleIDs.includes(role)) set_perm = false
 				})
+
 				if (set_perm)
 					no_mic_chan.updateOverwrite(member.user.id, {
 						CREATE_INSTANT_INVITE: false,
@@ -65,6 +68,7 @@ module.exports = {
 						ADD_REACTIONS: true,
 					})
 			})
+
 			no_mic_chan.updateOverwrite(client.config.guildID, {
 				CREATE_INSTANT_INVITE: false,
 				MANAGE_CHANNELS: false,

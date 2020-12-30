@@ -7,9 +7,11 @@ module.exports = async (client, oldState, newState) => {
 		const channel = await client.channels.cache
 			.get(newState.channelID)
 			.clone({ name: `${member.user.username}'s channel` })
+
 		await member.voice.setChannel(channel)
 		client.voiceManager.user_channel.push(channel.id)
 	}
+
 	if (
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(oldState.channelID) &&
@@ -23,6 +25,7 @@ module.exports = async (client, oldState, newState) => {
 		if (oldState.channelID in client.voiceManager.no_mic)
 			await client.voiceManager.no_mic[oldState.channelID].delete()
 	}
+
 	if (
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(oldState.channelID) &&
@@ -32,6 +35,7 @@ module.exports = async (client, oldState, newState) => {
 		await client.voiceManager.no_mic[oldState.channelID].permissionOverwrites
 			.get(newState.id)
 			.delete()
+
 	if (
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(newState.channelID) &&
@@ -39,10 +43,12 @@ module.exports = async (client, oldState, newState) => {
 	) {
 		const member = client.guilds.cache.get(client.config.guildID).members.cache.get(newState.id)
 		let set_perm = true
+
 		// eslint-disable-next-line no-underscore-dangle
 		member._roles.forEach(role => {
 			if (client.config.moderatorsRoleIDs.includes(role)) set_perm = false
 		})
+
 		if (set_perm)
 			await client.voiceManager.no_mic[newState.channelID].updateOverwrite(newState.id, {
 				CREATE_INSTANT_INVITE: false,
