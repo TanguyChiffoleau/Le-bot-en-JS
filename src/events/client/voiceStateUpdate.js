@@ -1,6 +1,5 @@
 module.exports = async (client, oldState, newState) => {
 	if (
-		newState.channelID &&
 		oldState.channelID !== newState.channelID &&
 		client.config.voiceManagerChannelsIDs.includes(newState.channelID)
 	) {
@@ -12,7 +11,6 @@ module.exports = async (client, oldState, newState) => {
 		client.voiceManager.user_channel.push(channel.id)
 	}
 	if (
-		oldState.channelID &&
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(oldState.channelID) &&
 		client.channels.cache.get(oldState.channelID).members.size === 0
@@ -26,7 +24,6 @@ module.exports = async (client, oldState, newState) => {
 			await client.voiceManager.no_mic[oldState.channelID].delete()
 	}
 	if (
-		oldState.channelID &&
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(oldState.channelID) &&
 		oldState.channelID in client.voiceManager.no_mic &&
@@ -36,7 +33,6 @@ module.exports = async (client, oldState, newState) => {
 			.get(newState.id)
 			.delete()
 	if (
-		newState.channelID &&
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(newState.channelID) &&
 		newState.channelID in client.voiceManager.no_mic
