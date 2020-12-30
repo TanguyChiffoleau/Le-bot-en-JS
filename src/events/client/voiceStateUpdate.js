@@ -39,7 +39,7 @@ module.exports = async (client, oldState, newState) => {
 		oldState.channelID !== newState.channelID &&
 		client.voiceManager.user_channel.includes(oldState.channelID) &&
 		oldState.channelID in client.voiceManager.no_mic &&
-		client.voiceManager.no_mic[oldState.channelID].permissionOverwrites.has(oldState.channelID)
+		client.voiceManager.no_mic[oldState.channelID].permissionOverwrites.has(oldState.id)
 	)
 		// Supprime les permissions du membre pour le no mic
 		await client.voiceManager.no_mic[oldState.channelID].permissionOverwrites

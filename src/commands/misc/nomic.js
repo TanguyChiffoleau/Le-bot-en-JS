@@ -26,6 +26,10 @@ module.exports = {
 				},
 			)
 
+			// Supprime toutes les permissions présentes pour le channel
+			no_mic_chan.permissionOverwrites.forEach(permissions => {
+				no_mic_chan.permissionOverwrites.get(permissions.id).delete()
+			})
 			// Set up les permissions pour tout les roles modérateurs
 			client.voiceManager.no_mic[message.member.voice.channelID] = no_mic_chan
 			client.config.moderatorsRoleIDs.forEach(id => {
