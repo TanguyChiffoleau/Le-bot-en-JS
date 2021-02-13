@@ -29,7 +29,6 @@ module.exports = {
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 				logsChannelID: process.env.LOGS_CHANNEL,
 				voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, +/),
-				moderatorsRoleIDs: process.env.MODERATORS_ROLES_IDS.split(/, +/),
 			}
 			client.cache = {
 				// Messages supprimés par le bot pour ne pas
@@ -38,11 +37,9 @@ module.exports = {
 			}
 			// Map utilisé pour la commande "roles"
 			client.commandsCategories = new Map()
-			// Objet utilisé pour la gestion des channels vocaux
-			client.voiceManager = {
-				user_channel: [],
-				no_mic: {},
-			}
+			// Map utilisé pour la gestion des channels vocaux
+			client.voiceManager = new Map()
+
 			return client
 		},
 

@@ -2,86 +2,56 @@ module.exports = {
 	name: 'nomic',
 	description:
 		"Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé. N`'est visible que par les membres connecté au salon vocal personnalisé",
-	aliases: ['nm'],
+	aliases: [],
 	usage: null,
 	needArguments: false,
-	guildOnly: false,
+	guildOnly: true,
 	requirePermissions: [],
 	execute: async (client, message) => {
-		if (
-			// Vérifie sur l'utilisateur est dans un channel vocal personnalisé
-			// et si le channel vocal a déjà un no mic
-			client.voiceManager.user_channel.includes(message.member.voice.channelID) &&
-			!(message.member.voice.channelID in client.voiceManager.no_mic)
-		) {
-			// Crée le channel no mic
-			const no_mic_chan = await message.guild.channels.create(
-				client.channels.cache
-					.get(message.member.voice.channelID)
-					.name.replace("'s channel", ' no mic'),
-				{
-					parent: client.channels.cache.get(
-						client.channels.cache.get(message.member.voice.channelID).parentID,
-					),
-				},
+		const voiceChannel = message.member.voice.channel
+
+		// Si l'utilisateur n'est pas dans un channel vocal
+		if (!voiceChannel)
+			return message.reply(
+				'tu dois être dans un channel vocal pour utiliser cette commande 😕',
 			)
 
-			// Supprime toutes les permissions présentes pour le channel
-			no_mic_chan.permissionOverwrites.forEach(permissions => {
-				no_mic_chan.permissionOverwrites.get(permissions.id).delete()
-			})
-			// Set up les permissions pour tout les roles modérateurs
-			client.voiceManager.no_mic[message.member.voice.channelID] = no_mic_chan
-			client.config.moderatorsRoleIDs.forEach(id => {
-				no_mic_chan.updateOverwrite(id, {
+		// Si l'utilisateur n'est pas dans un channel vocal personnalisé
+		if (!client.voiceManager.has(voiceChannel.id))
+			return message.reply(
+				'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+			)
+
+		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
+
+		if (existingNoMicChannel)
+			return message.reply(`il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`)
+
+		// Crée le channel no mic
+		const noMicChannel = await message.guild.channels.create(
+			voiceChannel.name.replace("'s channel", ' no mic'),
+			{
+				type: 'text',
+				topic: `Channel temporaire créer pour ${message.member.displayName} (ID ${message.member.id})`,
+				parent: voiceChannel.parent,
+			},
+		)
+
+		// Suppression des permissions existantes
+		await Promise.all(noMicChannel.permissionOverwrites.map(permission => permission.delete()))
+
+		// Setup des permissions
+		await Promise.all([
+			// Accès au channel pour les membres présents
+			...voiceChannel.members.map(member =>
+				noMicChannel.updateOverwrite(member, {
 					CREATE_INSTANT_INVITE: false,
-					MANAGE_CHANNELS: true,
-					MANAGE_ROLES: true,
-					MANAGE_WEBHOOKS: true,
 					VIEW_CHANNEL: true,
 					SEND_MESSAGES: true,
-					SEND_TTS_MESSAGES: false,
-					MANAGE_MESSAGES: true,
-					EMBED_LINKS: true,
-					ATTACH_FILES: true,
-					READ_MESSAGE_HISTORY: true,
-					MENTION_EVERYONE: true,
-					USE_EXTERNAL_EMOJIS: true,
-					ADD_REACTIONS: true,
-				})
-			})
-
-			// Set up les permissions pour les membres présents dans le channel
-			// Vérifie au préalable si l'utilisateur n'a pas un role modérateur
-			// pour éviter tout conflit de permissions
-			client.channels.cache.get(message.member.voice.channelID).members.forEach(member => {
-				let set_perm = true
-				// eslint-disable-next-line no-underscore-dangle
-				member._roles.forEach(role => {
-					if (client.config.moderatorsRoleIDs.includes(role)) set_perm = false
-				})
-
-				if (set_perm)
-					no_mic_chan.updateOverwrite(member.user.id, {
-						CREATE_INSTANT_INVITE: false,
-						MANAGE_CHANNELS: false,
-						MANAGE_ROLES: false,
-						MANAGE_WEBHOOKS: false,
-						VIEW_CHANNEL: true,
-						SEND_MESSAGES: true,
-						SEND_TTS_MESSAGES: false,
-						MANAGE_MESSAGES: false,
-						EMBED_LINKS: true,
-						ATTACH_FILES: true,
-						READ_MESSAGE_HISTORY: true,
-						MENTION_EVERYONE: false,
-						USE_EXTERNAL_EMOJIS: true,
-						ADD_REACTIONS: true,
-					})
-			})
-
-			// Set up les permissions (pas d'accès) pour le role everyone
-			no_mic_chan.updateOverwrite(client.config.guildID, {
+				}),
+			),
+			// Setup les permissions (pas d'accès) pour le role everyone
+			noMicChannel.updateOverwrite(message.guild.id, {
 				CREATE_INSTANT_INVITE: false,
 				MANAGE_CHANNELS: false,
 				MANAGE_ROLES: false,
@@ -96,7 +66,12 @@ module.exports = {
 				MENTION_EVERYONE: false,
 				USE_EXTERNAL_EMOJIS: false,
 				ADD_REACTIONS: false,
-			})
-		}
+			}),
+		])
+
+		// Ajout du channel dans la map
+		client.voiceManager.set(voiceChannel.id, noMicChannel)
+
+		return message.reply(`ton channel a bien été créé : ${noMicChannel} 👌`)
 	},
 }
