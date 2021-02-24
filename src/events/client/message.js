@@ -74,11 +74,11 @@ module.exports = async (client, message) => {
 		// Partie citation
 	} else if (message.guild) {
 		// Regex pour match les liens discord
-		const regexGlobal = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19}))(?!>)/g
-		const regex = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19}))(?!>)/
+		const regexGlobal = /https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/g
+		const regex = /https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/
 
 		// Suppression des lignes en citations, pour ne pas afficher la citation
-		const matches = message.content.replace(/^> .*$/gm, '').match(regexGlobal)
+		const matches = message.content.match(regexGlobal)
 		if (!matches) return
 
 		const validMessages = (
