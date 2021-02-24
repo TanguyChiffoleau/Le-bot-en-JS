@@ -4,6 +4,8 @@ const getMember = (message, mentionOrID) => {
 	if (!mentionOrID) return message.member
 
 	const matches = mentionOrID.match(/^<@!?(\d{17,19})>$|^(\d{17,19})$/)
+	if (!matches) return
+
 	const targetID = matches[1] || matches[2]
 	return message.guild.members.cache.get(targetID)
 }
