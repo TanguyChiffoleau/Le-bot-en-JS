@@ -6,3 +6,4 @@ COPY --chown=node:node . ./
 RUN npm ci --only=production
 
 USER node
+CMD ["node", "src/index.js"]
