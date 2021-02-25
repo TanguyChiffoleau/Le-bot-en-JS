@@ -100,7 +100,7 @@ L'application est capable de tourner sous plusieurs environnements :
 
 	> Utilisez la commande `node -v` pour vous assurez que Node est bien installé et que sa version est suffisante.
 
-	> À titre indicatif, l'application tourne sous Node.js v14.15.0 en production.
+	> À titre indicatif, l'application tourne sous Node.js v14.16.0 en production.
 
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
