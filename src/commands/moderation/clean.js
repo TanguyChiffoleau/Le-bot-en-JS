@@ -3,6 +3,7 @@ const {
 	pluralizeWithoutQuantity: pluralize,
 	convertDate,
 	convertDateToHours,
+	displayNameAndID,
 } = require('../../util/util')
 const { Util } = require('discord.js')
 
@@ -93,7 +94,7 @@ module.exports = {
 				embed: {
 					color: '0000ff',
 					author: {
-						name: `${message.member.displayName} (ID ${message.member.id})`,
+						name: `${displayNameAndID(message)}`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',
@@ -139,7 +140,7 @@ module.exports = {
 			embed: {
 				color: '0000ff',
 				author: {
-					name: `${message.member.displayName} (ID ${message.member.id})`,
+					name: `${displayNameAndID(message)}`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
 				title: 'Clean',
