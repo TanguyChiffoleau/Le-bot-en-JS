@@ -24,7 +24,7 @@ module.exports = {
 			},
 		],
 	},
-	needArguments: false,
+	needArguments: true,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
 	execute: async (client, message, args) => {
@@ -38,24 +38,38 @@ module.exports = {
 			return message.channel.send("Ce channel n'est pas en slowmode 😕")
 		}
 
-		// Valeurs par défaut :
-		// slowModeValue = 30 secondes
-		// slowModeTime = 5 minutes
-		const [slowModeTime = 5 * 60, slowModeValue = 30] = args.map(arg => parseInt(arg, 10))
-
+		// On ajoute le cooldown
+		// Erreur si le channel est déjà en slowmode
 		if (message.channel.rateLimitPerUser > 0)
 			return message.channel.send('Ce channel est déjà en slowmode 😕')
 
+		const [slowModeValue, slowModeTime] = args.map(arg => parseInt(arg, 10))
+
 		await message.channel.setRateLimitPerUser(slowModeValue)
+
+		// Si il n'y pas de temps du slowmode,
+		// le slowmode reste jusqu'au prochain clear
+		if (!slowModeTime)
+			return message.channel.send(
+				`Channel en slowmode de ${convertSecondsToString(
+					slowModeValue,
+				)} pour une durée indéfinie 👌`,
+			)
+
+		// Sinon on donne le temps du slowmode
 		message.channel.send(
 			`Channel en slowmode de ${convertSecondsToString(
 				slowModeValue,
 			)} pendant ${convertSecondsToString(slowModeTime)} 👌`,
 		)
 
+		// On arrête d'écrir dans le channel
 		message.channel.stopTyping()
+		// Et on attend le montant défini
 		await wait(slowModeTime * 1000)
+		// Si le channel est encore en slowmode
 		if (message.channel.rateLimitPerUser > 0) {
+			// On le clear et on envoie un message de confirmation
 			await message.channel.setRateLimitPerUser(0)
 			return message.channel.send('Slowmode désactivé 👌')
 		}

@@ -24,7 +24,7 @@ module.exports = {
 			client.commands = new Collection()
 			client.cooldowns = new Collection()
 			client.config = {
-				prefix: process.env.PREFIX,
+				prefix: process.env.COMMANDS_PREFIX,
 				guildID: process.env.GUILD_ID,
 				reportChannelID: process.env.REPORT_CHANNEL,
 				leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
@@ -41,8 +41,9 @@ module.exports = {
 			return client
 		},
 
-		// Connecte le client en utilisant le token
-		login: client => client.login(process.env.DISCORD_TOKEN),
+		// Connecte le client en utilisant la
+		// variable d'environnement DISCORD_TOKEN
+		login: client => client.login(),
 	},
 
 	// Chargement des commandes

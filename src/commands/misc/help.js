@@ -1,4 +1,5 @@
 const { escapeMarkdown } = require('discord.js').Util
+const { pluralizeWithoutQuantity } = require('../../util/util')
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
 module.exports = {
@@ -13,6 +14,7 @@ module.exports = {
 	guildOnly: false,
 	requirePermissions: [],
 	execute: (client, message, args) => {
+		// Si aucun argument, on montre la liste des commandes principales
 		if (args.length === 0) {
 			const fields = []
 			client.commandsCategories.forEach((commandsNames, category) => {
@@ -36,12 +38,14 @@ module.exports = {
 			})
 		}
 
+		// Acquisition de la commande
 		const chosenCommand = args[0]
 		const command =
 			client.commands.get(chosenCommand) ||
 			client.commands.find(({ aliases }) => aliases.includes(chosenCommand))
 		if (!command) return message.reply(`je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`)
 
+		// Fait l'intérmédiaire entre la propriété et sa traduction en langage
 		const properties = [
 			[
 				'needArguments',
@@ -59,6 +63,7 @@ module.exports = {
 			],
 		]
 
+		// Création de l'embed avec les propriétés toujours présentes
 		const embed = {
 			title: command.name,
 			color: 'ff8000',
@@ -83,12 +88,14 @@ module.exports = {
 			],
 		}
 
+		// Ajout des aliases
 		if (command.aliases.length > 0)
 			embed.fields.push({
 				name: 'Aliases',
 				value: command.aliases.reduce((acc, alias) => `${acc}> \`${alias}\`\n`, ''),
 			})
 
+		// Ajout de l'usage pour la commande
 		if (command.usage) {
 			embed.fields.push({
 				name: 'Utilisation',
@@ -97,9 +104,10 @@ module.exports = {
 				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
 			})
 
+			// Ajout des exemples
 			if (command.usage.examples.length > 0)
 				embed.fields.push({
-					name: 'Exemples',
+					name: pluralizeWithoutQuantity('Exemple', command.usage.examples.length),
 					value: command.usage.examples.reduce(
 						(acc, exemple) =>
 							`${acc}> \`${exemple.command}\` ${

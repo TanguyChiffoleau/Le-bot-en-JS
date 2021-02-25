@@ -14,9 +14,6 @@ module.exports = {
 			embed: {
 				color: '01579B',
 				title: 'Infos',
-				author: {
-					name: client.user.username,
-				},
 				fields: [
 					{
 						name: 'Latence API',

@@ -1,5 +1,15 @@
 const { convertDate, diffDate } = require('../../util/util')
 
+const getMember = (message, mentionOrID) => {
+	if (!mentionOrID) return message.member
+
+	const matches = mentionOrID.match(/^<@!?(\d{17,19})>$|^(\d{17,19})$/)
+	if (!matches) return
+
+	const targetID = matches[1] || matches[2]
+	return message.guild.members.cache.get(targetID)
+}
+
 module.exports = {
 	name: 'whois',
 	description: 'Donne des infos sur soit ou un autre utilisateur',
@@ -22,20 +32,14 @@ module.exports = {
 	guildOnly: true,
 	requirePermissions: [],
 	execute: (client, message, args) => {
-		// eslint-disable-next-line init-declarations
-		let member
-		if (args.length === 0) {
-			member = message.member
-		} else {
-			const matches = args[0].match(/^<@!?(\d{17,19})>$|^(\d{17,19})$/)
-			if (!matches) return message.reply("je n'ai pas trouvé de mention ou d'ID valable 😕")
+		// Acquisition du membre avec la mention/l'ID
+		const member = getMember(message, args[0])
+		if (!member)
+			return message.reply(
+				"je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+			)
 
-			const targetID = matches[1] || matches[2]
-			member = message.guild.members.cache.get(targetID)
-		}
-
-		if (!member) return message.reply("je n'ai pas trouvé cet utilisateur 😕")
-
+		// Création de l'embed
 		const embed = {
 			color: member.displayColor,
 			author: {
@@ -76,6 +80,7 @@ module.exports = {
 			],
 		}
 
+		// Ajout d'un field si l'utilisateur boost le serveur
 		if (member.premiumSince)
 			embed.fields.push({
 				name: 'Boost Nitro depuis',

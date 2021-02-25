@@ -32,12 +32,16 @@ module.exports = async (client, message) => {
 		if (timestamps.has(message.author.id)) {
 			const expirationTime = timestamps.get(message.author.id) + cooldownAmount
 			if (now < expirationTime) {
-				const timeLeft = (expirationTime - now) / 1000
-				return message.reply(
-					`merci d'attendre ${timeLeft.toFixed(
+				const timeLeft = expirationTime - now
+				const sentMessage = await message.reply(
+					`merci d'attendre ${(timeLeft / 1000).toFixed(
 						1,
 					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
 				)
+
+				// Suppression du message
+				client.cache.deleteMessagesID.add(sentMessage.id)
+				return sentMessage.delete({ timeout: timeLeft })
 			}
 		}
 		timestamps.set(message.author.id, now)
@@ -83,11 +87,11 @@ module.exports = async (client, message) => {
 		// Partie citation
 	} else if (message.guild) {
 		// Regex pour match les liens discord
-		const regexGlobal = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19}))(?!>)/g
-		const regex = /(?<!<)(?:https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19}))(?!>)/
+		const regexGlobal = /https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/g
+		const regex = /https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/
 
 		// Suppression des lignes en citations, pour ne pas afficher la citation
-		const matches = message.content.replace(/^> .*$/gm, '').match(regexGlobal)
+		const matches = message.content.match(regexGlobal)
 		if (!matches) return
 
 		const validMessages = (
