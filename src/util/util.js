@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-const { GuildMember } = require('discord.js')
+const { GuildMember, Message } = require('discord.js')
 
 const pluralize = (word, quantity, isAlwaysPlural = false) => {
 	if (quantity === 0) return ''
@@ -165,5 +165,16 @@ module.exports = {
 			name: fileNameSplited.join('.'),
 			type: filetType,
 		}
+	},
+
+	/**
+	 *
+	 * @param {Message} message
+	 * @returns le pseudo du guildMember ou le tag de l'user
+	 */
+	displayNameAndID: message => {
+		if (message.member) return `${message.member.displayName} (ID ${message.member.id})`
+
+		return `${message.author.tag} (ID ${message.author.id})`
 	},
 }
