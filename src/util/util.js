@@ -179,8 +179,8 @@ module.exports = {
 		return `${message.author.tag} (ID ${message.author.id})`
 	},
 
-	/** @param {'SIGINT' | 'SIGTERM'} signal signal received
-	 * @param {Client} client Discord.js client
+	/** @param {'SIGINT' | 'SIGTERM'} signal received
+	 * @param {Client} client Discord.js
 	 */
 	closeGracefully: (signal, client) => {
 		console.log(`Received signal to terminate : ${signal}`)
