@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-const { GuildMember, Client } = require('discord.js')
+
+const { GuildMember, Message, Client } = require('discord.js')
 
 const pluralize = (word, quantity, isAlwaysPlural = false) => {
 	if (quantity === 0) return ''
@@ -169,7 +170,16 @@ module.exports = {
 
 	/**
 	 *
-	 * @param {'SIGINT' | 'SIGTERM'} signal signal received
+	 * @param {Message} message
+	 * @returns le pseudo du guildMember ou le tag de l'user
+	 */
+	displayNameAndID: message => {
+		if (message.member) return `${message.member.displayName} (ID ${message.member.id})`
+
+		return `${message.author.tag} (ID ${message.author.id})`
+	},
+
+	/** @param {'SIGINT' | 'SIGTERM'} signal signal received
 	 * @param {Client} client Discord.js client
 	 */
 	closeGracefully: (signal, client) => {

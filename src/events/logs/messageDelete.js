@@ -1,4 +1,4 @@
-const { convertDate, isImage, getFileInfos } = require('../../util/util')
+const { convertDate, isImage, getFileInfos, displayNameAndID } = require('../../util/util')
 const { MessageAttachment, Util } = require('discord.js')
 const bent = require('bent')
 
@@ -32,7 +32,7 @@ module.exports = async (client, message) => {
 
 	const logEmbed = {
 		author: {
-			name: `${message.member.displayName} (ID ${message.member.id})`,
+			name: `${displayNameAndID(message)}`,
 			icon_url: message.author.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
