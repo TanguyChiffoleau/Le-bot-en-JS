@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-const { GuildMember } = require('discord.js')
+const { GuildMember, Client } = require('discord.js')
 
 const pluralize = (word, quantity, isAlwaysPlural = false) => {
 	if (quantity === 0) return ''
@@ -165,5 +165,19 @@ module.exports = {
 			name: fileNameSplited.join('.'),
 			type: filetType,
 		}
+	},
+
+	/**
+	 *
+	 * @param {'SIGINT' | 'SIGTERM'} signal signal received
+	 * @param {Client} client Discord.js client
+	 */
+	closeGracefully: (signal, client) => {
+		console.log(`Received signal to terminate : ${signal}`)
+
+		client.destroy()
+		console.log('Discord client successfully destroyed')
+
+		process.exit(0)
 	},
 }
