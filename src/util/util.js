@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-const { GuildMember, Message } = require('discord.js')
+
+const { GuildMember, Message, Client } = require('discord.js')
 
 const pluralize = (word, quantity, isAlwaysPlural = false) => {
 	if (quantity === 0) return ''
@@ -176,5 +177,17 @@ module.exports = {
 		if (message.member) return `${message.member.displayName} (ID ${message.member.id})`
 
 		return `${message.author.tag} (ID ${message.author.id})`
+	},
+
+	/** @param {'SIGINT' | 'SIGTERM'} signal received
+	 * @param {Client} client Discord.js
+	 */
+	closeGracefully: (signal, client) => {
+		console.log(`Received signal to terminate : ${signal}`)
+
+		client.destroy()
+		console.log('Discord client successfully destroyed')
+
+		process.exit(0)
 	},
 }
