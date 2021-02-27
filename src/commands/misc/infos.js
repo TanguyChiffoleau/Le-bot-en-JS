@@ -1,5 +1,8 @@
-import package from '../../../package.json'
 import { diffDate } from '../../util/util.js'
+
+// import nodePackage from '../../../package.json'
+import { readFileSync } from 'fs'
+const { version } = JSON.parse(readFileSync('./package.json'))
 
 export default {
 	name: 'infos',
@@ -32,7 +35,7 @@ export default {
 					},
 					{
 						name: 'version',
-						value: package.version,
+						value: version,
 						inline: true,
 					},
 					{

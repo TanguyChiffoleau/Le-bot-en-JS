@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop */
-import reactionRoleConfig from '../../../config/reactionRoleConfig.json'
+// import reactionRoleConfig from '../../../config/reactionRoleConfig.json'
+import { readFileSync } from 'fs'
+const reactionRoleConfig = JSON.parse(readFileSync('./config/reactionRoleConfig.json'))
 
 export default async client => {
 	console.log('The client is ready to start working')
