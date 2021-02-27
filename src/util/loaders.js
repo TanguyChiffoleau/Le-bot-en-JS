@@ -1,5 +1,4 @@
-import { promises } from 'fs'
-const { readdir } = promises
+import { readdir } from 'fs/promises'
 import { Client, Collection } from 'discord.js'
 import { removeFileExtension } from './util.js'
 

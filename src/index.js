@@ -1,5 +1,4 @@
 import { eventsLoader, commandsLoader, prepareClient } from './util/loaders.js'
-
 import { closeGracefully } from './util/util.js'
 
 const run = async () => {

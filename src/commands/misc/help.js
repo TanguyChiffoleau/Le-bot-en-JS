@@ -1,5 +1,4 @@
 import { Util } from 'discord.js'
-const { escapeMarkdown } = Util
 import { pluralizeWithoutQuantity } from '../../util/util.js'
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
@@ -100,7 +99,7 @@ export default {
 		if (command.usage) {
 			embed.fields.push({
 				name: 'Utilisation',
-				value: `${command.name} ${escapeMarkdown(command.usage.arguments)}${
+				value: `${command.name} ${Util.escapeMarkdown(command.usage.arguments)}${
 					command.usage.informations ? `\n_(${command.usage.informations})_` : ''
 				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
 			})
