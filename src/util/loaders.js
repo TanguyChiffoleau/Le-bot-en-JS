@@ -3,48 +3,42 @@ const { readdir } = promises
 import { Client, Collection } from 'discord.js'
 import { removeFileExtension } from './util.js'
 
-export const client = {
-	// Création du client et de ses propriétés
-	prepare: () => {
-		const client = new Client({
-			partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION'],
-			ws: {
-				intents: [
-					'GUILDS',
-					'GUILD_MEMBERS',
-					'GUILD_PRESENCES',
-					'GUILD_MESSAGES',
-					'GUILD_MESSAGE_REACTIONS',
-					'DIRECT_MESSAGES',
-				],
-			},
-		})
-		client.commands = new Collection()
-		client.cooldowns = new Collection()
-		client.config = {
-			prefix: process.env.COMMANDS_PREFIX,
-			guildID: process.env.GUILD_ID,
-			reportChannelID: process.env.REPORT_CHANNEL,
-			leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
-			logsChannelID: process.env.LOGS_CHANNEL,
-		}
-		client.cache = {
-			// Messages supprimés par la bot pour ne pas
-			// les log lors de l'event "messageDelete"
-			deleteMessagesID: new Set(),
-		}
-		// Map utilisé pour la commande "roles"
-		client.commandsCategories = new Map()
+// Création du client et de ses propriétés
+export const prepareClient = () => {
+	const client = new Client({
+		partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION'],
+		ws: {
+			intents: [
+				'GUILDS',
+				'GUILD_MEMBERS',
+				'GUILD_PRESENCES',
+				'GUILD_MESSAGES',
+				'GUILD_MESSAGE_REACTIONS',
+				'DIRECT_MESSAGES',
+			],
+		},
+	})
+	client.commands = new Collection()
+	client.cooldowns = new Collection()
+	client.config = {
+		prefix: process.env.COMMANDS_PREFIX,
+		guildID: process.env.GUILD_ID,
+		reportChannelID: process.env.REPORT_CHANNEL,
+		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
+		logsChannelID: process.env.LOGS_CHANNEL,
+	}
+	client.cache = {
+		// Messages supprimés par la bot pour ne pas
+		// les log lors de l'event "messageDelete"
+		deleteMessagesID: new Set(),
+	}
+	// Map utilisé pour la commande "roles"
+	client.commandsCategories = new Map()
 
-		return client
-	},
-
-	// Connecte le client en utilisant la
-	// variable d'environnement DISCORD_TOKEN
-	login: client => client.login(),
+	return client
 }
 
-export const commands = async client => {
+export const commandsLoader = async client => {
 	// Dossier des commandes
 	const commandsDir = await readdir('./src/commands')
 
@@ -60,14 +54,17 @@ export const commands = async client => {
 
 		// Pour chaque commande, on l'acquérit et on
 		// l'ajoute dans la map des commandes
-		commands.forEach(async commandFile => {
-			const command = await import(`../commands/${commandCategory}/${commandFile}`)
-			client.commands.set(command.name, command)
-		})
+		Promise.all(
+			commands.map(async commandFile => {
+				const command = (await import(`../commands/${commandCategory}/${commandFile}`))
+					.default
+				client.commands.set(command.name, command)
+			}),
+		)
 	})
 }
 
-export const events = async client => {
+export const eventsLoader = async client => {
 	// Dossier des events
 	const eventsDir = await readdir('./src/events')
 
@@ -79,10 +76,12 @@ export const events = async client => {
 		)
 
 		// Pour chaque event, on l'acquérit et on le charge
-		events.forEach(async eventFile => {
-			const event = await import(`../events/${eventCategory}/${eventFile}`)
-			const eventName = removeFileExtension(eventFile)
-			client.on(eventName, event.default.bind(null, client))
-		})
+		Promise.all(
+			events.map(async eventFile => {
+				const event = (await import(`../events/${eventCategory}/${eventFile}`)).default
+				const eventName = removeFileExtension(eventFile)
+				client.on(eventName, event.bind(null, client))
+			}),
+		)
 	})
 }
