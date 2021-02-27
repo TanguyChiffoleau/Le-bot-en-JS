@@ -71,6 +71,7 @@
 		"no-undefined": "error",
 		"no-use-before-define": ["error", "nofunc"],
 		// Stylistic Issues
+		"sourceType": "module",
 		"block-spacing": "error",
 		"brace-style": "error",
 		"comma-dangle": ["error", "always-multiline"],

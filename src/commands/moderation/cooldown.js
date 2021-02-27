@@ -1,7 +1,7 @@
-const { convertSecondsToString } = require('../../util/util')
+import { convertSecondsToString } from '../../util/util.js'
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-module.exports = {
+export default {
 	name: 'cooldown',
 	description: 'Active le mode lent sur le channel',
 	aliases: ['cd'],

@@ -1,6 +1,6 @@
-const { convertDate, diffDate } = require('../../util/util')
+import { convertDate, diffDate } from '../../util/util.js'
 
-module.exports = (client, guildMember) => {
+export default (client, guildMember) => {
 	if (
 		guildMember.user.bot ||
 		guildMember.guild.id !== client.config.guildID ||

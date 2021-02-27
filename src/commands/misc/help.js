@@ -1,8 +1,9 @@
-const { escapeMarkdown } = require('discord.js').Util
-const { pluralizeWithoutQuantity } = require('../../util/util')
+import { Util } from 'discord.js'
+const { escapeMarkdown } = Util
+import { pluralizeWithoutQuantity } from '../../util/util.js'
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
-module.exports = {
+export default {
 	name: 'help',
 	description: 'Affiche les commandes fixes du bot',
 	aliases: ['aide'],

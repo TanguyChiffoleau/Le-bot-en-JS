@@ -1,7 +1,7 @@
-const { version } = require('../../../package.json')
-const { diffDate } = require('../../util/util')
+import package from '../../../package.json'
+import { diffDate } from '../../util/util.js'
 
-module.exports = {
+export default {
 	name: 'infos',
 	description: 'Donne quelques infos sur le bot',
 	aliases: ['info'],
@@ -32,7 +32,7 @@ module.exports = {
 					},
 					{
 						name: 'version',
-						value: version,
+						value: package.version,
 						inline: true,
 					},
 					{

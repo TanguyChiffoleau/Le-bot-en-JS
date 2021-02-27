@@ -1,13 +1,13 @@
-const { convertDate, isImage, getFileInfos, displayNameAndID } = require('../../util/util')
-const { MessageAttachment, Util } = require('discord.js')
-const bent = require('bent')
+import { convertDate, isImage, getFileInfos, displayNameAndID } from '../../util/util.js'
+import { MessageAttachment, Util } from 'discord.js'
+import bent from 'bent'
 
 const getLinkBuffer = url => {
 	const getBuffer = bent('buffer')
 	return getBuffer(url)
 }
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
 	if (
 		message.partial ||
 		message.author.bot ||

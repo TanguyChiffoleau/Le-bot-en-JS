@@ -1,2 +1,1 @@
-module.exports = (client, error, shardID) =>
-	console.error(`ShardID : ${shardID} | error : ${error}`)
+export default (client, error, shardID) => console.error(`ShardID : ${shardID} | error : ${error}`)

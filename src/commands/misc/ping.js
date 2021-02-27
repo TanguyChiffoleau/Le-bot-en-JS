@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'ping',
 	description: "Donne le ping de l'API ainsi que du bot",
 	aliases: ['pong'],

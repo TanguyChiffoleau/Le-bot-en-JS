@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
-const reactionRoleConfig = require('../../../config/reactionRoleConfig.json')
+import reactionRoleConfig from '../../../config/reactionRoleConfig.json'
 
-module.exports = async client => {
+export default async client => {
 	console.log('The client is ready to start working')
 
 	// Lecture et en place du système de réactions

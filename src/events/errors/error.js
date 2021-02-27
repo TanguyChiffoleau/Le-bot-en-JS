@@ -1,1 +1,1 @@
-module.exports = (client, error) => console.error(error)
+export default (client, error) => console.error(error)

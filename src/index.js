@@ -1,15 +1,15 @@
-const {
-	events: eventsLoader,
-	commands: commandsLoader,
-	client: clientLoader,
-} = require('./util/loaders')
+import {
+	events as eventsLoader,
+	commands as commandsLoader,
+	client as clientLoader,
+} from './util/loaders.js'
 
-const { closeGracefully } = require('./util/util')
+import { closeGracefully } from './util/util.js'
 
 // Chargement des variables d'environnement si l'environnement
 // n'est pas "production"
 if (process.env.NODE_ENV !== 'production') {
-	const dotenv = require('dotenv')
+	const dotenv = await import('dotenv')
 	dotenv.config({ path: './config/bot.env' })
 }
 
