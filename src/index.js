@@ -2,6 +2,8 @@ import { eventsLoader, commandsLoader, prepareClient } from './util/loaders.js'
 import { closeGracefully } from './util/util.js'
 
 const run = async () => {
+	console.log('Starting the app...')
+
 	// Chargement des variables d'environnement si l'environnement
 	// n'est pas "production"
 	if (process.env.NODE_ENV !== 'production') {
