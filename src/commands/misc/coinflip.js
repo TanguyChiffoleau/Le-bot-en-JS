@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'coinflip',
 	description: 'Coinflip! (pile ou face)',
 	aliases: ['cf'],

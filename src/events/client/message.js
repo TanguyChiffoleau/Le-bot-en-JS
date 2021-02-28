@@ -1,13 +1,13 @@
-const { Collection } = require('discord.js')
-const {
+import { Collection } from 'discord.js'
+import {
 	modifyWrongUsernames,
 	convertDate,
 	isImage,
 	getFileInfos,
 	displayNameAndID,
-} = require('../../util/util')
+} from '../../util/util.js'
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
 	if (
 		message.author.bot ||
 		(message.guild && (message.guild.id !== client.config.guildID || !message.guild.available))

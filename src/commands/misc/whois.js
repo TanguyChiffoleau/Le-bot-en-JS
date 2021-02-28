@@ -1,4 +1,4 @@
-const { convertDate, diffDate } = require('../../util/util')
+import { convertDate, diffDate } from '../../util/util.js'
 
 const getMember = (message, mentionOrID) => {
 	if (!mentionOrID) return message.member
@@ -10,7 +10,7 @@ const getMember = (message, mentionOrID) => {
 	return message.guild.members.cache.get(targetID)
 }
 
-module.exports = {
+export default {
 	name: 'whois',
 	description: 'Donne des infos sur soit ou un autre utilisateur',
 	aliases: [],

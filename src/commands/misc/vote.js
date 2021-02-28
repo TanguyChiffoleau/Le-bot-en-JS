@@ -1,6 +1,6 @@
-const { convertDate } = require('../../util/util')
+import { convertDate } from '../../util/util.js'
 
-module.exports = {
+export default {
 	name: 'vote',
 	description: 'Créer un embed avec la proposition et des émojis pour voter',
 	aliases: [],

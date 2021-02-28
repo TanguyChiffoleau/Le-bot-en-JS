@@ -1,4 +1,4 @@
-module.exports = async (client, messageReaction, user) => {
+export default async (client, messageReaction, user) => {
 	const { message, emoji } = messageReaction
 
 	if (message.partial) await message.fetch()

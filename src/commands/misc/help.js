@@ -1,8 +1,8 @@
-const { escapeMarkdown } = require('discord.js').Util
-const { pluralizeWithoutQuantity } = require('../../util/util')
+import { Util } from 'discord.js'
+import { pluralizeWithoutQuantity } from '../../util/util.js'
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
-module.exports = {
+export default {
 	name: 'help',
 	description: 'Affiche les commandes fixes du bot',
 	aliases: ['aide'],
@@ -99,7 +99,7 @@ module.exports = {
 		if (command.usage) {
 			embed.fields.push({
 				name: 'Utilisation',
-				value: `${command.name} ${escapeMarkdown(command.usage.arguments)}${
+				value: `${command.name} ${Util.escapeMarkdown(command.usage.arguments)}${
 					command.usage.informations ? `\n_(${command.usage.informations})_` : ''
 				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
 			})

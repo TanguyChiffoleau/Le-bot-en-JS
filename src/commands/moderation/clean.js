@@ -1,13 +1,13 @@
 /* eslint-disable no-await-in-loop */
-const {
-	pluralizeWithoutQuantity: pluralize,
+import {
+	pluralizeWithoutQuantity as pluralize,
 	convertDate,
 	convertDateToHours,
 	displayNameAndID,
-} = require('../../util/util')
-const { Util } = require('discord.js')
+} from '../../util/util.js'
+import { Util } from 'discord.js'
 
-module.exports = {
+export default {
 	name: 'clean',
 	description: 'Supprime un nombre de messages donné dans le channel',
 	aliases: ['cl'],
