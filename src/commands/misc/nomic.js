@@ -48,6 +48,7 @@ module.exports = {
 					CREATE_INSTANT_INVITE: false,
 					VIEW_CHANNEL: true,
 					SEND_MESSAGES: true,
+					READ_MESSAGE_HISTORY: true,
 				}),
 			),
 			// Setup les permissions (pas d'accès) pour le role everyone
