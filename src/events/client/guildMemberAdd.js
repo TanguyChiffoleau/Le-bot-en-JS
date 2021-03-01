@@ -8,7 +8,7 @@ export default (client, guildMember) => {
 	)
 		return
 
-	modifyWrongUsernames(guildMember)
+	modifyWrongUsernames(guildMember).catch(() => null)
 
 	const leaveJoinChannel = guildMember.guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
