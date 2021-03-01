@@ -5,5 +5,5 @@ export default (client, oldGuildMember, newMGuildMember) => {
 	const isBot = oldGuildMember.user.bot || newMGuildMember.user.bot
 	if (isBot || guild.id !== client.config.guildID) return
 
-	modifyWrongUsernames(newMGuildMember)
+	modifyWrongUsernames(newMGuildMember).catch(() => null)
 }
