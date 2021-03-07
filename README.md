@@ -8,15 +8,6 @@
 
 - [Table des matières](#table-des-matières)
 - [À propos](#à-propos)
-- [Commandes](#commandes)
-	- [Divers](#divers)
-	- [Modération](#modération)
-- [Fonctionnalités](#fonctionnalités)
-	- [Logs](#logs)
-	- [Rename des utilisateurs à pseudo incorrect](#rename-des-utilisateurs-à-pseudo-incorrect)
-	- [Citations](#citations)
-	- [Système de report](#système-de-report)
-- [Setup en production](#setup-en-production)
 	- [Setup avec Node.js](#setup-avec-nodejs)
 	- [Setup dans un container avec Docker et Docker Compose](#setup-dans-un-container-avec-docker-et-docker-compose)
 - [Ressources](#ressources)
@@ -29,7 +20,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 [![Discord entraide](https://img.shields.io/discord/475253577288253440?color=%237289DA&logo=discord&logoColor=white)](https://www.discord.gg/informatique)
 
 
-## Commandes
+<!-- ## Commandes
 
 > Pour avoir toutes les informations sur une commande, utliser la commande `<prefix>help <commande>`.
 >
@@ -90,7 +81,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 L'application est capable de tourner sous plusieurs environnements :
 
 -   n'importe quel environnement avec Node.js d'installé
--   dans un container Docker avec Docker Compose
+-   dans un container Docker avec Docker Compose -->
 
 ### Setup avec Node.js
 
