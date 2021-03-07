@@ -5,7 +5,7 @@ module.exports = {
 	aliases: [],
 	usage: {
 		arguments: null,
-		informations: 'Créer un channel textuel pour les utilisateurs sans microphones',
+		informations: 'Créé un channel textuel pour les utilisateurs sans microphones',
 		examples: [],
 	},
 	needArguments: false,
@@ -36,7 +36,7 @@ module.exports = {
 			voiceChannel.name.replace('channel', 'no mic'),
 			{
 				type: 'text',
-				topic: `Channel temporaire créer pour ${message.member.displayName} (ID ${message.member.id})`,
+				topic: `Channel temporaire créé pour ${message.member.displayName} (ID ${message.member.id})`,
 				parent: voiceChannel.parent,
 			},
 		)
