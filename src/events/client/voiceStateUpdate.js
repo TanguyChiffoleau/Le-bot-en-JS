@@ -50,7 +50,7 @@ module.exports = async (client, oldState, newState) => {
 
 			// Création du channel vocal
 			const createdChannel = await newState.guild.channels.create(
-				`${member.user.username}'s channel`,
+				`channel de ${member.user.username}`,
 				{
 					type: 'voice',
 					parent: newState.channel.parent,

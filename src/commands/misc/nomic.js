@@ -29,7 +29,7 @@ module.exports = {
 
 		// Crée le channel no mic
 		const noMicChannel = await message.guild.channels.create(
-			voiceChannel.name.replace("'s channel", ' no mic'),
+			voiceChannel.name.replace('channel', 'no mic'),
 			{
 				type: 'text',
 				topic: `Channel temporaire créer pour ${message.member.displayName} (ID ${message.member.id})`,
