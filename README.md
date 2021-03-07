@@ -8,6 +8,7 @@
 
 - [Table des matières](#table-des-matières)
 - [À propos](#à-propos)
+- [Setup en production](#setup-en-production)
 	- [Setup avec Node.js](#setup-avec-nodejs)
 	- [Setup dans un container avec Docker et Docker Compose](#setup-dans-un-container-avec-docker-et-docker-compose)
 - [Ressources](#ressources)
@@ -75,13 +76,14 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
   - auteurs 
 
 ![Exemple d'un message signalé](./doc/images/report.png)
+-->
 
 ## Setup en production
 
 L'application est capable de tourner sous plusieurs environnements :
 
 -   n'importe quel environnement avec Node.js d'installé
--   dans un container Docker avec Docker Compose -->
+-   dans un container Docker avec Docker Compose
 
 ### Setup avec Node.js
 
