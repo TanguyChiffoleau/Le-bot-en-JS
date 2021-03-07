@@ -1,9 +1,13 @@
 module.exports = {
 	name: 'nomic',
 	description:
-		"Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé. N`'est visible que par les membres connecté au salon vocal personnalisé",
+		"Créé un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé. N'est visible que par les membres connectés au salon vocal personnalisé",
 	aliases: [],
-	usage: null,
+	usage: {
+		arguments: null,
+		informations: 'Créer un channel textuel pour les utilisateurs sans microphones',
+		examples: [],
+	},
 	needArguments: false,
 	guildOnly: true,
 	requirePermissions: [],

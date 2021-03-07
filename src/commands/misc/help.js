@@ -97,12 +97,13 @@ module.exports = {
 
 		// Ajout de l'usage pour la commande
 		if (command.usage) {
-			embed.fields.push({
-				name: 'Utilisation',
-				value: `${command.name} ${escapeMarkdown(command.usage.arguments)}${
-					command.usage.informations ? `\n_(${command.usage.informations})_` : ''
-				}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
-			})
+			if (command.usage.arguments)
+				embed.fields.push({
+					name: 'Utilisation',
+					value: `${command.name} ${escapeMarkdown(command.usage.arguments)}${
+						command.usage.informations ? `\n_(${command.usage.informations})_` : ''
+					}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
+				})
 
 			// Ajout des exemples
 			if (command.usage.examples.length > 0)
