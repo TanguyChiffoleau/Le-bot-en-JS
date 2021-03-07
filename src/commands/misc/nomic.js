@@ -22,8 +22,8 @@ module.exports = {
 				'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
 			)
 
+		// Check si il y a déjà un channel no-mic
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
-
 		if (existingNoMicChannel)
 			return message.reply(`il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`)
 
