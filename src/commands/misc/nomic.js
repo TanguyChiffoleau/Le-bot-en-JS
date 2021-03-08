@@ -5,7 +5,7 @@ export default {
 	aliases: [],
 	usage: {
 		arguments: null,
-		informations: 'Créé un channel textuel pour les utilisateurs sans microphones',
+		informations: 'Créé un channel textuel pour les utilisateurs sans microphone',
 		examples: [],
 	},
 	needArguments: false,
