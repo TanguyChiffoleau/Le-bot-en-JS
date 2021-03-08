@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	name: 'nomic',
 	description:
 		"Créé un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé. N'est visible que par les membres connectés au salon vocal personnalisé",

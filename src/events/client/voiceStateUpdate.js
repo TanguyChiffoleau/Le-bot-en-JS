@@ -79,7 +79,7 @@ const handleJoin = async (client, newState) => {
 		})
 }
 
-module.exports = (client, oldState, newState) => {
+export default (client, oldState, newState) => {
 	// Pour uniquement garder les changements de channels et non d'état
 	if (oldState.channelID === newState.channelID) return
 

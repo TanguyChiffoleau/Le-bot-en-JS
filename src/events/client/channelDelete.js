@@ -1,5 +1,5 @@
-const { VoiceChannel } = require('discord.js')
+import { VoiceChannel } from 'discord.js'
 
-module.exports = (client, channel) => {
+export default (client, channel) => {
 	if (channel instanceof VoiceChannel) return client.voiceManager.delete(channel.id)
 }
