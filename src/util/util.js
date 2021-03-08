@@ -126,7 +126,7 @@ export const isImage = fileName => {
 /**
  * Renomme l'utilisateur si son pseudo commence par un caractère spécial
  * @param {GuildMember} guildMember
- * @returns promesse de la modification du pseudo ou rien
+ * @returns promesse de la modification du pseudo ou une promesse résolue
  */
 export const modifyWrongUsernames = guildMember => {
 	if (
@@ -135,6 +135,8 @@ export const modifyWrongUsernames = guildMember => {
 		)
 	)
 		return guildMember.edit({ nick: 'Change ton pseudo' })
+
+	return Promise.resolve()
 }
 
 /**
