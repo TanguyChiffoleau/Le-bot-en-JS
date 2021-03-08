@@ -233,6 +233,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > LEAVE_JOIN_CHANNEL_ID="123456789012345678"
 > REPORT_CHANNEL="123456789012345678"
 > LOGS_CHANNEL="123456789012345678"
+> VOICE_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
 > ```
 
 | Variable                   | Description                                                                                                      |
