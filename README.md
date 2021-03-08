@@ -239,14 +239,15 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 
 #### Fichier bot.env
 
-| Variable              | Description                                                                                                      |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| DISCORD_TOKEN         | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token) |
-| COMMANDS_PREFIX       | Préfixe utilisé pour intéragir avec le bot                                                                       |
-| GUILD_ID              | ID du serveur (= guild) sur lequel le bot est utilisé                                                            |
-| LEAVE_JOIN_CHANNEL_ID | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
-| REPORT_CHANNEL        | ID du channel sur lequel les messages de signalement seront postés                                               |
-| LOGS_CHANNEL          | ID du channel sur lequel les messages de logs seront postés                                                      |
+| Variable                   | Description                                                                                                      |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token) |
+| COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                       |
+| GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                            |
+| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
+| REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                               |
+| LOGS_CHANNEL               | ID du channel sur lequel les messages de logs seront postés                                                      |
+| VOICE_MANAGER_CHANNELS_IDS | ID des channels utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule    |
 
 </details>
 
