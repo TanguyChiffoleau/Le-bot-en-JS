@@ -1,13 +1,13 @@
-const { convertDate, isImage, getFileInfos } = require('../../util/util')
-const { MessageAttachment, Util } = require('discord.js')
-const bent = require('bent')
+import { convertDate, isImage, getFileInfos, displayNameAndID } from '../../util/util.js'
+import { MessageAttachment, Util } from 'discord.js'
+import bent from 'bent'
 
 const getLinkBuffer = url => {
 	const getBuffer = bent('buffer')
 	return getBuffer(url)
 }
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
 	if (
 		message.partial ||
 		message.author.bot ||
@@ -32,7 +32,7 @@ module.exports = async (client, message) => {
 
 	const logEmbed = {
 		author: {
-			name: `${message.member.displayName} (ID ${message.member.id})`,
+			name: `${displayNameAndID(message)}`,
 			icon_url: message.author.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [

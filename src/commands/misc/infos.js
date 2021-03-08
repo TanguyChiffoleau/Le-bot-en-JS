@@ -1,7 +1,10 @@
-const { version } = require('../../../package.json')
-const { diffDate } = require('../../util/util')
+import { diffDate } from '../../util/util.js'
 
-module.exports = {
+// import nodePackage from '../../../package.json'
+import { readFileSync } from 'fs'
+const { version } = JSON.parse(readFileSync('./package.json'))
+
+export default {
 	name: 'infos',
 	description: 'Donne quelques infos sur le bot',
 	aliases: ['info'],

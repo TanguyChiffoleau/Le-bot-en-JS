@@ -1,12 +1,13 @@
 /* eslint-disable no-await-in-loop */
-const {
-	pluralizeWithoutQuantity: pluralize,
+import {
+	pluralizeWithoutQuantity as pluralize,
 	convertDate,
 	convertDateToHours,
-} = require('../../util/util')
-const { Util } = require('discord.js')
+	displayNameAndID,
+} from '../../util/util.js'
+import { Util } from 'discord.js'
 
-module.exports = {
+export default {
 	name: 'clean',
 	description: 'Supprime un nombre de messages donné dans le channel',
 	aliases: ['cl'],
@@ -93,7 +94,7 @@ module.exports = {
 				embed: {
 					color: '0000ff',
 					author: {
-						name: `${message.member.displayName} (ID ${message.member.id})`,
+						name: `${displayNameAndID(message)}`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',
@@ -139,7 +140,7 @@ module.exports = {
 			embed: {
 				color: '0000ff',
 				author: {
-					name: `${message.member.displayName} (ID ${message.member.id})`,
+					name: `${displayNameAndID(message)}`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
 				title: 'Clean',

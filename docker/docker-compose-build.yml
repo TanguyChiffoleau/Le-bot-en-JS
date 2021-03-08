@@ -2,16 +2,13 @@ version: '3.8'
 
 services:
 
-services:
-
-    bot:
+    le-bot-en-js:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile
+        container_name: le-bot-en-js
         restart: on-failure
-        env_file: 
+        env_file:
             - ../config/bot.env
-        environment:
-            NODE_ENV: production
         volumes:
-            - ../config/reactionRoleConfig.json:/config/reactionRoleConfig.json
+            - ../config/reactionRoleConfig.json:/usr/src/app/config/reactionRoleConfig.json

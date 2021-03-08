@@ -1,6 +1,6 @@
-const { convertDate } = require('../../util/util')
+import { convertDate } from '../../util/util.js'
 
-module.exports = async (client, messageReaction, user) => {
+export default async (client, messageReaction, user) => {
 	const { message, emoji } = messageReaction
 
 	if (message.partial) await message.fetch()
@@ -16,8 +16,8 @@ module.exports = async (client, messageReaction, user) => {
 
 	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
-		const rule = client.reactionRoleMap.get(message.id)
-		const roleID = rule.emojiRoleMap[emoji.id || emoji.name]
+		const emojiRoleMap = client.reactionRoleMap.get(message.id)
+		const roleID = emojiRoleMap[emoji.id || emoji.name]
 		const guildMember = await message.guild.members.fetch(user)
 
 		return guildMember.roles.add(roleID)

@@ -1,8 +1,9 @@
-FROM node:14.15.0-alpine
+FROM node:14.16.0-alpine3.13
 ENV NODE_ENV=production
+WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY --chown=node:node . ./
+RUN npm ci --only=production
 
-COPY src/ src/
-CMD node .
+USER node
+CMD ["node", "src/index.js"]

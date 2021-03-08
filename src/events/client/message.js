@@ -1,7 +1,13 @@
-const { Collection } = require('discord.js')
-const { modifyWrongUsernames, convertDate, isImage, getFileInfos } = require('../../util/util')
+import { Collection } from 'discord.js'
+import {
+	modifyWrongUsernames,
+	convertDate,
+	isImage,
+	getFileInfos,
+	displayNameAndID,
+} from '../../util/util.js'
 
-module.exports = async (client, message) => {
+export default async (client, message) => {
 	if (
 		message.author.bot ||
 		(message.guild && (message.guild.id !== client.config.guildID || !message.guild.available))
@@ -10,7 +16,7 @@ module.exports = async (client, message) => {
 
 	// Si le message vient d'une guild, on vérifie
 	// si le pseudo respecte bien les règles
-	if (message.member) modifyWrongUsernames(message.member)
+	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
 
 	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {
@@ -121,7 +127,7 @@ module.exports = async (client, message) => {
 			const embed = {
 				color: '2f3136',
 				author: {
-					name: `${validMessage.member.displayName} (ID ${validMessage.member.id})`,
+					name: `${displayNameAndID(validMessage)}`,
 					icon_url: validMessage.author.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [],
@@ -156,9 +162,9 @@ module.exports = async (client, message) => {
 
 			if (message.author !== validMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
-				embed.footer.text += `\nCité par ${message.member.displayName} (ID ${
-					message.author.id
-				}) le ${convertDate(message.createdAt)}`
+				embed.footer.text += `\nCité par ${displayNameAndID(message)} le ${convertDate(
+					message.createdAt,
+				)}`
 			}
 
 			// Partie pour gérer les attachements
