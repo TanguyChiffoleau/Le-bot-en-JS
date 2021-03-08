@@ -14,6 +14,7 @@ export const prepareClient = () => {
 				'GUILD_MESSAGES',
 				'GUILD_MESSAGE_REACTIONS',
 				'DIRECT_MESSAGES',
+				'GUILD_VOICE_STATES',
 			],
 		},
 	})
@@ -25,6 +26,7 @@ export const prepareClient = () => {
 		reportChannelID: process.env.REPORT_CHANNEL,
 		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 		logsChannelID: process.env.LOGS_CHANNEL,
+		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */),
 	}
 	client.cache = {
 		// Messages supprimés par la bot pour ne pas
@@ -33,6 +35,8 @@ export const prepareClient = () => {
 	}
 	// Map utilisé pour la commande "roles"
 	client.commandsCategories = new Map()
+	// Map utilisé pour la gestion des channels vocaux
+	client.voiceManager = new Map()
 
 	return client
 }

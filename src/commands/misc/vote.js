@@ -2,7 +2,7 @@ import { convertDate } from '../../util/util.js'
 
 export default {
 	name: 'vote',
-	description: 'Créer un embed avec la proposition et des émojis pour voter',
+	description: 'Créé un embed avec la proposition et des émojis pour voter',
 	aliases: [],
 	usage: {
 		arguments: '<texte>',
