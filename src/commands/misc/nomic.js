@@ -41,8 +41,20 @@ export default {
 			},
 		)
 
-		// Suppression des permissions existantes
-		await Promise.all(noMicChannel.permissionOverwrites.map(permission => permission.delete()))
+		// Suppression des permissions existantes sauf
+		// pour les rôles qui peuvent supprimer les messages (modos)
+		// ou qui ne peuvent pas envoyer de messages (muted)
+		await Promise.all(
+			noMicChannel.permissionOverwrites
+				.filter(
+					permissionOverwrites =>
+						!(
+							permissionOverwrites.allow.has('MANAGE_MESSAGES') ||
+							permissionOverwrites.deny.has('SEND_MESSAGES')
+						),
+				)
+				.map(permission => permission.delete()),
+		)
 
 		// Setup des permissions
 		await Promise.all([
