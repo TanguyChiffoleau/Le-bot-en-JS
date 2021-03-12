@@ -36,14 +36,7 @@ const handleJoin = async (client, newState) => {
 		const permissions = newState.channel.permissionOverwrites.clone().set(member, {
 			id: member,
 			type: 'member',
-			allow: [
-				'VIEW_CHANNEL',
-				'CONNECT',
-				'MANAGE_CHANNELS',
-				'MUTE_MEMBERS',
-				'DEAFEN_MEMBERS',
-				'MOVE_MEMBERS',
-			],
+			allow: ['VIEW_CHANNEL', 'CONNECT', 'MANAGE_CHANNELS', 'MOVE_MEMBERS'],
 		})
 
 		// Création du channel vocal
