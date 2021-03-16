@@ -32,14 +32,11 @@ export default {
 			return message.reply(`il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`)
 
 		// Crée le channel no mic
-		const noMicChannel = await message.guild.channels.create(
-			voiceChannel.name.replace('channel', 'no mic'),
-			{
-				type: 'text',
-				topic: `Channel temporaire créé pour ${message.member.displayName} (ID ${message.member.id})`,
-				parent: voiceChannel.parent,
-			},
-		)
+		const noMicChannel = await message.guild.channels.create(`no mic ${voiceChannel.name}`, {
+			type: 'text',
+			topic: `Channel temporaire créé pour ${message.member.displayName} (ID ${message.member.id})`,
+			parent: voiceChannel.parent,
+		})
 
 		// Suppression des permissions existantes sauf
 		// pour les rôles qui peuvent supprimer les messages (modos)
