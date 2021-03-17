@@ -1,8 +1,7 @@
 # Le-bot-en-JS
 
 [![Release](https://img.shields.io/github/v/release/TanguyChiffoleau/Le-bot-en-JS?include_prereleases)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)
-[![Discord.js version](https://img.shields.io/github/package-json/dependency-version/TanguyChiffoleau/Le-bot-en-JS/discord.js)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/blob/146c5cc906dfc667edffe384e225e4dab689bd0a/package.json#L23)
-[![Node.js CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/workflows/Node.js%20CI/badge.svg?branch=master&event=push)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions?query=workflow%3A%22Node.js+CI%22+event%3Apush)
+[![CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions?query=workflow%3A%22Node.js+CI%22+event%3Apush)
 
 ## Table des matières
 
@@ -236,15 +235,15 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > VOICE_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
 > ```
 
-| Variable                   | Description                                                                                                      |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token) |
-| COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                       |
-| GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                            |
-| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départs/arrivées seront postés                                          |
-| REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                               |
-| LOGS_CHANNEL               | ID du channel sur lequel les messages de logs seront postés                                                      |
-| VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule    |
+| Variable                   | Description                                                                                                          |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)     |
+| COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                           |
+| GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                                |
+| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départs/arrivées seront postés                                              |
+| REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                                   |
+| LOGS_CHANNEL               | ID du channel sur lequel les messages de logs seront postés                                                          |
+| VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule |
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
