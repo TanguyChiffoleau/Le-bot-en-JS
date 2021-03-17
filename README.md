@@ -1,7 +1,7 @@
 # Le-bot-en-JS
 
 [![Release](https://img.shields.io/github/v/release/TanguyChiffoleau/Le-bot-en-JS?include_prereleases)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)
-[![CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions?query=workflow%3A%22Node.js+CI%22+event%3Apush)
+[![CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions/workflows/CI.yml/badge.svg)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions/workflows/CI.yml)
 
 ## Table des matières
 
