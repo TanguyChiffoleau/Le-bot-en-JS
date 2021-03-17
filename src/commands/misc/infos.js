@@ -6,7 +6,7 @@ const { version } = JSON.parse(readFileSync('./package.json'))
 
 export default {
 	name: 'infos',
-	description: 'Donne quelques infos sur le bot',
+	description: 'Donne quelques infos et le statut du bot',
 	aliases: ['info'],
 	usage: null,
 	needArguments: false,
@@ -34,18 +34,13 @@ export default {
 						inline: true,
 					},
 					{
-						name: 'version',
+						name: 'Version',
 						value: version,
 						inline: true,
 					},
 					{
-						name: 'Source Code',
+						name: 'Code source',
 						value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
-						inline: true,
-					},
-					{
-						name: '\u200b',
-						value: '\u200b',
 						inline: true,
 					},
 				],
