@@ -22,7 +22,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 <!-- ## Commandes
 
-> Pour avoir toutes les informations sur une commande, utliser la commande `<prefix>help <commande>`.
+> Pour avoir toutes les informations sur une commande, utlisez la commande `<prefix>help <commande>`.
 >
 > Exemple : `!help coinflip`.
 
@@ -59,7 +59,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 ### Rename des utilisateurs à pseudo incorrect
 
-- Déclenché lors des events suivants : un utilisateur rejoint les serveur, un utilisateur envoie un message, un utilisateur est modifié et lorsque le pseudo matche le regex `/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/`
+- Déclenché lors des events suivants : un utilisateur rejoint le serveur, un utilisateur envoie un message, un utilisateur est modifié et lorsque le pseudo matche le regex `/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/`
 - Renomme en "Change ton pseudo"
 
 ### Citations
@@ -72,7 +72,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 - Poste un embed avec des informations sur le message signalé et sur le(s) signalement(s) :
   - contenu/channel/date et lien vers le message
-  - auteurs 
+  - auteur
 
 ![Exemple d'un message signalé](./doc/images/report.png)
 -->
@@ -96,13 +96,13 @@ L'application est capable de tourner sous plusieurs environnements :
 
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
-3. Il faut au préalable installer les dépendences de l'application avant de la lancer celle-ci en utilisant la commande `npm i`.
+3. Il faut au préalable installer les dépendances de l'application avant de lancer celle-ci en utilisant la commande `npm i`.
 
-	> Toutes les dépendences vont être installés, y compris celles prévus pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
+	> Toutes les dépendances vont être installées, y compris celles prévues pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
 
-4. Renommez le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+4. Renommez le fichier `bot.example.env` en `bot.env`, puis modifiez les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-5. Renommez le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifier son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+5. Renommez le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
 #### Lancement et arrêt de l'application
 
@@ -118,7 +118,7 @@ L'application est capable de tourner sous plusieurs environnements :
 #### Prérequis
 
 1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) ainsi que [Docker Compose](https://docs.docker.com/compose/install/) d'installé.
-	> Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installés.
+	> Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installées.
 
 2. Créez les fichiers `bot.env` et `reactionRoleConfig.json` dans le dossier `config` ainsi que le fichier `docker-compose.yml` dans le dossier `docker` :
 	```bash
@@ -168,11 +168,11 @@ L'application est capable de tourner sous plusieurs environnements :
 
 1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) d'installé.
 
-	> Utilisez la commandes `docker -v` pour vérifier que l'application soit bien installé.
+	> Utilisez la commandes `docker -v` pour vérifier que l'application soit bien installée.
 
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
-3. Renommer le fichier `bot.example.env` en `bot.env`, puis modifier les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+3. Renommez le fichier `bot.example.env` en `bot.env`, puis modifiez les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
 	> Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
 
@@ -240,10 +240,10 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)     |
 | COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                           |
 | GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                                |
-| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départs/arrivées seront postés                                              |
+| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départ/arrivée seront postés                                              |
 | REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                                   |
-| LOGS_CHANNEL               | ID du channel sur lequel les messages de logs seront postés                                                          |
-| VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule |
+| LOGS_CHANNEL               | ID du channel sur lequel les messages de log seront postés                                                          |
+| VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparées par une virgule |
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
