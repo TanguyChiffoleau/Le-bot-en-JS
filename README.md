@@ -1,7 +1,6 @@
 # Le-bot-en-JS
 
 [![Release](https://img.shields.io/github/v/release/TanguyChiffoleau/Le-bot-en-JS?include_prereleases)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)
-[![CI](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions/workflows/CI.yml/badge.svg)](https://github.com/TanguyChiffoleau/Le-bot-en-JS/actions/workflows/CI.yml)
 
 ## Table des matières
 
