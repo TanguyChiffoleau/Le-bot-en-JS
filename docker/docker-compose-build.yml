@@ -1,14 +1,37 @@
 version: '3.8'
 
 services:
-
     le-bot-en-js:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile
         container_name: le-bot-en-js
         restart: on-failure
+        # networks:
+        #     - internet
+        #     - no-internet
         env_file:
             - ../config/bot.env
+            - ../config/database.env
         volumes:
             - ../config/reactionRoleConfig.json:/usr/src/app/config/reactionRoleConfig.json
+
+    postgres-database:
+        image: postgres:13.1-alpine
+        container_name: postgres-database
+        restart: always
+        # networks:
+        #     - no-internet
+        env_file:
+            - ../config/database.env
+        environment:
+            PGDATA: /var/lib/postgresql/data
+        volumes:
+            - ../pgdata/:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+
+# networks:
+#     no-internet:
+#         internal: true
+#     internet:
