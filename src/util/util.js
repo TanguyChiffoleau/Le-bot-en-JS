@@ -168,13 +168,13 @@ export const getFileInfos = file => {
 
 /**
  *
- * @param {Message} message discord.js message
+ * @param {GuildMember} guildMember
  * @returns le pseudo du guildMember ou le tag de l'user
  */
-export const displayNameAndID = message => {
-	if (message.member) return `${message.member.displayName} (ID ${message.member.id})`
+export const displayNameAndID = guildMember => {
+	if (guildMember) return `${guildMember.displayName} (ID ${guildMember.id})`
 
-	return `${message.author.tag} (ID ${message.author.id})`
+	return `${guildMember.user.tag} (ID ${guildMember.user.id})`
 }
 
 /**

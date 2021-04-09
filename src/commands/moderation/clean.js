@@ -94,7 +94,7 @@ export default {
 				embed: {
 					color: '0000ff',
 					author: {
-						name: `${displayNameAndID(message)}`,
+						name: `${displayNameAndID(message.member)}`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',
@@ -140,7 +140,7 @@ export default {
 			embed: {
 				color: '0000ff',
 				author: {
-					name: `${displayNameAndID(message)}`,
+					name: `${displayNameAndID(message.member)}`,
 					icon_url: message.author.displayAvatarURL({ dynamic: true }),
 				},
 				title: 'Clean',

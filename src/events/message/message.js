@@ -162,9 +162,9 @@ export default async (message, client) => {
 
 			if (message.author !== validMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
-				embed.footer.text += `\nCité par ${displayNameAndID(message)} le ${convertDate(
-					message.createdAt,
-				)}`
+				embed.footer.text += `\nCité par ${displayNameAndID(
+					message.member,
+				)} le ${convertDate(message.createdAt)}`
 			}
 
 			// Partie pour gérer les attachements
