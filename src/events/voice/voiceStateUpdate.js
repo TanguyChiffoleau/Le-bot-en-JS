@@ -28,7 +28,7 @@ const handleLeave = (oldState, newState, client) => {
 			.delete()
 }
 
-const handleJoin = async (client, newState) => {
+const handleJoin = async (newState, client) => {
 	// S'il rejoint un channel qui doit créer un nouveau channel
 	if (client.config.voiceManagerChannelsIDs.includes(newState.channelID)) {
 		const member = newState.member
@@ -72,13 +72,13 @@ const handleJoin = async (client, newState) => {
 		})
 }
 
-export default (client, oldState, newState) => {
+export default (oldState, newState, client) => {
 	// Pour uniquement garder les changements de channels et non d'état
 	if (oldState.channelID === newState.channelID) return
 
 	// Si l'utilisateur quitte un channel
-	if (oldState.channel) handleLeave(client, oldState, newState)
+	if (oldState.channel) handleLeave(oldState, newState, client)
 
 	// Si l'utilisateur rejoint un channel
-	if (newState.channel) handleJoin(client, newState)
+	if (newState.channel) handleJoin(newState, client)
 }
