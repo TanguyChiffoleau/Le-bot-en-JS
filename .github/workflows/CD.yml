@@ -19,8 +19,8 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v2.3.0
         with:
           images: tanguychiffoleau/le-bot-en-js
-          tag-semver: |
-            {{version}}
+          tags: |
+            type=semver,pattern={{version}}
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
