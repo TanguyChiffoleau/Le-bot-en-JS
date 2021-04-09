@@ -1,6 +1,6 @@
 import { convertDate } from '../../util/util.js'
 
-export default async (client, messageReaction, user) => {
+export default async (messageReaction, user, client) => {
 	const { message, emoji } = messageReaction
 
 	if (message.partial) await message.fetch()

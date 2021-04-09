@@ -7,7 +7,7 @@ const getLinkBuffer = url => {
 	return getBuffer(url)
 }
 
-export default async (client, message) => {
+export default async (message, client) => {
 	if (
 		message.partial ||
 		message.author.bot ||

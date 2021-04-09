@@ -1,6 +1,6 @@
 import { convertDate, diffDate, modifyWrongUsernames } from '../../util/util.js'
 
-export default (client, guildMember) => {
+export default (guildMember, client) => {
 	if (
 		guildMember.user.bot ||
 		guildMember.guild.id !== client.config.guildID ||

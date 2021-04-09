@@ -83,9 +83,13 @@ export const eventsLoader = async client => {
 		// Pour chaque event, on l'acquérit et on le charge
 		Promise.all(
 			events.map(async eventFile => {
-				const event = (await import(`../events/${eventCategory}/${eventFile}`)).default
+				const { default: execute, once } = await import(
+					`../events/${eventCategory}/${eventFile}`
+				)
 				const eventName = removeFileExtension(eventFile)
-				client.on(eventName, event.bind(null, client))
+
+				if (once) return client.once(eventName, (...args) => execute(...args, client))
+				return client.on(eventName, (...args) => execute(...args, client))
 			}),
 		)
 	})

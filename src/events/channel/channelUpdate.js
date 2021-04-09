@@ -1,6 +1,6 @@
 import { GuildChannel, VoiceChannel } from 'discord.js'
 
-export default (client, oldChannel, newChannel) => {
+export default (oldChannel, newChannel, client) => {
 	// Si le channel n'est pas un channel de guild, return
 	if (!(oldChannel instanceof GuildChannel) || !(newChannel instanceof GuildChannel)) return
 

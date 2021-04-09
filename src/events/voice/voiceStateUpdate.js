@@ -1,4 +1,4 @@
-const handleLeave = (client, oldState, newState) => {
+const handleLeave = (oldState, newState, client) => {
 	// S'il quitte un channel non personnalisé, on return
 	if (!client.voiceManager.has(oldState.channelID)) return
 

@@ -1,1 +1,1 @@
-export default (client, error) => console.error(error)
+export default error => console.error(error)

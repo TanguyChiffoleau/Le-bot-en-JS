@@ -7,7 +7,7 @@ import {
 	displayNameAndID,
 } from '../../util/util.js'
 
-export default async (client, message) => {
+export default async (message, client) => {
 	if (
 		message.author.bot ||
 		(message.guild && (message.guild.id !== client.config.guildID || !message.guild.available))
