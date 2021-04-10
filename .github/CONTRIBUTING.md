@@ -15,4 +15,5 @@ Pour être prêt à travailler sur le code, suivez les étapes suivantes :
 ## Soummettre une pull request
 
 1. **Avant de soumettre une PR**, éxecutez la commande `npm test` pour éxécuter ESLint et assurez que votre codez respecte bien les règles.
-2. [Soummettez votre pull request](https://github.com/TanguyChiffoleau/Le-bot-en-JS/compare) !
+2. Si vous ajoutez un event, assurez-vous d'avoir ajouté l'intent associé (s'il ce n'est pas déjà le cas). Plus d'informations sur le topic [Gateway Intents](https://discordjs.guide/popular-topics/intents.html) tiré du [guide officiel de Discord.js](https://discordjs.guide/).
+3. [Soummettez votre pull request](https://github.com/TanguyChiffoleau/Le-bot-en-JS/compare) !
