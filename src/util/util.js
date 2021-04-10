@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-import { GuildMember, Message, Client } from 'discord.js'
+import { GuildMember, Client } from 'discord.js'
 
 /**
  * Gère l'ajout de "s" à la fin d'un mot en fonction de la quantité
@@ -190,3 +190,9 @@ export const closeGracefully = (signal, client) => {
 
 	process.exit(0)
 }
+
+/**
+ * No operation function
+ */
+// eslint-disable-next-line no-empty-function
+export const noop = () => {}
