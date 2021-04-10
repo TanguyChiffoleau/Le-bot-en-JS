@@ -6,6 +6,9 @@
 
 - [Table des matières](#table-des-matières)
 - [À propos](#à-propos)
+- [Mise en place du bot](#mise-en-place-du-bot)
+	- [Création du bot](#création-du-bot)
+	- [Invitation du bot](#invitation-du-bot)
 - [Setup en production](#setup-en-production)
 	- [Setup avec Node.js](#setup-avec-nodejs)
 	- [Setup dans un container avec Docker et Docker Compose](#setup-dans-un-container-avec-docker-et-docker-compose)
@@ -18,70 +21,30 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 [![Discord entraide](https://img.shields.io/discord/475253577288253440?color=%237289DA&logo=discord&logoColor=white)](https://www.discord.gg/informatique)
 
+## Mise en place du bot
 
-<!-- ## Commandes
+### Création du bot
 
-> Pour avoir toutes les informations sur une commande, utlisez la commande `<prefix>help <commande>`.
->
-> Exemple : `!help coinflip`.
+[Cliquez ici](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) pour accéder à un tutoriel (en anglais) tiré du [guide officiel de Discord.js](https://discordjs.guide/) pour créer votre bot.
 
+Une fois le bot créé, dans la section "Bot", il faudra activer l'intent privilégié "SERVER MEMBERS INTENT". Si votre bot n'est pas vérifié, il faut simplement activé le bouton. Sinon, voici quelques ressources pour activé les intents : [Discords FAQ](https://dis.gd/gwupdate), [Discord Support](https://dis.gd/contact).
 
-### Divers
+Une fois votre application et bot créés, vous devez récupérer le token du bot ("TOKEN") ainsi que l'ID de l'application ("APPLICATION ID").
 
-| Commande | Description                                                 |
-| -------- | ----------------------------------------------------------- |
-| coinflip | Coinflip! (pile ou face)                                    |
-| help     | Affiche les commandes fixes du bot                          |
-| infos    | Donne quelques infos sur le bot                             |
-| ping     | Donne le ping de l'API ainsi que du bot                     |
-| roles    | Affiche le nombre de membres pour chaque rôle               |
-| votes    | Créer un embed avec la proposition et des émojis pour voter |
-| whois    | Donne des infos sur soit ou un autre utilisateur            |
+### Invitation du bot
 
-### Modération
+Pour inviter le bot sur un serveur, il faut créer un lien d'invitation. Il est nécessaire d'avoir l'ID du client. Voici le lien type utilisé pour ce bot : `https://discord.com/oauth2/authorize?client_id=INSERT_CLIENT_ID_HERE&scope=bot&permissions=419540176`.
 
-| Commande | Description                                          |
-| -------- | ---------------------------------------------------- |
-| clean    | Supprime un nombre de messages donné dans le channel |
-| cooldown | Active le mode lent sur le channel                   |
+> Remplacez `INSERT_CLIENT_ID_HERE` par l'ID de votre application.
 
-
-## Fonctionnalités
-
-### Logs
-
-- Join/leave des membres :
-
-  ![Exemple de join](./doc/images/user_join.png)
-  ![Exemple de leave](./doc/images/user_leave.png)
-- Messages supprimés : TO BE DONE (ne pas oublier les screenshots/gifs)
-
-### Rename des utilisateurs à pseudo incorrect
-
-- Déclenché lors des events suivants : un utilisateur rejoint le serveur, un utilisateur envoie un message, un utilisateur est modifié et lorsque le pseudo matche le regex `/^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/`
-- Renomme en "Change ton pseudo"
-
-### Citations
-
-- Poste un embed avec le contenu d'un message lorsqu'un lien pointant vers un message discord du serveur est reçu.
-
-![Exemples de citations](./doc/images/citations.png)
-
-### Système de report
-
-- Poste un embed avec des informations sur le message signalé et sur le(s) signalement(s) :
-  - contenu/channel/date et lien vers le message
-  - auteur
-
-![Exemple d'un message signalé](./doc/images/report.png)
--->
+> `permissions=419540176` correspond aux permissions d'invitation du bot. Vous pouvez modifier le code des permissions avec un [calculateur de permissions](https://discordapi.com/permissions.html). `419540176` accorde au bot les permissions suivantes : Manage Channels, Manage Roles, View Audit Log, Manage Nicknames, Read Messages, Send Messages, Attach Files, Add Reactions, Manage Messages, Read Message History, View Channel, Move Members. Veuillez noter qu'il est nécessaire d'avoir [l'authentification à deux facteurs](https://support.discord.com/hc/fr/articles/219576828-Mise-en-place-de-l-authentification-%C3%A0-deux-facteurs) activée sur le compte du propriétaire du bot pour utiliser les permissions suivantes : Manage Channels, Manage Roles, Manage Messages.
 
 ## Setup en production
 
 L'application est capable de tourner sous plusieurs environnements :
 
--   n'importe quel environnement avec Node.js d'installé
--   dans un container Docker avec Docker Compose
+- n'importe quel environnement avec Node.js d'installé
+- dans un container Docker avec Docker Compose
 
 ### Setup avec Node.js
 
@@ -239,9 +202,9 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)     |
 | COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                           |
 | GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                                |
-| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départ/arrivée seront postés                                              |
+| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départ/arrivée seront postés                                                |
 | REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                                   |
-| LOGS_CHANNEL               | ID du channel sur lequel les messages de log seront postés                                                          |
+| LOGS_CHANNEL               | ID du channel sur lequel les messages de log seront postés                                                           |
 | VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule |
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
