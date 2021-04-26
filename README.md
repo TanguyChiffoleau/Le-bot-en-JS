@@ -27,7 +27,7 @@ Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et
 
 [Cliquez ici](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) pour accéder à un tutoriel (en anglais) tiré du [guide officiel de Discord.js](https://discordjs.guide/) pour créer votre bot.
 
-Une fois le bot créé, dans la section "Bot", il faudra activer l'intent privilégié "SERVER MEMBERS INTENT". Si votre bot n'est pas vérifié, il faut simplement activé le bouton. Sinon, voici quelques ressources pour activé les intents : [Discords FAQ](https://dis.gd/gwupdate), [Discord Support](https://dis.gd/contact).
+Une fois le bot créé, dans la section "Bot", il faudra activer l'intent privilégié "SERVER MEMBERS INTENT". Si votre bot n'est pas vérifié, il faut simplement activer le bouton. Sinon, voici quelques ressources pour activer les intents : [Discords FAQ](https://dis.gd/gwupdate), [Discord Support](https://dis.gd/contact).
 
 Une fois votre application et bot créés, vous devez récupérer le token du bot ("TOKEN") ainsi que l'ID de l'application ("APPLICATION ID").
 
