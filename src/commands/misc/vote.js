@@ -1,5 +1,3 @@
-import { convertDate } from '../../util/util.js'
-
 export default {
 	name: 'vote',
 	description: 'Créé un embed avec la proposition et des émojis pour voter',
@@ -27,9 +25,7 @@ export default {
 				},
 				title: 'Nouveau vote',
 				description: `\`\`\`${args.join(' ')}\`\`\``,
-				footer: {
-					text: convertDate(new Date()),
-				},
+				timestamp: new Date(),
 			},
 		})
 

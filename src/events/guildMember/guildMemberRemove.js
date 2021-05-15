@@ -35,8 +35,9 @@ export default (guildMember, client) => {
 			},
 		],
 		footer: {
-			text: `Un utilisateur a quitté le serveur • ${convertDate(new Date())}`,
+			text: 'Un utilisateur a quitté le serveur',
 		},
+		timestamp: new Date(),
 	}
 
 	if (guildMember.joinedAt)

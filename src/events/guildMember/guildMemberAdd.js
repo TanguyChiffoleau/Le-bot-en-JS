@@ -38,8 +38,9 @@ export default (guildMember, client) => {
 				},
 			],
 			footer: {
-				text: `Un utilisateur a rejoint le serveur • ${convertDate(new Date())}`,
+				text: 'Un utilisateur a rejoint le serveur',
 			},
+			timestamp: new Date(),
 		},
 	})
 }
