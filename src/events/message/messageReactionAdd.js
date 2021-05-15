@@ -52,7 +52,6 @@ export default async (messageReaction, user, client) => {
 					author: logReportEmbed.author,
 					description: logReportEmbed.description,
 					fields: [logReportEmbed.fields],
-					footer: logReportEmbed.footer,
 				}
 
 				// On ajoute un field en fonction
