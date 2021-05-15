@@ -52,6 +52,7 @@ export default async (message, client) => {
 				inline: true,
 			},
 		],
+		timestamp: new Date(),
 	}
 
 	const { executor, target, extra } = fetchedLog
@@ -67,12 +68,12 @@ export default async (message, client) => {
 		logEmbed.color = 'fc3c3c'
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
-			text: `Date de suppression: ${convertDate(new Date())}\nSupprimé par ${executor.tag}`,
+			text: `Message supprimé par ${executor.tag}`,
 		}
 	} else {
 		logEmbed.color = '00FF00'
 		logEmbed.footer = {
-			text: `Date de suppression: ${convertDate(new Date())}`,
+			text: `Message supprimé par l'auteur du message`,
 		}
 	}
 
