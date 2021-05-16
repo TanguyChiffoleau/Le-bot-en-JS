@@ -14,6 +14,7 @@ export const prepareClient = () => {
 				'GUILD_MESSAGE_REACTIONS',
 				'DIRECT_MESSAGES',
 				'GUILD_VOICE_STATES',
+				'GUILD_PRESENCES',
 			],
 		},
 	})
