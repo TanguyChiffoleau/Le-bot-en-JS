@@ -129,7 +129,7 @@ export default async (message, client) => {
 			const embed = {
 				color: '2f3136',
 				author: {
-					name: `${displayNameAndID(validMessage)}`,
+					name: `${displayNameAndID(validMessage.member)}`,
 					icon_url: validMessage.author.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [],
