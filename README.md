@@ -221,26 +221,57 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > Exemple disponible [ici](config/reactionRoleConfig.example.json) :
 > ```js
 > [
-> 	// Message n°1
 > 	{
-> 		"channelId": "123456789123456789", // ID du channel du message
-> 		"messageId": "123456789123456789", // ID du message
-> 		"emojiRoleMap": {
-> 			// Émoji unicode en clé et ID du rôle en valeur
-> 			"💸": "123456789123456789", 
-> 			"🔧": "123456789123456789"
-> 		}
+> 		// Channel n°1
+> 		"channelID": "123456789123456789",
+> 		"messageArray": [
+> 			// Message n°1
+> 			{
+> 				// ID du message
+> 				"messageID": "123456789123456789",
+> 				// Émoji unicode en clé et ID du rôle en valeur
+> 				"emojiRoleMap": {
+> 					"💸": "123456789123456789",
+> 					"🔧": "123456789123456789"
+> 				}
+> 			},
+> 			// Message n°2
+> 			{
+> 				// ID du message
+> 				"messageID": "123456789123456789",
+> 				// Émoji unicode en clé et ID du rôle en valeur
+> 				"emojiRoleMap": {
+> 					"🥵": "123456789123456789",
+> 					"✅": "123456789123456789"
+> 				}
+> 			}
+> 		]
 > 	},
-> 
-> 	// Message n°2
 > 	{
-> 		"channelId": "987654321987654321", // ID du channel du message
-> 		"messageId": "123456789123456789", // ID du message
-> 		"emojiRoleMap": {
-> 			// ID de l'émoji custom en clé et ID du rôle en valeur
-> 			"987654321987654322": "987654321987654321",
-> 			"987654321987654321": "987654321987654321"
-> 		}
+> 		// Channel n°2
+> 		"channelID": "123456789123456789",
+> 		"messageArray": [
+> 			// Message n°1
+> 			{
+> 				// ID du message
+> 				"messageID": "123456789123456789",
+> 				// ID de l'émoji custom en clé et ID du rôle en valeur
+> 				"emojiRoleMap": {
+> 					"123456789123456789": "123456789123456789",
+> 					"987654321987654321": "123456789123456789"
+> 				}
+> 			},
+> 			// Message n°2
+> 			{
+> 				// ID du message
+> 				"messageID": "123456789123456789",
+> 				// ID de l'émoji custom en clé et ID du rôle en valeur
+> 				"emojiRoleMap": {
+> 					"123456789123456789": "123456789123456789",
+> 					"987654321987654321": "123456789123456789"
+> 				}
+> 			}
+> 		]
 > 	}
 > ]
 > ```
