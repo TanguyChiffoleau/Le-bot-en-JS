@@ -52,7 +52,7 @@ export default async (guildMember, client) => {
 	const banReactions = await sentMessage.awaitReactions(banReactionFilter, {
 		// Une seule réaction
 		max: 1,
-		// 12 heures = 4,32e+7 ms  43200000
+		// 12 heures = 4,32e+7 ms
 		idle: 43200000,
 	})
 
