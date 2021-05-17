@@ -32,6 +32,7 @@ export default {
 		// Ajout des réactions pour voter
 		await sentMessage.react('✅')
 		await sentMessage.react('🤷')
+		await sentMessage.react('⌛')
 		return sentMessage.react('❌')
 	},
 }
