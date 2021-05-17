@@ -84,7 +84,7 @@ export default async (guildMember, client) => {
 	if (!guildMember.bannable) return sentMessage.react('⚠️')
 
 	// Ban du membre
-	const banAction = guildMember.ban({ days: 7, reason: 'Raid' }).catch(() => null)
+	const banAction = guildMember.ban({ days: 7, reason: 'Le-bot-en-JS - Raid' }).catch(() => null)
 
 	// Si erreur lors du ban, réaction avec ⚠️
 	if (!banAction) return sentMessage.react('⚠️')
