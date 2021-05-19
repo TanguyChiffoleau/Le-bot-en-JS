@@ -22,7 +22,7 @@ const isUserOnMobileDevice = clientPresenceStatusData => {
 export default {
 	name: 'config',
 	description: 'Donne le formulaire des configs',
-	aliases: ['config'],
+	aliases: ['configs'],
 	usage: null,
 	needArguments: false,
 	guildOnly: true,
