@@ -1,5 +1,5 @@
-
-```**x Budget :** (A fixer dès le départ) €
+```
+**x Budget :** (A fixer dès le départ) €
 **x Quand voulez-vous acheter :**
 **x Utilisation :** (Gaming/Montage/Stream/Applicatif...)
 **x Critères esthétiques :** (RGB/Fenêtre/Couleur/Taille de boitier etc)
