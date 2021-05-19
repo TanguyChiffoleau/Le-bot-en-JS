@@ -1,6 +1,5 @@
 import { readFile } from 'fs/promises'
-// eslint-disable-next-line no-unused-vars
-import { Client, Message, Constants } from 'discord.js'
+import { Constants } from 'discord.js'
 
 const isUserOnMobileDevice = clientPresenceStatusData => {
 	// Si il n'y a pas d'objet ou un objet vide
@@ -28,11 +27,6 @@ export default {
 	needArguments: false,
 	guildOnly: true,
 	requirePermissions: [],
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {Message} message
-	 */
 	execute: async (client, message) => {
 		const [config, configDescription] = await Promise.all([
 			readFile('./forms/config.md', { encoding: 'utf8' }),
