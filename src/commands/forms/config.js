@@ -23,7 +23,21 @@ export default {
 	name: 'config',
 	description: 'Donne le formulaire des configs',
 	aliases: ['configs'],
-	usage: null,
+	usage: {
+		arguments: '[mention]',
+		informations: null,
+		examples: [
+			{
+				command: 'config',
+				explaination: "envoie le formulaire en DM à l'utilisateur et supprime son message",
+			},
+			{
+				command: 'config @Tanguy#3760',
+				explaination:
+					"envoie le formulaire en DM à l'utilisateur mentionné et donne l'état de la commande avec une réaction (✅ ou ❌)",
+			},
+		],
+	},
 	needArguments: false,
 	guildOnly: true,
 	requirePermissions: [],

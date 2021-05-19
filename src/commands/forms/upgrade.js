@@ -23,7 +23,21 @@ export default {
 	name: 'upgrade',
 	description: 'Donne le formulaire des upgrade',
 	aliases: ['upgrades'],
-	usage: null,
+	usage: {
+		arguments: '[mention]',
+		informations: null,
+		examples: [
+			{
+				command: 'upgrade',
+				explaination: "envoie le formulaire en DM à l'utilisateur et supprime son message",
+			},
+			{
+				command: 'upgrade @Tanguy#3760',
+				explaination:
+					"envoie le formulaire en DM à l'utilisateur mentionné et donne l'état de la commande avec une réaction (✅ ou ❌)",
+			},
+		],
+	},
 	needArguments: false,
 	guildOnly: true,
 	requirePermissions: [],
