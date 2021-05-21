@@ -1,23 +1,6 @@
 import { readFile } from 'fs/promises'
 import { Constants } from 'discord.js'
-
-const isUserOnMobileDevice = clientPresenceStatusData => {
-	// Si il n'y a pas d'objet ou un objet vide
-	if (!clientPresenceStatusData || Object.entries(clientPresenceStatusData).length === 0)
-		return true
-
-	// Si il n'est pas sur mobile
-	if (!clientPresenceStatusData.mobile) return false
-
-	// S'il est sur mobile et non AFK
-	if (clientPresenceStatusData.mobile !== 'idle') return true
-
-	// Si AFK sur mobile et online sur une autre platerforme
-	if (clientPresenceStatusData.desktop === 'online' || clientPresenceStatusData.web === 'online')
-		return false
-
-	return true
-}
+import { isUserOnMobileDevice } from '../../util/util.js'
 
 export default {
 	name: 'upgrade',
