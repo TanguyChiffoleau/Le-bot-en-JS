@@ -1,4 +1,6 @@
-import { eventsLoader, commandsLoader, prepareClient } from './util/loaders.js'
+import prepareClient from './util/clientLoader.js'
+import commandsLoader from './commands/loader.js'
+import eventsLoader from './events/loader.js'
 import { closeGracefully } from './util/util.js'
 
 const run = async () => {
