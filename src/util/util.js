@@ -199,9 +199,3 @@ export const closeGracefully = (signal, client) => {
 
 	process.exit(0)
 }
-
-/**
- * No operation function
- */
-// eslint-disable-next-line no-empty-function
-export const noop = () => {}
