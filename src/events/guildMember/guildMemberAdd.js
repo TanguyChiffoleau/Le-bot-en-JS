@@ -50,8 +50,10 @@ export default async (guildMember, client) => {
 		guild.member(user).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS')
 	// Création du collecteur de réactions de ban
 	const banReactions = await sentMessage.awaitReactions(banReactionFilter, {
-		// Une seule réaction
+		// Une seule réaction/émoji/user
 		max: 1,
+		maxEmojis: 1,
+		maxUsers: 1,
 		// 12 heures = 4,32e+7 ms
 		idle: 43200000,
 	})
@@ -68,8 +70,10 @@ export default async (guildMember, client) => {
 		messageReaction.emoji.name === '✅' && user === banReactionUser
 	// Création du collecteur de réactions de confirmation
 	const confirmReaction = await sentMessage.awaitReactions(confirmReactionFilter, {
-		// Une seule réaction
+		// Une seule réaction/émoji/user
 		max: 1,
+		maxEmojis: 1,
+		maxUsers: 1,
 		// 5 minutes = 300000 ms
 		idle: 300000,
 	})
