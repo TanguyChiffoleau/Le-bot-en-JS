@@ -45,7 +45,7 @@ export const pluralizeWithoutQuantity = (word, quantity, isAlwaysPlural = false)
  */
 export const convertDate = date =>
 	new Intl.DateTimeFormat('fr-FR', {
-		timeZone: 'Europe/Paris',
+		timeZone: process.env.TIMEZONE,
 		year: 'numeric',
 		month: 'long',
 		day: '2-digit',
@@ -61,7 +61,7 @@ export const convertDate = date =>
  */
 export const convertDateToHours = date =>
 	new Intl.DateTimeFormat('fr-FR', {
-		timeZone: 'Europe/Paris',
+		timeZone: process.env.TIMEZONE,
 		hour: '2-digit',
 		minute: '2-digit',
 	}).format(date)
