@@ -44,12 +44,14 @@ export const pluralizeWithoutQuantity = (word, quantity, isAlwaysPlural = false)
  * @example convertDate(new Date('15 Nov 2020 14:24:39')) => '15/11/2020 14:24:39'
  */
 export const convertDate = date =>
-	`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
-		.toString()
-		.padStart(2, '0')}/${date.getFullYear().toString().padStart(4, '0')} ${date
-		.getHours()
-		.toString()
-		.padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+	new Intl.DateTimeFormat('fr-FR', {
+		timeZone: 'Europe/Paris',
+		year: 'numeric',
+		month: 'long',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+	}).format(date)
 
 /**
  * Convertis la date sous un format HH:MM
@@ -58,10 +60,11 @@ export const convertDate = date =>
  * @example convertDate(new Date('15 Nov 2020 14:24:39')) => '14:24'
  */
 export const convertDateToHours = date =>
-	`${date.getHours().toString().padStart(2, '0')}:${date
-		.getMinutes()
-		.toString()
-		.padStart(2, '0')}`
+	new Intl.DateTimeFormat('fr-FR', {
+		timeZone: 'Europe/Paris',
+		hour: '2-digit',
+		minute: '2-digit',
+	}).format(date)
 
 /**
  * Convertis la date sous un format Y années M mois D jours H heures M minutes
