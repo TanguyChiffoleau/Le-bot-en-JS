@@ -48,7 +48,7 @@ L'application est capable de tourner sous plusieurs environnements :
 
 ### Setup avec Node.js
 
-#### **Prérequis**
+#### Prérequis
 
 1. Il est nécessaire d'avoir [Node.js](https://nodejs.org/fr/) 12.0.0 ou plus récent d'installé sur votre machine.
 
