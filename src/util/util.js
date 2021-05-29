@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-import { GuildMember, Client } from 'discord.js'
+import { GuildMember, Client, ClientPresenceStatusData } from 'discord.js'
 
 /**
  * Gère l'ajout de "s" à la fin d'un mot en fonction de la quantité
@@ -201,4 +201,27 @@ export const closeGracefully = (signal, client) => {
 	console.log('Discord client successfully destroyed')
 
 	process.exit(0)
+}
+
+/**
+ * Check si un utilisateur a un client connecté sur mobile
+ * @param {ClientPresenceStatusData} clientPresenceStatusData
+ * @returns booléen si l'utilisateur a un client mobile
+ */
+export const isUserOnMobileDevice = clientPresenceStatusData => {
+	// Si il n'y a pas d'objet ou un objet vide
+	if (!clientPresenceStatusData || Object.entries(clientPresenceStatusData).length === 0)
+		return true
+
+	// Si il n'est pas sur mobile
+	if (!clientPresenceStatusData.mobile) return false
+
+	// S'il est sur mobile et non AFK
+	if (clientPresenceStatusData.mobile !== 'idle') return true
+
+	// Si AFK sur mobile et online sur une autre platerforme
+	if (clientPresenceStatusData.desktop === 'online' || clientPresenceStatusData.web === 'online')
+		return false
+
+	return true
 }

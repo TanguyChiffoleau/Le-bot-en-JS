@@ -27,6 +27,7 @@ export default () => {
 		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
+		configChannelID: process.env.CONFIG_CHANNEL_ID,
 	}
 	client.cache = {
 		// Messages supprimés par la bot pour ne pas
