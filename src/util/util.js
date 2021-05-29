@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-import { GuildMember, Client, ClientPresenceStatusData } from 'discord.js'
+import { GuildMember, Client } from 'discord.js'
 
 /**
  * Gère l'ajout de "s" à la fin d'un mot en fonction de la quantité
@@ -205,7 +205,7 @@ export const closeGracefully = (signal, client) => {
 
 /**
  * Check si un utilisateur a un client connecté sur mobile
- * @param {ClientPresenceStatusData} clientPresenceStatusData
+ * @param {} clientPresenceStatusData
  * @returns booléen si l'utilisateur a un client mobile
  */
 export const isUserOnMobileDevice = clientPresenceStatusData => {
