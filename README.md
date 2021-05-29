@@ -197,16 +197,16 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > VOICE_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
 > ```
 
-| Variable                   | Description                                                                                                                                                                                              |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)                                                                                         |
-| COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                                                                                                               |
-| GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                                                                                                                    |
-| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départ/arrivée seront postés                                                                                                                                    |
-| REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                                                                                                                       |
-| LOGS_CHANNEL               | ID du channel sur lequel les messages de log seront postés                                                                                                                                               |
-| VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                     |
-| TIMEZONE                   | Fuseau horaire utilisé pour le formatage des dates. Variable optionnel, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
+| Variable                   | Description                                                                                                                                                                                                |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DISCORD_TOKEN              | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)                                                                                           |
+| COMMANDS_PREFIX            | Préfixe utilisé pour intéragir avec le bot                                                                                                                                                                 |
+| GUILD_ID                   | ID du serveur (= guild) sur lequel le bot est utilisé                                                                                                                                                      |
+| LEAVE_JOIN_CHANNEL_ID      | ID du channel sur lequel les messages de départ/arrivée seront postés                                                                                                                                      |
+| REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                                                                                                                         |
+| LOGS_CHANNEL               | ID du channel sur lequel les messages de log seront postés                                                                                                                                                 |
+| VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                       |
+| TIMEZONE                   | Fuseau horaire utilisé pour le formatage des dates. Variable optionnelle, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
