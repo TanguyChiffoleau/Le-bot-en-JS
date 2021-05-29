@@ -206,6 +206,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | REPORT_CHANNEL             | ID du channel sur lequel les messages de signalement seront postés                                                   |
 | LOGS_CHANNEL               | ID du channel sur lequel les messages de log seront postés                                                           |
 | VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule |
+| CONFIG_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires de config en DM vers le bon channel                               |
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
