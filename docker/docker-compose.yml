@@ -10,3 +10,4 @@ services:
             - ../config/bot.env
         volumes:
             - ../config/reactionRoleConfig.json:/usr/src/app/config/reactionRoleConfig.json
+            - ../forms/:/usr/src/app/forms/
