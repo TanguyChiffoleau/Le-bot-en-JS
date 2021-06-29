@@ -28,6 +28,7 @@ export default () => {
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
 		configChannelID: process.env.CONFIG_CHANNEL_ID,
+		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
 	}
 	client.cache = {
 		// Messages supprimés par la bot pour ne pas

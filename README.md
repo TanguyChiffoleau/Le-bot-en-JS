@@ -208,6 +208,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | VOICE_MANAGER_CHANNELS_IDS | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                       |
 | TIMEZONE                   | Fuseau horaire utilisé pour le formatage des dates. Variable optionnelle, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
 | CONFIG_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires de config en DM vers le bon channel                                                                                                                     |
+| UPGRADE_CHANNEL_ID         | ID du channel utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                     |
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
