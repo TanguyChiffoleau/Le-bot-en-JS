@@ -16,11 +16,11 @@ export default {
 			},
 			{
 				command: 'cooldown 20',
-				explaination: 'cooldown de 30 secondes pendant 20 secondes',
+				explaination: 'cooldown de 20 secondes pendant une durée indéfinie',
 			},
 			{
 				command: 'cooldown 20 50',
-				explaination: 'cooldown de 50 secondes pendant 20 secondes',
+				explaination: 'cooldown de 20 secondes pendant 50 secondes',
 			},
 		],
 	},
