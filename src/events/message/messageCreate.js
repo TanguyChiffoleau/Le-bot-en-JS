@@ -70,11 +70,9 @@ export default async (message, client) => {
 
 		// Exécution de la commande
 		try {
-			message.channel.startTyping()
-			await command.execute(client, message, args)
-			return message.channel.stopTyping(true)
+			await message.channel.sendTyping()
+			return command.execute(client, message, args)
 		} catch (error) {
-			message.channel.stopTyping(true)
 			message.reply('il y a eu une erreur en exécutant la commande 😬')
 			console.error(error)
 		}
