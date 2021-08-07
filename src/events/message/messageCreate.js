@@ -14,6 +14,8 @@ export default async (message, client) => {
 	)
 		return
 
+	if (message.partial) await message.fetch()
+
 	// Si le message vient d'une guild, on vérifie
 	// si le pseudo respecte bien les règles
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)

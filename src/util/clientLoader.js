@@ -3,6 +3,7 @@ import { Client, Collection, Intents } from 'discord.js'
 // Création du client et de ses propriétés
 export default () => {
 	const client = new Client({
+		partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION', 'CHANNEL'],
 		intents: [
 			Intents.FLAGS.GUILDS,
 			Intents.FLAGS.GUILD_MEMBERS,
