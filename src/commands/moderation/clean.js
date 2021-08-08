@@ -117,12 +117,12 @@ export default {
 					fields: [
 						{
 							name: 'Channel',
-							value: message.channel,
+							value: message.channel.toString(),
 							inline: true,
 						},
 						{
 							name: 'Exécuté par',
-							value: message.member,
+							value: message.member.toString(),
 							inline: true,
 						},
 						{
@@ -148,12 +148,12 @@ export default {
 				fields: [
 					{
 						name: 'Channel',
-						value: message.channel,
+						value: message.channel.toString(),
 						inline: true,
 					},
 					{
 						name: 'Exécuté par',
-						value: message.member,
+						value: message.member.toString(),
 						inline: true,
 					},
 					{

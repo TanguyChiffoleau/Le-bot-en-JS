@@ -64,7 +64,7 @@ export default {
 				},
 				{
 					name: 'Mention',
-					value: member,
+					value: member.toString(),
 					inline: true,
 				},
 				{

@@ -22,7 +22,7 @@ export default async (guildMember, client) => {
 				fields: [
 					{
 						name: 'Mention',
-						value: guildMember,
+						value: guildMember.toString(),
 						inline: true,
 					},
 					{

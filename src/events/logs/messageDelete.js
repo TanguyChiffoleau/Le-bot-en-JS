@@ -38,12 +38,12 @@ export default async (message, client) => {
 		fields: [
 			{
 				name: 'Auteur',
-				value: message.author,
+				value: message.author.toString(),
 				inline: true,
 			},
 			{
 				name: 'Channel',
-				value: message.channel,
+				value: message.channel.toString(),
 				inline: true,
 			},
 			{
