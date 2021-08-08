@@ -30,11 +30,13 @@ export default {
 			})
 
 			return message.channel.send({
-				embed: {
-					title: 'Commandes principales disponibles',
-					color: 'ff8000',
-					fields,
-				},
+				embeds: [
+					{
+						title: 'Commandes principales disponibles',
+						color: 'ff8000',
+						fields,
+					},
+				],
 			})
 		}
 
@@ -119,6 +121,6 @@ export default {
 				})
 		}
 
-		return message.channel.send({ embed })
+		return message.channel.send({ embeds: [embed] })
 	},
 }

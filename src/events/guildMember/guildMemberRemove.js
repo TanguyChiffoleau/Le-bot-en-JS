@@ -54,5 +54,5 @@ export default (guildMember, client) => {
 			},
 		)
 
-	return leaveJoinChannel.send({ embed })
+	return leaveJoinChannel.send({ embeds: [embed] })
 }

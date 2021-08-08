@@ -88,6 +88,6 @@ export default {
 				inline: true,
 			})
 
-		return message.channel.send({ embed })
+		return message.channel.send({ embeds: [embed] })
 	},
 }

@@ -193,7 +193,7 @@ export default async (messageReaction, user, client) => {
 			}
 
 			// Envoie de l'embed
-			return reportChannel.send({ embed: sendLogReport })
+			return reportChannel.send({ embeds: [sendLogReport] })
 		}
 
 		default:

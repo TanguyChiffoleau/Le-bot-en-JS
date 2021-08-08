@@ -14,36 +14,38 @@ export default {
 	requirePermissions: [],
 	execute: (client, message) =>
 		message.channel.send({
-			embed: {
-				color: '01579B',
-				title: 'Infos',
-				fields: [
-					{
-						name: 'Latence API',
-						value: `${client.ws.ping} ms`,
-						inline: true,
-					},
-					{
-						name: 'Uptime',
-						value: diffDate(client.readyAt),
-						inline: true,
-					},
-					{
-						name: 'Prefix',
-						value: `\`${client.config.prefix}\``,
-						inline: true,
-					},
-					{
-						name: 'Version',
-						value: version,
-						inline: true,
-					},
-					{
-						name: 'Code source',
-						value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
-						inline: true,
-					},
-				],
-			},
+			embeds: [
+				{
+					color: '01579B',
+					title: 'Infos',
+					fields: [
+						{
+							name: 'Latence API',
+							value: `${client.ws.ping} ms`,
+							inline: true,
+						},
+						{
+							name: 'Uptime',
+							value: diffDate(client.readyAt),
+							inline: true,
+						},
+						{
+							name: 'Prefix',
+							value: `\`${client.config.prefix}\``,
+							inline: true,
+						},
+						{
+							name: 'Version',
+							value: version,
+							inline: true,
+						},
+						{
+							name: 'Code source',
+							value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
+							inline: true,
+						},
+					],
+				},
+			],
 		}),
 }

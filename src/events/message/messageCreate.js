@@ -183,7 +183,7 @@ export default async (message, client) => {
 					})
 				})
 
-			return message.channel.send({ embed })
+			return message.channel.send({ embeds: [embed] })
 		})
 
 		// Si le message ne contenais que un(des) lien(s),

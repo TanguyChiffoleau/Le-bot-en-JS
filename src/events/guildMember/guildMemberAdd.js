@@ -12,34 +12,36 @@ export default async (guildMember, client) => {
 
 	// Envoi du message de join
 	const sentMessage = await leaveJoinChannel.send({
-		embed: {
-			color: '57C92A',
-			author: {
-				name: `${guildMember.displayName} (ID ${guildMember.id})`,
-				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
+		embeds: [
+			{
+				color: '57C92A',
+				author: {
+					name: `${guildMember.displayName} (ID ${guildMember.id})`,
+					icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
+				},
+				fields: [
+					{
+						name: 'Mention',
+						value: guildMember,
+						inline: true,
+					},
+					{
+						name: 'Date de création du compte',
+						value: convertDate(guildMember.user.createdAt),
+						inline: true,
+					},
+					{
+						name: 'Âge du compte',
+						value: diffDate(guildMember.user.createdAt),
+						inline: true,
+					},
+				],
+				footer: {
+					text: 'Un utilisateur a rejoint le serveur',
+				},
+				timestamp: new Date(),
 			},
-			fields: [
-				{
-					name: 'Mention',
-					value: guildMember,
-					inline: true,
-				},
-				{
-					name: 'Date de création du compte',
-					value: convertDate(guildMember.user.createdAt),
-					inline: true,
-				},
-				{
-					name: 'Âge du compte',
-					value: diffDate(guildMember.user.createdAt),
-					inline: true,
-				},
-			],
-			footer: {
-				text: 'Un utilisateur a rejoint le serveur',
-			},
-			timestamp: new Date(),
-		},
+		],
 	})
 
 	// Ajout de la réaction pour ban
