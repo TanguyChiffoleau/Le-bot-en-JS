@@ -50,10 +50,12 @@ export default async (guildMember, client) => {
 	// Filtre pour la réaction de ban
 	const banReactionFilter = (messageReaction, user) =>
 		messageReaction.emoji.name === '🔨' &&
-		guild.member(user).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS')
+		guild.member(user).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
+		!user.bot
 
 	// Création du collecteur de réactions de ban
-	const banReactions = await sentMessage.awaitReactions(banReactionFilter, {
+	const banReactions = await sentMessage.awaitReactions({
+		banReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
 		maxEmojis: 1,
@@ -74,10 +76,11 @@ export default async (guildMember, client) => {
 
 	// Filtre pour la réqction de confirmation
 	const confirmReactionFilter = (messageReaction, user) =>
-		messageReaction.emoji.name === '✅' && user === banReactionUser
+		messageReaction.emoji.name === '✅' && user === banReactionUser && !user.bot
 
 	// Création du collecteur de réactions de confirmation
-	const confirmReaction = await sentMessage.awaitReactions(confirmReactionFilter, {
+	const confirmReaction = await sentMessage.awaitReactions({
+		confirmReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
 		maxEmojis: 1,
