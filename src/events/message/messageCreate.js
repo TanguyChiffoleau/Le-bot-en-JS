@@ -39,11 +39,11 @@ export default async (message, client) => {
 			const expirationTime = timestamps.get(message.author.id) + cooldownAmount
 			if (now < expirationTime) {
 				const timeLeft = expirationTime - now
-				const sentMessage = await message.reply(
-					`merci d'attendre ${(timeLeft / 1000).toFixed(
+				const sentMessage = await message.reply({
+					content: `merci d'attendre ${(timeLeft / 1000).toFixed(
 						1,
 					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
-				)
+				})
 
 				// Suppression du message
 				client.cache.deleteMessagesID.add(sentMessage.id)
@@ -55,25 +55,27 @@ export default async (message, client) => {
 
 		// Rejets de la commandes
 		if (command.needArguments && !args.length)
-			return message.reply("tu n'as pas donné d'argument(s) 😕")
+			return message.reply({ content: "tu n'as pas donné d'argument(s) 😕" })
 
 		if (command.guildOnly && !message.guild)
-			return message.reply(
-				'Je ne peux pas exécuter cette commande dans les messages privés 😕',
-			)
+			return message.reply({
+				content: 'Je ne peux pas exécuter cette commande dans les messages privés 😕',
+			})
 
 		if (
 			command.requirePermissions.length > 0 &&
 			!message.member.permissionsIn(message.channel).has(command.requirePermissions)
 		)
-			return message.reply("tu n'as pas les permissions d'effectuer cette commande 😕")
+			return message.reply({
+				content: "tu n'as pas les permissions d'effectuer cette commande 😕",
+			})
 
 		// Exécution de la commande
 		try {
 			await message.channel.sendTyping()
 			return command.execute(client, message, args)
 		} catch (error) {
-			message.reply('il y a eu une erreur en exécutant la commande 😬')
+			message.reply({ content: 'il y a eu une erreur en exécutant la commande 😬' })
 			console.error(error)
 		}
 

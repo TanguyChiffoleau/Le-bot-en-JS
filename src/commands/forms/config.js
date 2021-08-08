@@ -69,13 +69,15 @@ export default {
 			if (error.code !== Constants.APIErrors.CANNOT_MESSAGE_USER) throw error
 
 			if (targetedMember === message.member)
-				message.reply(
-					"je n'ai pas réussi à envoyer le message privé, tu as dû sûrement me bloquer/désactiver tes messages provenant du serveur 😬",
-				)
+				message.reply({
+					content:
+						"je n'ai pas réussi à envoyer le message privé, tu as dû sûrement me bloquer/désactiver tes messages provenant du serveur 😬",
+				})
 			else
-				message.reply(
-					"je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué /désactivé les messages provenant du serveur 😬",
-				)
+				message.reply({
+					content:
+						"je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué /désactivé les messages provenant du serveur 😬",
+				})
 
 			return message.react('❌')
 		}

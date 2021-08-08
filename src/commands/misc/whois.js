@@ -35,9 +35,9 @@ export default {
 		// Acquisition du membre avec la mention/l'ID
 		const member = getMember(message, args[0])
 		if (!member)
-			return message.reply(
-				"je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
-			)
+			return message.reply({
+				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+			})
 
 		// Création de l'embed
 		const embed = {

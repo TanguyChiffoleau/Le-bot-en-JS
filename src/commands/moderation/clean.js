@@ -48,14 +48,17 @@ export default {
 	execute: async (client, message, [number, silent = false]) => {
 		// Acquisition du nombre de messages à supprimer
 		const chosenNumber = parseInt(number, 10)
-		if (!chosenNumber) return message.reply("tu n'as pas donné un nombre 😕")
+		if (!chosenNumber) return message.reply({ content: "tu n'as pas donné un nombre 😕" })
 		if (chosenNumber < 1 || chosenNumber > 99)
-			return message.reply("tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕")
+			return message.reply({
+				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
+			})
 		const numberUsed = chosenNumber + 1
 
 		// Acquisition du channel de logs
 		const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
-		if (!logsChannel) return message.reply("il n'y a pas de channel pour log l'action 😕")
+		if (!logsChannel)
+			return message.reply({ content: "il n'y a pas de channel pour log l'action 😕" })
 
 		// Acquisition des messages et filtrage des épinglés
 		const fetchedMessages = (
@@ -66,7 +69,8 @@ export default {
 		const deletedMessages = await message.channel.bulkDelete(fetchedMessages, true)
 		// Exclusion du message de la commande
 		deletedMessages.delete(message.id)
-		if (deletedMessages.size === 0) return message.reply('aucun message supprimé 😕')
+		if (deletedMessages.size === 0)
+			return message.reply({ content: 'aucun message supprimé 😕' })
 
 		// Réponse pour l'utilisateur
 		const { size: nbDeletedMessages } = deletedMessages

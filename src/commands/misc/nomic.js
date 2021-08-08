@@ -18,20 +18,23 @@ export default {
 
 		// Si l'utilisateur n'est pas dans un channel vocal
 		if (!voiceChannel)
-			return message.reply(
-				'tu dois être dans un channel vocal pour utiliser cette commande 😕',
-			)
+			return message.reply({
+				content: 'tu dois être dans un channel vocal pour utiliser cette commande 😕',
+			})
 
 		// Si l'utilisateur n'est pas dans un channel vocal personnalisé
 		if (!client.voiceManager.has(voiceChannel.id))
-			return message.reply(
-				'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
-			)
+			return message.reply({
+				content:
+					'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+			})
 
 		// Check si il y a déjà un channel no-mic
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 		if (existingNoMicChannel)
-			return message.reply(`il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`)
+			return message.reply({
+				content: `il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
+			})
 
 		// Crée le channel no mic
 		const noMicChannel = await message.guild.channels.create(`no mic ${voiceChannel.name}`, {
@@ -88,6 +91,6 @@ export default {
 		// Ajout du channel dans la map
 		client.voiceManager.set(voiceChannel.id, noMicChannel)
 
-		return message.reply(`ton channel a bien été créé : ${noMicChannel} 👌`)
+		return message.reply({ content: `ton channel a bien été créé : ${noMicChannel} 👌` })
 	},
 }

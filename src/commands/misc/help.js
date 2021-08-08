@@ -45,7 +45,10 @@ export default {
 		const command =
 			client.commands.get(chosenCommand) ||
 			client.commands.find(({ aliases }) => aliases.includes(chosenCommand))
-		if (!command) return message.reply(`je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`)
+		if (!command)
+			return message.reply({
+				content: `je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`,
+			})
 
 		// Fait l'intérmédiaire entre la propriété et sa traduction en langage
 		const properties = [
