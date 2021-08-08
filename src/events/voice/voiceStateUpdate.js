@@ -1,18 +1,18 @@
 const handleLeave = (oldState, newState, client) => {
 	// S'il quitte un channel non personnalisé, on return
-	if (!client.voiceManager.has(oldState.channelID)) return
+	if (!client.voiceManager.has(oldState.channelId)) return
 
 	// S'il le channel qu'il a quitté est vide
 	if (oldState.channel.members.size === 0) {
 		// Acquisition du channel nomic
-		const noMicChannel = client.voiceManager.get(oldState.channelID)
+		const noMicChannel = client.voiceManager.get(oldState.channelId)
 		// S'il existe
 		if (noMicChannel)
 			// On supprime le channel nomic
 			noMicChannel.delete()
 
 		// On supprime le channel de la map
-		client.voiceManager.delete(oldState.channelID)
+		client.voiceManager.delete(oldState.channelId)
 
 		// Suppression du channel vocal
 		// Catch si le channel est déjà supprimé
@@ -20,17 +20,17 @@ const handleLeave = (oldState, newState, client) => {
 	}
 
 	// S'il n'est pas vide et qu'il quitte un channel avec un no_mic
-	if (client.voiceManager.get(oldState.channelID))
+	if (client.voiceManager.get(oldState.channelId))
 		// Suppression des permissions du membre pour le channel no_mic
 		return client.voiceManager
-			.get(oldState.channelID)
+			.get(oldState.channelId)
 			.permissionOverwrites.get(newState.id)
 			.delete()
 }
 
 const handleJoin = async (newState, client) => {
 	// S'il rejoint un channel qui doit créer un nouveau channel
-	if (client.config.voiceManagerChannelsIDs.includes(newState.channelID)) {
+	if (client.config.voiceManagerChannelsIDs.includes(newState.channelId)) {
 		const member = newState.member
 
 		const permissions = newState.channel.permissionOverwrites.clone().set(member, {
@@ -61,7 +61,7 @@ const handleJoin = async (newState, client) => {
 	}
 
 	// S'il rejoint un channel perso qui a un no_mic
-	const noMicChannel = client.voiceManager.get(newState.channelID)
+	const noMicChannel = client.voiceManager.get(newState.channelId)
 	if (noMicChannel)
 		// On lui donne la permission de voir le channel
 		return noMicChannel.updateOverwrite(newState.id, {
@@ -74,7 +74,7 @@ const handleJoin = async (newState, client) => {
 
 export default (oldState, newState, client) => {
 	// Pour uniquement garder les changements de channels et non d'état
-	if (oldState.channelID === newState.channelID) return
+	if (oldState.channelId === newState.channelId) return
 
 	// Si l'utilisateur quitte un channel
 	if (oldState.channel) handleLeave(oldState, newState, client)

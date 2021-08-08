@@ -1,1 +1,1 @@
-export default (error, shardID) => console.error(`ShardID : ${shardID} | error : ${error}`)
+export default (error, shardId) => console.error(`ShardID : ${shardId} | error : ${error}`)
