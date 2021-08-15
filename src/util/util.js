@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-import { GuildMember, Client } from 'discord.js'
+import { GuildMember, Client, User } from 'discord.js'
 
 /**
  * Gère l'ajout de "s" à la fin d'un mot en fonction de la quantité
@@ -181,12 +181,16 @@ export const getFileInfos = file => {
 /**
  *
  * @param {GuildMember} guildMember
+ * @param {User} user
  * @returns le pseudo du guildMember ou le tag de l'user
  */
-export const displayNameAndID = guildMember => {
-	if (guildMember) return `${guildMember.displayName} (ID ${guildMember.id})`
+export const displayNameAndID = (guildMember, user) => {
+	if (guildMember && guildMember.displayName)
+		return `${guildMember.displayName} (ID ${guildMember.id})`
 
-	return `${guildMember.user.tag} (ID ${guildMember.user.id})`
+	if (user && user.username) return `${user.username} (ID ${user.id})`
+
+	return '?'
 }
 
 /**
