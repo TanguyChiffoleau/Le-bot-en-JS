@@ -1,4 +1,4 @@
-FROM node:16.6.2-alpine3.13
+FROM node:16.7.0-alpine3.13
 RUN apk add dumb-init
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
