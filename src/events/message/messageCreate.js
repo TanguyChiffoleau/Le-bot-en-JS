@@ -82,9 +82,9 @@ export default async (message, client) => {
 	} else if (message.guild) {
 		// Regex pour match les liens discord
 		const regexGlobal =
-			/https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/g
+			/https:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/g
 		const regex =
-			/https:\/\/(?:canary\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/
+			/https:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/
 
 		// Suppression des lignes en citations, pour ne pas afficher la citation
 		const matches = message.content.match(regexGlobal)
@@ -130,7 +130,7 @@ export default async (message, client) => {
 			const embed = {
 				color: '2f3136',
 				author: {
-					name: `${displayNameAndID(validMessage.member)}`,
+					name: `${displayNameAndID(validMessage.member, validMessage.author)}`,
 					icon_url: validMessage.author.displayAvatarURL({ dynamic: true }),
 				},
 				fields: [],
@@ -167,6 +167,7 @@ export default async (message, client) => {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
 				embed.footer.text += `\nCité par ${displayNameAndID(
 					message.member,
+					message.author,
 				)} le ${convertDate(message.createdAt)}`
 			}
 

@@ -109,7 +109,7 @@ export default {
 				{
 					color: '0000ff',
 					author: {
-						name: `${displayNameAndID(message.member)}`,
+						name: `${displayNameAndID(message.member, message.author)}`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',
@@ -156,7 +156,7 @@ export default {
 				{
 					color: '0000ff',
 					author: {
-						name: `${displayNameAndID(message.member)}`,
+						name: `${displayNameAndID(message.member, message.author)}`,
 						icon_url: message.author.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',

@@ -32,7 +32,7 @@ export default async (message, client) => {
 
 	const logEmbed = {
 		author: {
-			name: `${displayNameAndID(message.member)}`,
+			name: `${displayNameAndID(message.member, message.author)}`,
 			icon_url: message.author.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
