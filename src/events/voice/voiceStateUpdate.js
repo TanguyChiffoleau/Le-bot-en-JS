@@ -24,7 +24,7 @@ const handleLeave = (oldState, newState, client) => {
 		// Suppression des permissions du membre pour le channel no_mic
 		return client.voiceManager
 			.get(oldState.channelId)
-			.permissionOverwrites.get(newState.id)
+			.permissionOverwrites.cache.get(newState.id)
 			.delete()
 }
 
@@ -33,7 +33,7 @@ const handleJoin = async (newState, client) => {
 	if (client.config.voiceManagerChannelsIDs.includes(newState.channelId)) {
 		const member = newState.member
 
-		const permissions = newState.channel.permissionOverwrites.clone().set(member, {
+		const permissions = newState.channel.permissionOverwrites.cache.clone().set(member, {
 			id: member,
 			type: 'member',
 			allow: ['VIEW_CHANNEL', 'CONNECT', 'MANAGE_CHANNELS', 'MOVE_MEMBERS'],
@@ -43,7 +43,7 @@ const handleJoin = async (newState, client) => {
 		const createdChannel = await newState.guild.channels.create(
 			`vocal de ${member.displayName}`,
 			{
-				type: 'voice',
+				type: 'GUILD_VOICE',
 				parent: newState.channel.parent,
 				permissionOverwrites: permissions,
 			},
@@ -64,7 +64,7 @@ const handleJoin = async (newState, client) => {
 	const noMicChannel = client.voiceManager.get(newState.channelId)
 	if (noMicChannel)
 		// On lui donne la permission de voir le channel
-		return noMicChannel.updateOverwrite(newState.id, {
+		return noMicChannel.permissionOverwrites.edit(newState.id, {
 			CREATE_INSTANT_INVITE: false,
 			VIEW_CHANNEL: true,
 			SEND_MESSAGES: true,

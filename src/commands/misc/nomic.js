@@ -50,7 +50,7 @@ export default {
 		// pour les rôles qui peuvent supprimer les messages (modos)
 		// ou qui ne peuvent pas envoyer de messages (muted)
 		await Promise.all(
-			noMicChannel.permissionOverwrites
+			noMicChannel.permissionOverwrites.cache
 				.filter(
 					permissionOverwrites =>
 						!(
@@ -65,7 +65,7 @@ export default {
 		await Promise.all([
 			// Accès au channel pour les membres présents
 			...voiceChannel.members.map(member =>
-				noMicChannel.updateOverwrite(member, {
+				noMicChannel.permissionOverwrites.edit(member, {
 					CREATE_INSTANT_INVITE: false,
 					VIEW_CHANNEL: true,
 					SEND_MESSAGES: true,
@@ -73,7 +73,7 @@ export default {
 				}),
 			),
 			// Setup les permissions (pas d'accès) pour le role everyone
-			noMicChannel.updateOverwrite(message.guild.id, {
+			noMicChannel.permissionOverwrites.edit(message.guild.id, {
 				CREATE_INSTANT_INVITE: false,
 				MANAGE_CHANNELS: false,
 				MANAGE_ROLES: false,

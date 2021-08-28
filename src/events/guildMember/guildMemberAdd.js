@@ -50,7 +50,7 @@ export default async (guildMember, client) => {
 	// Filtre pour la réaction de ban
 	const banReactionFilter = (messageReaction, user) =>
 		messageReaction.emoji.name === '🔨' &&
-		guild.member(user).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
+		guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
 		!user.bot
 
 	// Création du collecteur de réactions de ban
