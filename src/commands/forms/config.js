@@ -40,7 +40,9 @@ export default {
 			fields: [
 				{
 					name: 'Channel dans lequel renvoyer le formulaire complété',
-					value: message.guild.channels.cache.get(client.config.configChannelID),
+					value: message.guild.channels.cache
+						.get(client.config.configChannelID)
+						.toString(),
 				},
 				{
 					name: 'Précisions',
