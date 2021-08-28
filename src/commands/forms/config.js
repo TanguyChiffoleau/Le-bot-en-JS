@@ -1,6 +1,5 @@
 import { readFile } from 'fs/promises'
 import { Constants } from 'discord.js'
-import { isUserOnMobileDevice } from '../../util/util.js'
 
 export default {
 	name: 'config',
@@ -55,16 +54,9 @@ export default {
 				? message.member
 				: message.mentions.members.first()
 
-		const targetedMemberStatus = targetedMember.user.presence.clientStatus
-
 		try {
-			if (isUserOnMobileDevice(targetedMemberStatus)) {
-				await targetedMember.send({ embed })
-				await targetedMember.send(config)
-			} else {
-				embed.description = config
-				await targetedMember.send({ embed })
-			}
+			await targetedMember.send({ embeds: [embed] })
+			await targetedMember.send(config)
 		} catch (error) {
 			if (error.code !== Constants.APIErrors.CANNOT_MESSAGE_USER) throw error
 
