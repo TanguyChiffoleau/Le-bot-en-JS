@@ -12,34 +12,36 @@ export default async (guildMember, client) => {
 
 	// Envoi du message de join
 	const sentMessage = await leaveJoinChannel.send({
-		embed: {
-			color: '57C92A',
-			author: {
-				name: `${guildMember.displayName} (ID ${guildMember.id})`,
-				icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
+		embeds: [
+			{
+				color: '57C92A',
+				author: {
+					name: `${guildMember.displayName} (ID ${guildMember.id})`,
+					icon_url: guildMember.user.displayAvatarURL({ dynamic: true }),
+				},
+				fields: [
+					{
+						name: 'Mention',
+						value: guildMember.toString(),
+						inline: true,
+					},
+					{
+						name: 'Date de création du compte',
+						value: convertDate(guildMember.user.createdAt),
+						inline: true,
+					},
+					{
+						name: 'Âge du compte',
+						value: diffDate(guildMember.user.createdAt),
+						inline: true,
+					},
+				],
+				footer: {
+					text: 'Un utilisateur a rejoint le serveur',
+				},
+				timestamp: new Date(),
 			},
-			fields: [
-				{
-					name: 'Mention',
-					value: guildMember,
-					inline: true,
-				},
-				{
-					name: 'Date de création du compte',
-					value: convertDate(guildMember.user.createdAt),
-					inline: true,
-				},
-				{
-					name: 'Âge du compte',
-					value: diffDate(guildMember.user.createdAt),
-					inline: true,
-				},
-			],
-			footer: {
-				text: 'Un utilisateur a rejoint le serveur',
-			},
-			timestamp: new Date(),
-		},
+		],
 	})
 
 	// Ajout de la réaction pour ban
@@ -48,10 +50,12 @@ export default async (guildMember, client) => {
 	// Filtre pour la réaction de ban
 	const banReactionFilter = (messageReaction, user) =>
 		messageReaction.emoji.name === '🔨' &&
-		guild.member(user).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS')
+		guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
+		!user.bot
 
 	// Création du collecteur de réactions de ban
-	const banReactions = await sentMessage.awaitReactions(banReactionFilter, {
+	const banReactions = await sentMessage.awaitReactions({
+		banReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
 		maxEmojis: 1,
@@ -72,10 +76,11 @@ export default async (guildMember, client) => {
 
 	// Filtre pour la réqction de confirmation
 	const confirmReactionFilter = (messageReaction, user) =>
-		messageReaction.emoji.name === '✅' && user === banReactionUser
+		messageReaction.emoji.name === '✅' && user === banReactionUser && !user.bot
 
 	// Création du collecteur de réactions de confirmation
-	const confirmReaction = await sentMessage.awaitReactions(confirmReactionFilter, {
+	const confirmReaction = await sentMessage.awaitReactions({
+		confirmReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
 		maxEmojis: 1,

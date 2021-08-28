@@ -20,7 +20,7 @@ export default (guildMember, client) => {
 		fields: [
 			{
 				name: 'Mention',
-				value: guildMember,
+				value: guildMember.toString(),
 				inline: true,
 			},
 			{
@@ -54,5 +54,5 @@ export default (guildMember, client) => {
 			},
 		)
 
-	return leaveJoinChannel.send({ embed })
+	return leaveJoinChannel.send({ embeds: [embed] })
 }

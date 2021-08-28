@@ -1,20 +1,17 @@
-import { Client, Collection } from 'discord.js'
+import { Client, Collection, Intents } from 'discord.js'
 
 // Création du client et de ses propriétés
 export default () => {
 	const client = new Client({
-		partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION'],
-		ws: {
-			intents: [
-				'GUILDS',
-				'GUILD_MEMBERS',
-				'GUILD_MESSAGES',
-				'GUILD_MESSAGE_REACTIONS',
-				'DIRECT_MESSAGES',
-				'GUILD_VOICE_STATES',
-				'GUILD_PRESENCES',
-			],
-		},
+		partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION', 'CHANNEL'],
+		intents: [
+			Intents.FLAGS.GUILDS,
+			Intents.FLAGS.GUILD_MEMBERS,
+			Intents.FLAGS.GUILD_MESSAGES,
+			Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+			Intents.FLAGS.GUILD_VOICE_STATES,
+			Intents.FLAGS.DIRECT_MESSAGES,
+		],
 	})
 	client.commands = new Collection()
 	client.cooldowns = new Collection()

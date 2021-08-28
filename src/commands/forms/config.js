@@ -1,6 +1,5 @@
 import { readFile } from 'fs/promises'
 import { Constants } from 'discord.js'
-import { isUserOnMobileDevice } from '../../util/util.js'
 
 export default {
 	name: 'config',
@@ -41,7 +40,9 @@ export default {
 			fields: [
 				{
 					name: 'Channel dans lequel renvoyer le formulaire complété',
-					value: message.guild.channels.cache.get(client.config.configChannelID),
+					value: message.guild.channels.cache
+						.get(client.config.configChannelID)
+						.toString(),
 				},
 				{
 					name: 'Précisions',
@@ -55,27 +56,22 @@ export default {
 				? message.member
 				: message.mentions.members.first()
 
-		const targetedMemberStatus = targetedMember.user.presence.clientStatus
-
 		try {
-			if (isUserOnMobileDevice(targetedMemberStatus)) {
-				await targetedMember.send({ embed })
-				await targetedMember.send(config)
-			} else {
-				embed.description = config
-				await targetedMember.send({ embed })
-			}
+			await targetedMember.send({ embeds: [embed] })
+			await targetedMember.send(config)
 		} catch (error) {
 			if (error.code !== Constants.APIErrors.CANNOT_MESSAGE_USER) throw error
 
 			if (targetedMember === message.member)
-				message.reply(
-					"je n'ai pas réussi à envoyer le message privé, tu as dû sûrement me bloquer/désactiver tes messages provenant du serveur 😬",
-				)
+				message.reply({
+					content:
+						"je n'ai pas réussi à envoyer le message privé, tu as dû sûrement me bloquer/désactiver tes messages provenant du serveur 😬",
+				})
 			else
-				message.reply(
-					"je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué /désactivé les messages provenant du serveur 😬",
-				)
+				message.reply({
+					content:
+						"je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué /désactivé les messages provenant du serveur 😬",
+				})
 
 			return message.react('❌')
 		}

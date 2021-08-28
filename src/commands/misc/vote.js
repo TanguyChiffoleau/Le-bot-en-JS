@@ -17,16 +17,18 @@ export default {
 
 		// Envoie du message de vote
 		const sentMessage = await message.channel.send({
-			embed: {
-				color: '00FF00',
-				author: {
-					name: `${message.member.displayName} (ID ${message.member.id})`,
-					icon_url: message.author.displayAvatarURL({ dynamic: true }),
+			embeds: [
+				{
+					color: '00FF00',
+					author: {
+						name: `${message.member.displayName} (ID ${message.member.id})`,
+						icon_url: message.author.displayAvatarURL({ dynamic: true }),
+					},
+					title: 'Nouveau vote',
+					description: `\`\`\`${args.join(' ')}\`\`\``,
+					timestamp: new Date(),
 				},
-				title: 'Nouveau vote',
-				description: `\`\`\`${args.join(' ')}\`\`\``,
-				timestamp: new Date(),
-			},
+			],
 		})
 
 		// Ajout des réactions pour voter

@@ -38,12 +38,12 @@ export default async (message, client) => {
 		fields: [
 			{
 				name: 'Auteur',
-				value: message.author,
+				value: message.author.toString(),
 				inline: true,
 			},
 			{
 				name: 'Channel',
-				value: message.channel,
+				value: message.channel.toString(),
 				inline: true,
 			},
 			{
@@ -85,7 +85,7 @@ export default async (message, client) => {
 
 	// Partie attachements (fichiers, images...)
 	const attachments = message.attachments
-	if (attachments.size <= 0) return logsChannel.send({ embed: logEmbed })
+	if (attachments.size <= 0) return logsChannel.send({ embeds: [logEmbed] })
 
 	// Séparation des images et des autres fichiers
 	const [imageAttachments, otherAttachments] = attachments.partition(attachment =>
@@ -138,5 +138,5 @@ export default async (message, client) => {
 		})
 	}
 
-	return logsChannel.send({ files: messageAttachments, embed: logEmbed })
+	return logsChannel.send({ files: messageAttachments, embeds: [logEmbed] })
 }

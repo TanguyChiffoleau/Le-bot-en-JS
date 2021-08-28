@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import {
 	pluralizeWithoutQuantity as pluralize,
 	convertDate,
@@ -6,6 +5,22 @@ import {
 	displayNameAndID,
 } from '../../util/util.js'
 import { Util } from 'discord.js'
+
+const isEmbedExceedingLimits = embeds =>
+	embeds.reduce((acc, { title, description, fields, footer, author }) => {
+		let sum = 0
+		if (title) sum += title.length
+		if (description) sum += description.length
+		if (fields && fields.length > 0)
+			sum += fields.reduce(
+				(accBis, field) => accBis + field.name.length + field.value.length,
+				0,
+			)
+		if (footer) sum += footer.text.length
+		if (author) sum += author.name.length
+
+		return acc + sum
+	}, 0) > 6000
 
 export default {
 	name: 'clean',
@@ -33,14 +48,17 @@ export default {
 	execute: async (client, message, [number, silent = false]) => {
 		// Acquisition du nombre de messages à supprimer
 		const chosenNumber = parseInt(number, 10)
-		if (!chosenNumber) return message.reply("tu n'as pas donné un nombre 😕")
+		if (!chosenNumber) return message.reply({ content: "tu n'as pas donné un nombre 😕" })
 		if (chosenNumber < 1 || chosenNumber > 99)
-			return message.reply("tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕")
+			return message.reply({
+				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
+			})
 		const numberUsed = chosenNumber + 1
 
 		// Acquisition du channel de logs
 		const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
-		if (!logsChannel) return message.reply("il n'y a pas de channel pour log l'action 😕")
+		if (!logsChannel)
+			return message.reply({ content: "il n'y a pas de channel pour log l'action 😕" })
 
 		// Acquisition des messages et filtrage des épinglés
 		const fetchedMessages = (
@@ -51,21 +69,18 @@ export default {
 		const deletedMessages = await message.channel.bulkDelete(fetchedMessages, true)
 		// Exclusion du message de la commande
 		deletedMessages.delete(message.id)
-		if (deletedMessages.size === 0) return message.reply('aucun message supprimé 😕')
+		if (deletedMessages.size === 0)
+			return message.reply({ content: 'aucun message supprimé 😕' })
 
-		// Réponse pour l'utilisateur
+		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
 		const { size: nbDeletedMessages } = deletedMessages
-		const confirmationMessage = await message.channel.send(
-			`${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
-				'supprimé',
-				nbDeletedMessages,
-			)} 👌`,
-		)
-
-		// Suppression du message après 4 secondes
-		// si l'argument "silent" est vrai
-		if (silent && (silent === 's' || silent === 'silent'))
-			confirmationMessage.delete({ timeout: 4 * 1000 })
+		if (!silent || (silent !== 's' && silent !== 'silent'))
+			await message.channel.send(
+				`${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
+					'supprimé',
+					nbDeletedMessages,
+				)} 👌`,
+			)
 
 		// Partie logs
 		// Tri décroissant en fonction de l'heure à laquelle le message a été
@@ -81,17 +96,17 @@ export default {
 			)
 
 		// Envoie plusieurs embeds si les logs ne tient pas dans un seul embed
-		if (text.length > 2048) {
+		if (text.length > 4096) {
 			// Séparation des messages pour 3 embeds :
 			// 1er : titre + 1ère partie des messages
 			// 2nd : 2nd partie des messsages
 			// 3ème: 3ème partie des messages + fields exécuté par/le et channel
-			const splitedDescriptions = Util.splitMessage(text, { maxLength: 2048 })
+			const splitedDescriptions = Util.splitMessage(text, { maxLength: 4096 })
 			const firstDescription = splitedDescriptions.shift()
 			const lastDescription = splitedDescriptions.pop()
 
-			await logsChannel.send({
-				embed: {
+			const embeds = [
+				{
 					color: '0000ff',
 					author: {
 						name: `${displayNameAndID(message.member, message.author)}`,
@@ -100,29 +115,22 @@ export default {
 					title: 'Clean',
 					description: firstDescription,
 				},
-			})
-
-			for (const description of splitedDescriptions)
-				await logsChannel.send({
-					embed: {
-						color: '0000ff',
-						description: description,
-					},
-				})
-
-			return logsChannel.send({
-				embed: {
+				...splitedDescriptions.map(description => ({
+					color: '0000ff',
+					description: description,
+				})),
+				{
 					color: '0000ff',
 					description: lastDescription,
 					fields: [
 						{
 							name: 'Channel',
-							value: message.channel,
+							value: message.channel.toString(),
 							inline: true,
 						},
 						{
 							name: 'Exécuté par',
-							value: message.member,
+							value: message.member.toString(),
 							inline: true,
 						},
 						{
@@ -132,37 +140,46 @@ export default {
 						},
 					],
 				},
-			})
+			]
+
+			if (!isEmbedExceedingLimits(embeds)) return logsChannel.send({ embeds: embeds })
+
+			// eslint-disable-next-line no-await-in-loop
+			for (const embed of embeds) await logsChannel.send({ embeds: [embed] })
+
+			return
 		}
 
 		// Si les messages tiennent dans un seul embed
 		return logsChannel.send({
-			embed: {
-				color: '0000ff',
-				author: {
-					name: `${displayNameAndID(message.member, message.author)}`,
-					icon_url: message.author.displayAvatarURL({ dynamic: true }),
+			embeds: [
+				{
+					color: '0000ff',
+					author: {
+						name: `${displayNameAndID(message.member, message.author)}`,
+						icon_url: message.author.displayAvatarURL({ dynamic: true }),
+					},
+					title: 'Clean',
+					description: text,
+					fields: [
+						{
+							name: 'Channel',
+							value: message.channel.toString(),
+							inline: true,
+						},
+						{
+							name: 'Exécuté par',
+							value: message.member.toString(),
+							inline: true,
+						},
+						{
+							name: 'Exécuté le',
+							value: convertDate(new Date()),
+							inline: true,
+						},
+					],
 				},
-				title: 'Clean',
-				description: text,
-				fields: [
-					{
-						name: 'Channel',
-						value: message.channel,
-						inline: true,
-					},
-					{
-						name: 'Exécuté par',
-						value: message.member,
-						inline: true,
-					},
-					{
-						name: 'Exécuté le',
-						value: convertDate(new Date()),
-						inline: true,
-					},
-				],
-			},
+			],
 		})
 	},
 }
