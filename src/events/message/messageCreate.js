@@ -46,8 +46,7 @@ export default async (message, client) => {
 				})
 
 				// Suppression du message
-				client.cache.deleteMessagesID.add(sentMessage.id)
-				return sentMessage.delete({ timeout: timeLeft })
+				return client.cache.deleteMessagesID.add(sentMessage.id)
 			}
 		}
 		timestamps.set(message.author.id, now)

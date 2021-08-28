@@ -72,19 +72,15 @@ export default {
 		if (deletedMessages.size === 0)
 			return message.reply({ content: 'aucun message supprimé 😕' })
 
-		// Réponse pour l'utilisateur
+		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
 		const { size: nbDeletedMessages } = deletedMessages
-		const confirmationMessage = await message.channel.send(
-			`${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
-				'supprimé',
-				nbDeletedMessages,
-			)} 👌`,
-		)
-
-		// Suppression du message après 4 secondes
-		// si l'argument "silent" est vrai
-		if (silent && (silent === 's' || silent === 'silent'))
-			confirmationMessage.delete({ timeout: 4 * 1000 })
+		if (!silent || (silent !== 's' && silent !== 'silent'))
+			await message.channel.send(
+				`${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
+					'supprimé',
+					nbDeletedMessages,
+				)} 👌`,
+			)
 
 		// Partie logs
 		// Tri décroissant en fonction de l'heure à laquelle le message a été
