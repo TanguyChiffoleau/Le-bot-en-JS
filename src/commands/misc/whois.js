@@ -1,4 +1,4 @@
-import { convertDate, diffDate } from '../../util/util.js'
+import { convertDateForDiscord, diffDate } from '../../util/util.js'
 
 const getMember = (message, mentionOrID) => {
 	if (!mentionOrID) return message.member
@@ -54,7 +54,7 @@ export default {
 				},
 				{
 					name: 'Compte créé le',
-					value: convertDate(member.user.createdAt),
+					value: convertDateForDiscord(member.user.createdAt),
 					inline: true,
 				},
 				{
@@ -69,7 +69,7 @@ export default {
 				},
 				{
 					name: 'Serveur rejoint le',
-					value: convertDate(member.joinedAt),
+					value: convertDateForDiscord(member.joinedAt),
 					inline: true,
 				},
 				{

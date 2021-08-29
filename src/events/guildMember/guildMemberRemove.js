@@ -1,4 +1,4 @@
-import { convertDate, diffDate } from '../../util/util.js'
+import { convertDateForDiscord, diffDate } from '../../util/util.js'
 
 export default (guildMember, client) => {
 	if (
@@ -25,7 +25,7 @@ export default (guildMember, client) => {
 			},
 			{
 				name: 'Date de création du compte',
-				value: convertDate(guildMember.user.createdAt),
+				value: convertDateForDiscord(guildMember.user.createdAt),
 				inline: true,
 			},
 			{
@@ -44,7 +44,7 @@ export default (guildMember, client) => {
 		embed.fields.push(
 			{
 				name: 'Serveur rejoint le',
-				value: convertDate(guildMember.joinedAt),
+				value: convertDateForDiscord(guildMember.joinedAt),
 				inline: true,
 			},
 			{

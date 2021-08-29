@@ -1,4 +1,4 @@
-import { convertDate, isImage, getFileInfos, displayNameAndID } from '../../util/util.js'
+import { isImage, getFileInfos, displayNameAndID, convertDateForDiscord } from '../../util/util.js'
 import { MessageAttachment, Util } from 'discord.js'
 import bent from 'bent'
 
@@ -48,7 +48,7 @@ export default async (message, client) => {
 			},
 			{
 				name: 'Posté le',
-				value: convertDate(message.createdAt),
+				value: convertDateForDiscord(message.createdAt),
 				inline: true,
 			},
 		],

@@ -1,4 +1,4 @@
-import { convertDate } from '../../util/util.js'
+import { convertDateForDiscord } from '../../util/util.js'
 
 export default async (messageReaction, user, client) => {
 	const { message, emoji } = messageReaction
@@ -61,7 +61,7 @@ export default async (messageReaction, user, client) => {
 						editLogReport.color = 'ff8200'
 						editLogReport.fields.push({
 							name: '2nd signalement',
-							value: `Signalement de ${user} le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 							inline: false,
 						})
 						break
@@ -69,7 +69,7 @@ export default async (messageReaction, user, client) => {
 						editLogReport.color = 'ff6600'
 						editLogReport.fields.push({
 							name: '3ème signalement',
-							value: `Signalement de ${user} le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 							inline: false,
 						})
 						break
@@ -77,7 +77,7 @@ export default async (messageReaction, user, client) => {
 						editLogReport.color = 'ff3200'
 						editLogReport.fields.push({
 							name: '4ème signalement',
-							value: `Signalement de ${user} le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 							inline: false,
 						})
 						client.cache.deleteMessagesID.add(messageReaction.message.id)
@@ -111,7 +111,9 @@ export default async (messageReaction, user, client) => {
 					},
 					{
 						name: 'Message',
-						value: `[Posté le ${convertDate(message.createdAt)}](${message.url})`,
+						value: `[Posté le ${convertDateForDiscord(message.createdAt)}](${
+							message.url
+						})`,
 						inline: true,
 					},
 				],
@@ -122,7 +124,7 @@ export default async (messageReaction, user, client) => {
 					sendLogReport.color = 'ffae00'
 					sendLogReport.fields.push({
 						name: '1er signalement',
-						value: `Signalement de ${user} le ${convertDate(new Date())}`,
+						value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 						inline: false,
 					})
 					break
@@ -136,7 +138,7 @@ export default async (messageReaction, user, client) => {
 						},
 						{
 							name: '2nd signalement',
-							value: `Signalement de ${user} le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 							inline: false,
 						},
 					)
@@ -156,7 +158,7 @@ export default async (messageReaction, user, client) => {
 						},
 						{
 							name: '3ème signalement',
-							value: `Signalement de ${user} le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 							inline: false,
 						},
 					)
@@ -181,7 +183,7 @@ export default async (messageReaction, user, client) => {
 						},
 						{
 							name: '4ème signalement',
-							value: `Signalement de ${user} le ${convertDate(new Date())}`,
+							value: `Signalement de ${user} le ${convertDateForDiscord(Date.now())}`,
 							inline: false,
 						},
 					)

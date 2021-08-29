@@ -54,19 +54,6 @@ export const convertDate = date =>
 	}).format(date)
 
 /**
- * Convertis la date sous un format HH:MM
- * @param {Date} date
- * @returns date sous un format HH:MM
- * @example convertDate(new Date('15 Nov 2020 14:24:39')) => '14:24'
- */
-export const convertDateToHours = date =>
-	new Intl.DateTimeFormat('fr-FR', {
-		timeZone: process.env.TIMEZONE,
-		hour: '2-digit',
-		minute: '2-digit',
-	}).format(date)
-
-/**
  * Convertis la date sous un format Y années M mois D jours H heures M minutes
  * @param {Date} date
  * @returns date sous un format Y années M mois D jours H heures M minutes ou "Il y a moins d'une minute"
@@ -206,3 +193,9 @@ export const closeGracefully = (signal, client) => {
 
 	process.exit(0)
 }
+
+/**
+ * Convertis la date sous un format utilisé par Discord pour afficher une date
+ * @param {Date} date
+ */
+export const convertDateForDiscord = date => `<t:${Math.round(new Date(date) / 1000)}>`

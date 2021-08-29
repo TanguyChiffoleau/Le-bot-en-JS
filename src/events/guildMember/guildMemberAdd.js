@@ -1,4 +1,4 @@
-import { convertDate, diffDate, modifyWrongUsernames } from '../../util/util.js'
+import { convertDateForDiscord, diffDate, modifyWrongUsernames } from '../../util/util.js'
 
 export default async (guildMember, client) => {
 	const guild = guildMember.guild
@@ -27,7 +27,7 @@ export default async (guildMember, client) => {
 					},
 					{
 						name: 'Date de création du compte',
-						value: convertDate(guildMember.user.createdAt),
+						value: convertDateForDiscord(guildMember.user.createdAt),
 						inline: true,
 					},
 					{

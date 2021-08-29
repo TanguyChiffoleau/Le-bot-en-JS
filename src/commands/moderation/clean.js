@@ -1,8 +1,7 @@
 import {
 	pluralizeWithoutQuantity as pluralize,
-	convertDate,
-	convertDateToHours,
 	displayNameAndID,
+	convertDateForDiscord,
 } from '../../util/util.js'
 import { Util } from 'discord.js'
 
@@ -89,7 +88,7 @@ export default {
 			.sort((messageA, messageB) => messageA.createdTimestamp - messageB.createdTimestamp)
 			.reduce(
 				(acc, deletedMessage) =>
-					`${acc}[${convertDateToHours(deletedMessage.createdAt)}] ${
+					`${acc}${convertDateForDiscord(deletedMessage.createdAt)} ${
 						deletedMessage.member
 					}: ${deletedMessage.content}\n`,
 				'',
@@ -135,7 +134,7 @@ export default {
 						},
 						{
 							name: 'Exécuté le',
-							value: convertDate(new Date()),
+							value: convertDateForDiscord(Date.now()),
 							inline: true,
 						},
 					],
@@ -174,7 +173,7 @@ export default {
 						},
 						{
 							name: 'Exécuté le',
-							value: convertDate(new Date()),
+							value: convertDateForDiscord(Date.now()),
 							inline: true,
 						},
 					],
