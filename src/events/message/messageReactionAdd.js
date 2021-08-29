@@ -88,7 +88,7 @@ export default async (messageReaction, user, client) => {
 				}
 
 				// Edit de l'embed
-				return logReport.edit({ embed: editLogReport })
+				return logReport.edit({ embeds: [editLogReport] })
 			}
 
 			// Si il n'a pas de report déjà posté
