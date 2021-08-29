@@ -55,7 +55,7 @@ export default async (guildMember, client) => {
 
 	// Création du collecteur de réactions de ban
 	const banReactions = await sentMessage.awaitReactions({
-		banReactionFilter,
+		filter: banReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
 		maxEmojis: 1,
@@ -80,7 +80,7 @@ export default async (guildMember, client) => {
 
 	// Création du collecteur de réactions de confirmation
 	const confirmReaction = await sentMessage.awaitReactions({
-		confirmReactionFilter,
+		filter: confirmReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
 		maxEmojis: 1,
