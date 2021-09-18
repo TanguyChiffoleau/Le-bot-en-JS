@@ -50,4 +50,4 @@ jobs:
          password: ${{ secrets.SSH_PASSWORD }}
          script: |
            docker pull tanguychiffoleau/le-bot-en-js:latest
-           docker-compose --file ./le-bot-en-js/docker/docker-compose.yml --project-name le-bot-en-js up -d
+           docker-compose --file ./le-bot-en-js/docker/docker-compose.yml --project-name le-bot-en-js up --detach
