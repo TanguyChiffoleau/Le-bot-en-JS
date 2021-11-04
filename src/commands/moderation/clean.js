@@ -55,7 +55,7 @@ export default {
 		const numberUsed = chosenNumber + 1
 
 		// Acquisition du channel de logs
-		const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
+		const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
 		if (!logsChannel)
 			return message.reply({ content: "il n'y a pas de channel pour log l'action 😕" })
 

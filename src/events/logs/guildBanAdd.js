@@ -4,8 +4,9 @@ import { Util } from 'discord.js'
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
 
-	const logsBansChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
-	if (!logsBansChannel) return
+	// Acquisition du channel de logs
+	const logsChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
+	if (!logsChannel) return
 
 	// Fetch du membre banni
 	const fetchedLog = (
@@ -16,12 +17,14 @@ export default async (ban, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
+	// Fetch du ban
 	const bannedUser = await ban.fetch()
 
+	// Création de l'embed
 	const logEmbed = {
 		author: {
 			name: `${bannedUser.user.username} (ID ${bannedUser.user.id})`,
-			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true })
+			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
 			{
@@ -44,7 +47,8 @@ export default async (ban, client) => {
 	}
 
 	const { executor, target } = fetchedLog
-	
+
+	// Détermination du modérateur ayant effectué le bannissement
 	if (target.id === bannedUser.user.id && fetchedLog.createdTimestamp > Date.now() - 5000) {
 		logEmbed.color = '000000'
 		logEmbed.footer = {
@@ -64,5 +68,5 @@ export default async (ban, client) => {
 		logEmbed.description = `\`\`\`\n${escapedcontent}\`\`\``
 	}
 
-	return logsBansChannel.send({ embeds: [logEmbed] })
+	return logsChannel.send({ embeds: [logEmbed] })
 }

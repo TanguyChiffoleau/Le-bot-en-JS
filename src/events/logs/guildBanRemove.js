@@ -1,10 +1,11 @@
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
 
 export default async (ban, client) => {
-	if (ban.user.bot ||nban.guild.id !== client.config.guildID || !ban.guild.available) return
+	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
 
-	const logsBansChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
-	if (!logsBansChannel) return
+	// Acquisition du channel de logs
+	const logsChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
+	if (!logsChannel) return
 
 	// Fetch du membre banni
 	const fetchedLog = (
@@ -15,6 +16,7 @@ export default async (ban, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
+	// Création de l'embed
 	const logEmbed = {
 		author: {
 			name: `${ban.user.username} (ID ${ban.user.id})`,
@@ -41,7 +43,8 @@ export default async (ban, client) => {
 	}
 
 	const { executor, target } = fetchedLog
-	
+
+	// Détermination du modérateur ayant effectué le débannissement
 	if (target.id === ban.user.id && fetchedLog.createdTimestamp > Date.now() - 5000) {
 		logEmbed.color = '17419E'
 		logEmbed.footer = {
@@ -55,5 +58,5 @@ export default async (ban, client) => {
 		}
 	}
 
-	return logsBansChannel.send({ embeds: [logEmbed] })
+	return logsChannel.send({ embeds: [logEmbed] })
 }

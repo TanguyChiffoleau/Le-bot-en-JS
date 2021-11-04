@@ -18,8 +18,8 @@ export default async (message, client) => {
 		return
 
 	// Acquisition du channel pour les logs
-	const logsMessagesChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
-	if (!logsMessagesChannel) return
+	const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
+	if (!logsChannel) return
 
 	// Fetch du message supprimé
 	const fetchedLog = (
@@ -85,7 +85,7 @@ export default async (message, client) => {
 
 	// Partie attachements (fichiers, images...)
 	const attachments = message.attachments
-	if (attachments.size <= 0) return logsMessagesChannel.send({ embeds: [logEmbed] })
+	if (attachments.size <= 0) return logsChannel.send({ embeds: [logEmbed] })
 
 	// Séparation des images et des autres fichiers
 	const [imageAttachments, otherAttachments] = attachments.partition(attachment =>
@@ -138,5 +138,5 @@ export default async (message, client) => {
 		})
 	}
 
-	return logsMessagesChannel.send({ files: messageAttachments, embeds: [logEmbed] })
+	return logsChannel.send({ files: messageAttachments, embeds: [logEmbed] })
 }
