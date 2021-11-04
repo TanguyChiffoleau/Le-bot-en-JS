@@ -2,12 +2,7 @@ import { convertDateForDiscord, diffDate } from '../../util/util.js'
 import { Util } from 'discord.js'
 
 export default async (ban, client) => {
-	if (
-		ban.user.bot ||
-		ban.guild.id !== client.config.guildID ||
-		!ban.guild.available
-	)
-		return
+	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
 
 	const logsBansChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
 	if (!logsBansChannel) return
@@ -21,12 +16,12 @@ export default async (ban, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
-	const bannedUser = await ban.fetch();
+	const bannedUser = await ban.fetch()
 
 	const logEmbed = {
 		author: {
 			name: `${bannedUser.user.username} (ID ${bannedUser.user.id})`,
-			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true }),
+			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true })
 		},
 		fields: [
 			{
@@ -50,10 +45,7 @@ export default async (ban, client) => {
 
 	const { executor, target } = fetchedLog
 	
-	if (
-		target.id === bannedUser.user.id &&
-		fetchedLog.createdTimestamp > Date.now() - 5000
-	) {
+	if (target.id === bannedUser.user.id && fetchedLog.createdTimestamp > Date.now() - 5000) {
 		logEmbed.color = '000000'
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
