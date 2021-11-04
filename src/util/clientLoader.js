@@ -3,10 +3,11 @@ import { Client, Collection, Intents } from 'discord.js'
 // Création du client et de ses propriétés
 export default () => {
 	const client = new Client({
-		partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION', 'CHANNEL'],
+		partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION', 'CHANNEL', 'USER'],
 		intents: [
 			Intents.FLAGS.GUILDS,
 			Intents.FLAGS.GUILD_MEMBERS,
+			Intents.FLAGS.GUILD_BANS,
 			Intents.FLAGS.GUILD_MESSAGES,
 			Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
 			Intents.FLAGS.GUILD_VOICE_STATES,
@@ -20,7 +21,8 @@ export default () => {
 		guildID: process.env.GUILD_ID,
 		reportChannelID: process.env.REPORT_CHANNEL,
 		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
-		logsChannelID: process.env.LOGS_CHANNEL,
+		logsMessagesChannelID: process.env.LOGS_MESSAGES_CHANNEL,
+		logsBansChannelID: process.env.LOGS_BANS_CHANNEL,
 		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
@@ -28,7 +30,7 @@ export default () => {
 		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
 	}
 	client.cache = {
-		// Messages supprimés par la bot pour ne pas
+		// Messages supprimés par le bot pour ne pas
 		// les log lors de l'event "messageDelete"
 		deleteMessagesID: new Set(),
 	}
