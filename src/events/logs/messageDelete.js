@@ -18,7 +18,7 @@ export default async (message, client) => {
 		return
 
 	// Acquisition du channel pour les logs
-	const logsChannel = message.guild.channels.cache.get(client.config.logsChannelID)
+	const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
 	if (!logsChannel) return
 
 	// Fetch du message supprimé
