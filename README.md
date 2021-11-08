@@ -50,7 +50,7 @@ L'application est capable de tourner sous plusieurs environnements :
 
 #### Prérequis
 
-1. Il est nécessaire d'avoir [Node.js](https://nodejs.org/fr/) 12.0.0 ou plus récent d'installé sur votre machine.
+1. Il est nécessaire d'avoir [Node.js](https://nodejs.org/fr/) 16.6.0 ou plus récent d'installé sur votre machine.
 
 	> Utilisez la commande `node -v` pour vous assurez que Node est bien installé et que sa version est suffisante.
 
