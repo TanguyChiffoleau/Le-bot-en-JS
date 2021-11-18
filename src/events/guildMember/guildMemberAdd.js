@@ -44,12 +44,15 @@ export default async (guildMember, client) => {
 		],
 	})
 
-	// Ajout de la réaction pour ban
+	// Ajout de la réaction pour ban de raid
 	const hammerReaction = await sentMessage.react('🔨')
+
+	// Ajout de la réaction pour ban de double compte
+	const doubleHammersReaction = await sentMessage.react('<:doublecompte:910896944572952646>')
 
 	// Filtre pour la réaction de ban
 	const banReactionFilter = (messageReaction, user) =>
-		messageReaction.emoji.name === '🔨' &&
+		messageReaction.emoji.name === '🔨' || messageReaction.emoji.name === '<:doublecompte:910896944572952646>' &&
 		guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
 		!user.bot
 
@@ -64,12 +67,16 @@ export default async (guildMember, client) => {
 		idle: 43200000,
 	})
 
-	// Si pas de réaction , suppression de la réaction "hammer"
-	if (!banReactions.size) return hammerReaction.remove()
+	// Si pas de réaction, suppression de la réaction "hammer"
+	if (!banReactions.size) return hammerReaction.remove() && doubleHammersReaction.remove()
 
 	// Acquisition de la réaction de ban et de son user
 	const banReaction = banReactions.first()
 	const banReactionUser = banReaction.users.cache.filter(user => !user.bot).first()
+
+	// Définition de la variable "reason" suivant la réaction cliquée
+	if (banReaction.emoji.name === '🔨') { var reason = 'UserBot - Raid' }
+	if (banReaction.emoji.name === '<:doublecompte:910896944572952646>') { var reason = 'UserBot - Double compte' }
 
 	// Ajout de la réaction de confirmation
 	const checkReaction = await sentMessage.react('✅')
@@ -90,7 +97,7 @@ export default async (guildMember, client) => {
 	})
 
 	// Suppression des émotes précédentes
-	await Promise.all([hammerReaction.remove(), checkReaction.remove()])
+	await Promise.all([hammerReaction.remove(), doubleHammersReaction.remove(), checkReaction.remove()])
 
 	// Si pas de réaction return
 	if (!confirmReaction) return
@@ -99,7 +106,7 @@ export default async (guildMember, client) => {
 	if (!guildMember.bannable) return sentMessage.react('❌')
 
 	// Ban du membre
-	const banAction = guildMember.ban({ days: 7, reason: 'Le-bot-en-JS - Raid' }).catch(() => null)
+	const banAction = guildMember.ban({ days: 7, reason: reason }).catch(() => null)
 
 	// Si erreur lors du ban, réaction avec ⚠️
 	if (!banAction) return sentMessage.react('⚠️')
