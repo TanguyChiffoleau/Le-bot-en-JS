@@ -44,18 +44,18 @@ export default async (guildMember, client) => {
 		],
 	})
 
-	// Ajout de la réaction pour ban de raid
+	// Ajout de la réaction pour ban (raid)
 	const hammerReaction = await sentMessage.react('🔨')
 
-	// Ajout de la réaction pour ban de double compte
+	// Ajout de la réaction pour ban (double compte)
 	const doubleHammersReaction = await sentMessage.react('<:doublecompte:910896944572952646>')
 
 	// Filtre pour la réaction de ban
 	const banReactionFilter = (messageReaction, user) =>
-		(messageReaction.emoji.name === '🔨' ||
-			messageReaction.emoji.name === '<:doublecompte:910896944572952646>') &&
-		guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
-		!user.bot
+		messageReaction.emoji.name === '🔨' ||
+		(messageReaction.emoji.id === '910896944572952646' &&
+			guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
+			!user.bot)
 
 	// Création du collecteur de réactions de ban
 	const banReactions = await sentMessage.awaitReactions({
@@ -76,8 +76,12 @@ export default async (guildMember, client) => {
 	const banReactionUser = banReaction.users.cache.filter(user => !user.bot).first()
 
 	// Définition de la variable "reason" suivant la réaction cliquée
-	if (banReaction.emoji.name === '🔨') const reason = 'UserBot - Raid'
-	else if (banReaction.emoji.name === '<:doublecompte:910896944572952646>') const reason = 'UserBot - Double compte'
+	if (banReaction.emoji.name === '🔨') {
+		var reason = 'UserBot - Raid'
+	}
+	if (banReaction.emoji.id === '910896944572952646') {
+		var reason = 'UserBot - Double compte'
+	}
 
 	// Ajout de la réaction de confirmation
 	const checkReaction = await sentMessage.react('✅')
