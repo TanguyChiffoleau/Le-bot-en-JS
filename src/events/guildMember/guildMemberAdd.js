@@ -69,7 +69,8 @@ export default async (guildMember, client) => {
 	})
 
 	// Si pas de réaction, suppression de la réaction "hammer"
-	if (!banReactions.size) return hammerReaction.remove() && doubleHammersReaction.remove()
+	if (!banReactions.size)
+		return Promise.all([hammerReaction.remove(), doubleHammersReaction.remove()])
 
 	// Acquisition de la réaction de ban et de son user
 	const banReaction = banReactions.first()
