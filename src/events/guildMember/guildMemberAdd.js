@@ -78,9 +78,9 @@ export default async (guildMember, client) => {
 
 	// Définition de la variable "reason" suivant la réaction cliquée
 	let reason = ''
-	if (banReaction.emoji.name === '🔨') reason = 'UserBot - Raid'
+	if (banReaction.emoji.name === '🔨') reason = 'Le-bot-en-JS - Raid'
 
-	if (banReaction.emoji.id === '910896944572952646') reason = 'UserBot - Double compte'
+	if (banReaction.emoji.id === '910896944572952646') reason = 'Le-bot-en-JS - Double compte'
 
 	// Ajout de la réaction de confirmation
 	const checkReaction = await sentMessage.react('✅')
