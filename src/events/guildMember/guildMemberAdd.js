@@ -76,12 +76,10 @@ export default async (guildMember, client) => {
 	const banReactionUser = banReaction.users.cache.filter(user => !user.bot).first()
 
 	// Définition de la variable "reason" suivant la réaction cliquée
-	if (banReaction.emoji.name === '🔨') {
-		var reason = 'UserBot - Raid'
-	}
-	if (banReaction.emoji.id === '910896944572952646') {
-		var reason = 'UserBot - Double compte'
-	}
+	let reason = ''
+	if (banReaction.emoji.name === '🔨') reason = 'UserBot - Raid'
+
+	if (banReaction.emoji.id === '910896944572952646') reason = 'UserBot - Double compte'
 
 	// Ajout de la réaction de confirmation
 	const checkReaction = await sentMessage.react('✅')
