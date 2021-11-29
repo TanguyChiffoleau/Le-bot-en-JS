@@ -21,9 +21,8 @@ export default async (message, client) => {
 	const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
 	if (!logsChannel) return
 
-	// Acquisition du channel admins à ne pas logger
-	const adminsChannel = message.guild.channels.cache.get(client.config.adminsChannelID)
-	if (message.channel.id === adminsChannel) return
+	// Vérification si le salon du message est dans la liste des salons à ne pas logger
+	if (client.config.noLogsManagerChannelIDs.includes(message.channel.id)) return
 
 	// Fetch du message supprimé
 	const fetchedLog = (
