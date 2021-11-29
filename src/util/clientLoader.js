@@ -28,6 +28,7 @@ export default () => {
 			: [],
 		configChannelID: process.env.CONFIG_CHANNEL_ID,
 		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
+		adminsChannelID: process.env.ADMINS_CHANNEL,
 	}
 	client.cache = {
 		// Messages supprimés par le bot pour ne pas
