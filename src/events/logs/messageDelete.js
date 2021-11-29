@@ -21,7 +21,7 @@ export default async (message, client) => {
 	const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
 	if (!logsChannel) return
 
-	// Vérification si le salon du message 
+	// Vérification si le salon du message
 	// est dans la liste des salons à ne pas logger
 	if (client.config.noLogsManagerChannelIDs.includes(message.channel.id)) return
 
