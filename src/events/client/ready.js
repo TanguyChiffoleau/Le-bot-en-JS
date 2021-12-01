@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { readFileSync } from 'fs'
-const reactionRoleConfig = JSON.parse(readFileSync('./config/reactionRoleConfig.json'))
+import { readFile } from 'fs/promises'
 
 export const once = true
 
@@ -9,6 +8,7 @@ export default async client => {
 
 	// Lecture et en place du système de réactions
 	// puis ajout des émojis (peut prendre du temps)
+	const reactionRoleConfig = JSON.parse(await readFile('./config/reactionRoleConfig.json'))
 	client.reactionRoleMap = new Map()
 
 	// Pour chaque channel
