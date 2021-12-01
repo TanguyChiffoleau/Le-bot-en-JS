@@ -1,4 +1,6 @@
 import { convertDateForDiscord, diffDate, modifyWrongUsernames } from '../../util/util.js'
+import { readFile } from 'fs/promises'
+const removeAddedReactions = reactions => Promise.all(reactions.map(reaction => reaction.remove()))
 
 export default async (guildMember, client) => {
 	const guild = guildMember.guild
@@ -44,16 +46,22 @@ export default async (guildMember, client) => {
 		],
 	})
 
-	// Ajout de la réaction pour ban (raid)
-	const hammerReaction = await sentMessage.react('🔨')
+	// Si le membre n'est pas bannisable, réaction avec ❌
+	if (!guildMember.bannable) return sentMessage.react('❌')
 
-	// Ajout de la réaction pour ban (double compte)
-	const doubleHammersReaction = await sentMessage.react('<:doublecompte:910896944572952646>')
+	// Lecture du fichier de configuration
+	const emotesConfig = new Map(JSON.parse(await readFile('./config/banEmotesAtJoin.json')))
+
+	const reactionsList = []
+	for (const [emoji] of emotesConfig) {
+		// eslint-disable-next-line no-await-in-loop
+		const sentReaction = await sentMessage.react(emoji)
+		reactionsList.push(sentReaction)
+	}
 
 	// Filtre pour la réaction de ban
-	const banReactionFilter = (messageReaction, user) =>
-		(messageReaction.emoji.name === '🔨' ||
-			messageReaction.emoji.id === '910896944572952646') &&
+	const banReactionFilter = ({ _emoji: emoji }, user) =>
+		(emotesConfig.has(emoji.name) || emotesConfig.has(emoji.id)) &&
 		guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
 		!user.bot
 
@@ -68,29 +76,26 @@ export default async (guildMember, client) => {
 		idle: 43200000,
 	})
 
-	// Si pas de réaction, suppression de la réaction "hammer"
-	if (!banReactions.size)
-		return Promise.all([hammerReaction.remove(), doubleHammersReaction.remove()])
+	// Si réaction correcte ajoutée ou temps écoulé,
+	// on supprime les réactions ajoutées
+	await removeAddedReactions(reactionsList)
+
+	// Si pas de réaction, return
+	if (!banReactions.size) return
 
 	// Acquisition de la réaction de ban et de son user
-	const banReaction = banReactions.first()
-	const banReactionUser = banReaction.users.cache.filter(user => !user.bot).first()
-
-	// Définition de la variable "reason" suivant la réaction cliquée
-	let reason = ''
-	if (banReaction.emoji.name === '🔨') reason = 'Le-bot-en-JS - Raid'
-
-	if (banReaction.emoji.id === '910896944572952646') reason = 'Le-bot-en-JS - Double compte'
+	const { users: banReactionUsers, _emoji: banReactionEmoji } = banReactions.first()
+	const banReactionUser = banReactionUsers.cache.first()
 
 	// Ajout de la réaction de confirmation
-	const checkReaction = await sentMessage.react('✅')
+	const confirmationReaction = await sentMessage.react('✅')
 
-	// Filtre pour la réqction de confirmation
+	// Filtre pour la réaction de confirmation
 	const confirmReactionFilter = (messageReaction, user) =>
-		messageReaction.emoji.name === '✅' && user === banReactionUser && !user.bot
+		messageReaction.emoji.name === '✅' && user === banReactionUser
 
 	// Création du collecteur de réactions de confirmation
-	const confirmReaction = await sentMessage.awaitReactions({
+	const confirmationReactions = await sentMessage.awaitReactions({
 		filter: confirmReactionFilter,
 		// Une seule réaction/émoji/user
 		max: 1,
@@ -100,21 +105,20 @@ export default async (guildMember, client) => {
 		idle: 300000,
 	})
 
-	// Suppression des émotes précédentes
-	await Promise.all([
-		hammerReaction.remove(),
-		doubleHammersReaction.remove(),
-		checkReaction.remove(),
-	])
+	// Si réaction correcte ajoutée ou temps écoulé,
+	// on supprime la réaction de confirmation
+	await confirmationReaction.remove()
 
-	// Si pas de réaction return
-	if (!confirmReaction) return
+	// Si pas de réaction de confirmation return
+	if (!confirmationReactions) return
 
-	// Si le membre n'est pas bannisable, réaction avec ❌
-	if (!guildMember.bannable) return sentMessage.react('❌')
+	// Définition de la variable "reason" suivant la réaction cliquée
+	const reason = emotesConfig.get(banReactionEmoji.name) || emotesConfig.get(banReactionEmoji.id)
 
 	// Ban du membre
-	const banAction = guildMember.ban({ days: 7, reason: reason }).catch(() => null)
+	const banAction = guildMember
+		.ban({ days: 7, reason: `${client.user.tag} - ${reason}` })
+		.catch(() => null)
 
 	// Si erreur lors du ban, réaction avec ⚠️
 	if (!banAction) return sentMessage.react('⚠️')
