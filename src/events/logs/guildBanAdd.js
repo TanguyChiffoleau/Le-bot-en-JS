@@ -22,6 +22,7 @@ export default async (ban, client) => {
 
 	// Création de l'embed
 	const logEmbed = {
+		color: 'C9572A',
 		author: {
 			name: `${bannedUser.user.username} (ID ${bannedUser.user.id})`,
 			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true }),
@@ -49,18 +50,15 @@ export default async (ban, client) => {
 	const { executor, target } = fetchedLog
 
 	// Détermination du modérateur ayant effectué le bannissement
-	if (target.id === bannedUser.user.id && fetchedLog.createdTimestamp > Date.now() - 5000) {
-		logEmbed.color = '000000'
+	if (target.id === bannedUser.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
 			text: `Membre banni par ${executor.tag}`,
 		}
-	} else {
-		logEmbed.color = '000000'
+	else
 		logEmbed.footer = {
 			text: `Membre banni`,
 		}
-	}
 
 	// Raison du bannissement
 	if (bannedUser.reason) {
