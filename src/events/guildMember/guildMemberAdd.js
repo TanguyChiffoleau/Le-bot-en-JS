@@ -145,7 +145,7 @@ export default async (guildMember, client) => {
 	}
 
 	// Ban du membre
-	const banAction = guildMember
+	const banAction = await guildMember
 		.ban({ days: 7, reason: `${client.user.tag} - ${reason}` })
 		.catch(() => null)
 
