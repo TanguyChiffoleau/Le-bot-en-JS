@@ -49,8 +49,9 @@ export default async (guildMember, client) => {
 	// Si le membre n'est pas bannisable, réaction avec ❌
 	if (!guildMember.bannable) return sentMessage.react('❌')
 
-	// Lecture du fichier de configuration
+	// Lecture des fichiers de configuration
 	const emotesConfig = new Map(JSON.parse(await readFile('./config/banEmotesAtJoin.json')))
+	const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
 
 	const reactionsList = []
 	for (const [emoji] of emotesConfig) {
@@ -85,7 +86,7 @@ export default async (guildMember, client) => {
 
 	// Acquisition de la réaction de ban et de son user
 	const { users: banReactionUsers, _emoji: banReactionEmoji } = banReactions.first()
-	const banReactionUser = banReactionUsers.cache.first()
+	const banReactionUser = banReactionUsers.cache.filter(user => !user.bot).first()
 
 	// Ajout de la réaction de confirmation
 	const confirmationReaction = await sentMessage.react('✅')
@@ -114,6 +115,27 @@ export default async (guildMember, client) => {
 
 	// Définition de la variable "reason" suivant la réaction cliquée
 	const reason = emotesConfig.get(banReactionEmoji.name) || emotesConfig.get(banReactionEmoji.id)
+
+	// Création de l'embed
+	const embed = {
+		color: '#C27C0E',
+		title: 'Bannissement',
+		description: banDM,
+		author: {
+			name: guild.name,
+			icon_url: guild.iconURL({ dynamic: true }),
+			url: guild.vanityURL,
+		},
+		fields: [
+			{
+				name: 'Raison du bannissement',
+				value: reason,
+			},
+		],
+	}
+
+	// Envoi du message de bannissement en message privé
+	await guildMember.send({ embeds: [embed] })
 
 	// Ban du membre
 	const banAction = guildMember
