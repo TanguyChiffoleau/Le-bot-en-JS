@@ -1,5 +1,7 @@
 import { convertDateForDiscord, diffDate, modifyWrongUsernames } from '../../util/util.js'
 import { readFile } from 'fs/promises'
+import { Constants, Message, GuildMember } from 'discord.js'
+
 const removeAddedReactions = reactions => Promise.all(reactions.map(reaction => reaction.remove()))
 
 export default async (guildMember, client) => {
@@ -119,8 +121,8 @@ export default async (guildMember, client) => {
 	const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
 
 	// Envoi du message de bannissement en message privé
-	try {
-		await guildMember.send({
+	const DMMessage = await guildMember
+		.send({
 			embeds: [
 				{
 					color: '#C27C0E',
@@ -140,18 +142,33 @@ export default async (guildMember, client) => {
 				},
 			],
 		})
-	} catch (error) {
-		await sentMessage.react('❌')
-	}
+		.catch(async error => {
+			if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
+				return sentMessage.react('⛔')
+
+			console.error(error)
+			await sentMessage.react('⚠️')
+			return error
+		})
+
+	// Si le message a bien été envoyé, ajout réaction 📧
+	if (DMMessage instanceof Message) await sentMessage.react('📧')
 
 	// Ban du membre
 	const banAction = await guildMember
 		.ban({ days: 7, reason: `${client.user.tag} - ${reason}` })
-		.catch(() => null)
+		.catch(async error => {
+			console.error(error)
+			await sentMessage.react('⚠️')
+			return error
+		})
 
-	// Si erreur lors du ban, réaction avec ⚠️
-	if (!banAction) return sentMessage.react('⚠️')
+	// Si pas d'erreur, réaction avec 🚪 pour confirmer le ban
+	if (banAction instanceof GuildMember) await sentMessage.react('🚪')
 
-	// Sinon réaction avec 🚪 pour confirmer le ban
-	return sentMessage.react('🚪')
+	// Si au moins une erreur, throw
+	if (banAction instanceof Error || DMMessage instanceof Error)
+		throw new Error(
+			'Sending message and/or banning member failed. See precedents logs for more informations.',
+		)
 }
