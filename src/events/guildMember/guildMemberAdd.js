@@ -175,7 +175,8 @@ export default async (guildMember, client) => {
 						},
 					],
 				})
-				await sentMessage.react('❌')
+
+			await sentMessage.react('❌')
 		})
 
 	// Si pas d'erreur, réaction avec 🚪 pour confirmer le ban
