@@ -49,9 +49,8 @@ export default async (guildMember, client) => {
 	// Si le membre n'est pas bannisable, réaction avec ❌
 	if (!guildMember.bannable) return sentMessage.react('❌')
 
-	// Lecture des fichiers de configuration
+	// Lecture du fichier de configuration
 	const emotesConfig = new Map(JSON.parse(await readFile('./config/banEmotesAtJoin.json')))
-	const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
 
 	const reactionsList = []
 	for (const [emoji] of emotesConfig) {
@@ -115,6 +114,9 @@ export default async (guildMember, client) => {
 
 	// Définition de la variable "reason" suivant la réaction cliquée
 	const reason = emotesConfig.get(banReactionEmoji.name) || emotesConfig.get(banReactionEmoji.id)
+
+	// Lecture du message de ban
+	const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
 
 	// Création de l'embed
 	const embed = {
