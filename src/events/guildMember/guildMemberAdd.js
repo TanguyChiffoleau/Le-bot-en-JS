@@ -175,7 +175,6 @@ export default async (guildMember, client) => {
 						},
 					],
 				})
-
 				await sentMessage.react('❌')
 		})
 
