@@ -135,7 +135,11 @@ export default async (guildMember, client) => {
 	}
 
 	// Envoi du message de bannissement en message privé
-	await guildMember.send({ embeds: [embed] })
+	try {
+		await guildMember.send({ embeds: [embed] })
+	} catch (error) {
+		await sentMessage.react('❌')
+	}
 
 	// Ban du membre
 	const banAction = guildMember
