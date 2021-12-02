@@ -118,27 +118,28 @@ export default async (guildMember, client) => {
 	// Lecture du message de ban
 	const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
 
-	// Création de l'embed
-	const embed = {
-		color: '#C27C0E',
-		title: 'Bannissement',
-		description: banDM,
-		author: {
-			name: guild.name,
-			icon_url: guild.iconURL({ dynamic: true }),
-			url: guild.vanityURL,
-		},
-		fields: [
-			{
-				name: 'Raison du bannissement',
-				value: reason,
-			},
-		],
-	}
-
 	// Envoi du message de bannissement en message privé
 	try {
-		await guildMember.send({ embeds: [embed] })
+		await guildMember.send({
+			embeds: [
+				{
+					color: '#C27C0E',
+					title: 'Bannissement',
+					description: banDM,
+					author: {
+						name: guild.name,
+						icon_url: guild.iconURL({ dynamic: true }),
+						url: guild.vanityURL,
+					},
+					fields: [
+						{
+							name: 'Raison du bannissement',
+							value: reason,
+						},
+					],
+				},
+			],
+		})
 	} catch (error) {
 		await sentMessage.react('❌')
 	}
