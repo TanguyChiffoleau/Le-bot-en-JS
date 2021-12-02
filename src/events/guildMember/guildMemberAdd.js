@@ -154,7 +154,29 @@ export default async (guildMember, client) => {
 	const banAction = await guildMember
 		.ban({ days: 7, reason: `${client.user.tag} - ${reason}` })
 		.catch(async error => {
-			await sentMessage.react('❌')
+			if (error)
+				DMMessage.edit({
+					embeds: [
+						{
+							color: '#C27C0E',
+							title: 'Avertissement',
+							description: 'Vous avez reçu un avertissement !',
+							author: {
+								name: guild.name,
+								icon_url: guild.iconURL({ dynamic: true }),
+								url: guild.vanityURL,
+							},
+							fields: [
+								{
+									name: "Raison de l'avertissement",
+									value: reason,
+								},
+							],
+						},
+					],
+				})
+
+				await sentMessage.react('❌')
 		})
 
 	// Si pas d'erreur, réaction avec 🚪 pour confirmer le ban
