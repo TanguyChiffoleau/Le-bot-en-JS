@@ -160,6 +160,16 @@ export default async (guildMember, client) => {
 		.catch(async error => {
 			console.error(error)
 			await sentMessage.react('❌')
+
+			// Edit du message envoyé en DM
+			const editedDMMessageEmbed = DMMessage.embeds[0]
+			editedDMMessageEmbed.title = 'Avertissement'
+			editedDMMessageEmbed.description = 'Vous avez reçu un avertissement !'
+			editedDMMessageEmbed.fields[0].name = "Raison de l'avertissement"
+			await DMMessage.edit({
+				embeds: [editedDMMessageEmbed],
+			})
+
 			return error
 		})
 
