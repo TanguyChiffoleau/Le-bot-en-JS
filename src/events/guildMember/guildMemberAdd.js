@@ -1,6 +1,6 @@
 import { convertDateForDiscord, diffDate, modifyWrongUsernames } from '../../util/util.js'
 import { readFile } from 'fs/promises'
-import { Constants, Message, GuildMember } from 'discord.js'
+import { Constants, Message, GuildMember, MessageEmbed } from 'discord.js'
 
 const removeAddedReactions = reactions => Promise.all(reactions.map(reaction => reaction.remove()))
 
@@ -162,7 +162,7 @@ export default async (guildMember, client) => {
 			await sentMessage.react('❌')
 
 			// Edit du message envoyé en DM
-			const editedDMMessageEmbed = DMMessage.embeds[0]
+			const editedDMMessageEmbed = new MessageEmbed(DMMessage.embeds[0])
 			editedDMMessageEmbed.title = 'Avertissement'
 			editedDMMessageEmbed.description = 'Vous avez reçu un avertissement !'
 			editedDMMessageEmbed.fields[0].name = "Raison de l'avertissement"
