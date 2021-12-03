@@ -48,8 +48,8 @@ export default async (guildMember, client) => {
 		],
 	})
 
-	// Si le membre n'est pas bannisable, réaction avec ⛔
-	if (!guildMember.bannable) return sentMessage.react('⛔')
+	// Si le membre n'est pas bannisable, réaction avec 🚫
+	if (!guildMember.bannable) return sentMessage.react('🚫')
 
 	// Lecture du fichier de configuration
 	const emotesConfig = new Map(JSON.parse(await readFile('./config/banEmotesAtJoin.json')))
@@ -144,7 +144,11 @@ export default async (guildMember, client) => {
 		})
 		.catch(async error => {
 			if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
-				await sentMessage.react('⚠️')
+				return sentMessage.react('⛔')
+
+			console.error(error)
+			await sentMessage.react('⚠️')
+			return error
 		})
 
 	// Si le message a bien été envoyé, ajout réaction 📩
@@ -154,29 +158,9 @@ export default async (guildMember, client) => {
 	const banAction = await guildMember
 		.ban({ days: 7, reason: `${client.user.tag} - ${reason}` })
 		.catch(async error => {
-			if (error)
-				DMMessage.edit({
-					embeds: [
-						{
-							color: '#C27C0E',
-							title: 'Avertissement',
-							description: 'Vous avez reçu un avertissement !',
-							author: {
-								name: guild.name,
-								icon_url: guild.iconURL({ dynamic: true }),
-								url: guild.vanityURL,
-							},
-							fields: [
-								{
-									name: "Raison de l'avertissement",
-									value: reason,
-								},
-							],
-						},
-					],
-				})
-
+			console.error(error)
 			await sentMessage.react('❌')
+			return error
 		})
 
 	// Si pas d'erreur, réaction avec 🚪 pour confirmer le ban
