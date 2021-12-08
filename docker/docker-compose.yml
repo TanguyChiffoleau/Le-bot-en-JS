@@ -10,4 +10,5 @@ services:
             - ../config/bot.env
         volumes:
             - ../config/reactionRoleConfig.json:/usr/src/app/config/reactionRoleConfig.json
+            - ../config/banEmotesAtJoin.json:/usr/src/app/config/banEmotesAtJoin.json
             - ../forms/:/usr/src/app/forms/
