@@ -66,6 +66,8 @@ L'application est capable de tourner sous plusieurs environnements :
 
 5. Renommez le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
+6. Renommez le fichier `banEmotesAtJoin.example.json` en `banEmotesAtJoin.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+
 #### Lancement et arrêt de l'application
 
 -   Vous pouvez utiliser `npm start` pour lancer l'application.
@@ -82,11 +84,11 @@ L'application est capable de tourner sous plusieurs environnements :
 1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) ainsi que [Docker Compose](https://docs.docker.com/compose/install/) d'installé.
 	> Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installées.
 
-2. Créez les fichiers `bot.env` et `reactionRoleConfig.json` dans le dossier `config` ainsi que le fichier `docker-compose.yml` dans le dossier `docker` :
+2. Créez les fichiers `bot.env`, `reactionRoleConfig.json` et `banEmotesAtJoin.json` dans le dossier `config` ainsi que le fichier `docker-compose.yml` dans le dossier `docker` :
 	```bash
 	mdkir config
 	cd config
-	touch bot.env reactionRoleConfig.json
+	touch bot.env reactionRoleConfig.json banEmotesAtJoin.json
 	cd ..
 	mkdir docker
 	touch docker-compose.yml
@@ -94,8 +96,9 @@ L'application est capable de tourner sous plusieurs environnements :
 
    - Configurez le fichier `bot.env` en ajoutant les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-
    - Configurez le fichier `reactionRoleConfig.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
+
+   - Configurez le fichier `banEmotesAtJoin.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
 
    - Copiez le contenu du fichier [docker/docker-compose.yml](docker/docker-compose.yml) dans le fichier du même emplacement sur votre machine. Il correspond au fichier de configuration pour `docker-compose`.
 
@@ -104,7 +107,8 @@ L'application est capable de tourner sous plusieurs environnements :
 > .
 > ├── config
 > │   ├── bot.env
-> │   └── reactionRoleConfig.json
+> │   ├── reactionRoleConfig.json
+> │   └── banEmotesAtJoin.json
 > └── docker
 > 	  └── docker-compose.yml
 > ```
@@ -292,6 +296,19 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > Pour désactiver le système, le fichier doit être composé d'un tableau (array) **vide** :
 > ```js
 > []
+> ```
+
+#### Fichier banEmotesAtJoin.json
+
+> Exemple disponible [ici](config/banEmotesAtJoin.example.json) :
+> ```js
+> [
+> 	// Réaction sous forme d'émoji unicode ou son ID, texte de raison
+> 	["🔨", "Reason 1"],
+> 	["🧹", "Reason 2"],
+> 	["123456789123456789", "Reason 3"],
+> 	["123456789123456789", "Reason 4"]
+> ]
 > ```
 
 -  Pour récupérer les émojis :
