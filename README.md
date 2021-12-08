@@ -108,7 +108,7 @@ L'application est capable de tourner sous plusieurs environnements :
 > ├── config
 > │   ├── bot.env
 > │   ├── reactionRoleConfig.json
-> │   └── banEmotesAtJoin.example.json
+> │   └── banEmotesAtJoin.json
 > └── docker
 > 	  └── docker-compose.yml
 > ```
