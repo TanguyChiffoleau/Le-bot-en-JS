@@ -187,9 +187,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 
 > Exemple disponible [ici](config/bot.example.env) :
 > ```env
-> POSTGRES_HOST="postgres-database"
-> POSTGRES_PORT=5432
-> POSTGRES_DATABASE="database"
+> POSTGRES_DB="postgres-database"
 > POSTGRES_USER="user"
 > POSTGRES_PASSWORD="password"
 > #DATABASE_FILES_PATH="../relative/path"
