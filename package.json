@@ -23,7 +23,8 @@
 	"homepage": "https://github.com/TanguyChiffoleau/Le-bot-en-JS#readme",
 	"dependencies": {
 		"bent": "^7.3.12",
-		"discord.js": "^13.3.1"
+		"discord.js": "^13.3.1",
+		"slonik": "^27.0.0"
 	},
 	"devDependencies": {
 		"dotenv": "^10.0.0",
