@@ -49,5 +49,6 @@ jobs:
          username: ${{ secrets.SSH_USERNAME }}
          password: ${{ secrets.SSH_PASSWORD }}
          script: |
+           cd le-bot-en-js/
            docker pull tanguychiffoleau/le-bot-en-js:latest
-           docker-compose --file ./le-bot-en-js/docker/docker-compose.yml --project-name le-bot-en-js up --detach
+           docker-compose --file ./docker/docker-compose.yml --env-file ./config/database.env --project-name le-bot-en-js up --detach

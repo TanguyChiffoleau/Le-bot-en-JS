@@ -64,9 +64,11 @@ L'application est capable de tourner sous plusieurs environnements :
 
 4. Renommez le fichier `bot.example.env` en `bot.env`, puis modifiez les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-5. Renommez le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+5. Renommez le fichier `database.example.env` en `database.env`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-6. Renommez le fichier `banEmotesAtJoin.example.json` en `banEmotesAtJoin.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+6. Renommez le fichier `reactionRoleConfig.example.json` en `reactionRoleConfig.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+
+7. Renommez le fichier `banEmotesAtJoin.example.json` en `banEmotesAtJoin.json`, puis modifiez son contenu pour que le système fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
 #### Lancement et arrêt de l'application
 
@@ -115,7 +117,7 @@ L'application est capable de tourner sous plusieurs environnements :
 
 #### Lancement de l'application
 
--   Vous pouvez utiliser les commandes `docker pull tanguychiffoleau/le-bot-en-js:latest` puis `docker-compose -f ./docker/docker-compose.yml up -d` pour lancer l'application.
+-   Vous pouvez utiliser les commandes `docker pull tanguychiffoleau/le-bot-en-js:latest` puis `docker-compose --file ./docker/docker-compose.yml --env-file ./config/database.env --project-name le-bot-en-js up --detach` pour lancer l'application.
 
 > docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
 
@@ -126,46 +128,6 @@ L'application est capable de tourner sous plusieurs environnements :
 #### Arrêt de l'application
 
 -   Vous pouvez utiliser la commande `docker-compose -f ./docker/docker-compose.yml stop` pour stopper le container. Pour le supprimer, utilisez la commande `docker-compose -f ./docker/docker-compose.yml down`.
-
-<!-- <details>
-<summary id="docker"><b>Setup avec Docker</b></summary>
-
-#### Prérequis
-
-1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) d'installé.
-
-	> Utilisez la commandes `docker -v` pour vérifier que l'application soit bien installée.
-
-2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
-
-3. Renommez le fichier `bot.example.env` en `bot.env`, puis modifiez les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
-
-	> Seul le dossier `config` avec les fichiers `bot.env` et `reactionRoleConfig.json` ainsi que le dossier `docker` avec le fichier `docker-compose.yml` sont nécessaires, en effet, le code sera lui directement intégré dans l'image docker. Vous pouvez supprimer les autres dossiers et fichiers si vous le souhaitez.
-
-	> La structure des dossiers et fichiers devrait ressembler à ça :
-	>
-	> ```
-	> .
-	> ├── config
-	> │   ├── bot.env
-	> │   └── reactionRoleConfig.json
-	> └── docker
-	> 	  └── docker-compose.yml
-	> ```
-
-#### Lancement de l'application
-
--   Vous pouvez utiliser les commandes `docker pull tanguychiffoleau/le-bot-en-js:latest` puis `docker run --env NODE_ENV=production --env-file config/bot.env --volume /config/:/config/ --restart on-failure -d tanguychiffoleau/le-bot-en-js:latest` pour lancer l'application.
-
-	> docker pull va télécharger ou mettre à jour si besoin l'image de l'application hébergée sur [Docker Hub](https://hub.docker.com/repository/docker/tanguychiffoleau/le-bot-en-js). Le tag ici est `latest` ce qui correspond, de fait, au code présent sur la branche [master](https://github.com/TanguyChiffoleau/Le-bot-en-JS/tree/master/). Vous pouvez spécifier une version spécifique comme par exemple `2.0.0`. _cf. [liste des tags disponibles](https://hub.docker.com/repository/registry-1.docker.io/tanguychiffoleau/le-bot-en-js/tags?page=1) ainsi que leur [version correspondante](https://github.com/TanguyChiffoleau/Le-bot-en-JS/releases)_
-
-	> Pour plus d'infos sur les technologies liées à Docker utilisées ici, vous pouvez consulter leur [documentation](https://docs.docker.com/reference/) ou leur [manuel](https://docs.docker.com/engine/).
-
-#### Arrêt de l'application
-
--   Vous pouvez utiliser la commande `docker-compose -f ./docker/docker-compose.yml stop` pour stopper le container. Pour le supprimer, utilisez la commande `docker-compose -f ./docker/docker-compose.yml down`.
-
-</details> -->
 
 ## Ressources
 
@@ -221,8 +183,28 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | UPGRADE_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                     |
 | NOLOGS_MANAGER_CHANNELS_IDS | ID des channels dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                  |
 
+#### Fichier database.env
 
-> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+> Exemple disponible [ici](config/bot.example.env) :
+> ```env
+> POSTGRES_HOST="postgres-database"
+> POSTGRES_PORT=5432
+> POSTGRES_DATABASE="database"
+> POSTGRES_USER="user"
+> POSTGRES_PASSWORD="password"
+> #DATABASE_FILES_PATH="../relative/path"
+> #PGDATA="/absolute/path"
+> ```
+
+| Variable            | Description                                                                                                                                                                |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POSTGRES_DB         | Utilisé pour définir un nom différent pour la base de données qui est créée par défaut lors du premier démarrage de l'image                                                |
+| POSTGRES_USER       | Créer l'utilisateur spécifié avec le pouvoir de super-utilisateur et une base de données avec le même nom                                                                  |
+| POSTGRES_PASSWORD   | Définit le mot de passe du super-utilisateur pour PostgreSQL                                                                                                               |
+| PGDATA              | Utilisé pour définir un emplacement -comme un sous-répertoire- pour les fichiers de la base de données dans le container. Valeur par défaut : "../pgdata"                  |
+| DATABASE_FILES_PATH | Utilisé pour définir un emplacement -comme un sous-répertoire- pour les fichiers de la base de données sur la machine hôte. Valeur par défaut : "/var/lib/postgresql/data" |
+
+> Plus d'informations disponibles [sur le README de postgres](https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables).
 
 </details>
 

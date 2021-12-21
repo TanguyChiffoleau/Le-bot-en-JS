@@ -6,10 +6,10 @@
 	"scripts": {
 		"start": "node .",
 		"test": "eslint src && prettier --check src/**/*.js",
-		"docker-start": "docker-compose -f ./docker/docker-compose.yml up -d",
-		"docker-stop": "docker-compose -f ./docker/docker-compose.yml down -d",
-		"docker-compose-build-start": "docker-compose -f ./docker/docker-compose-build.yml up -d --build",
-		"docker-compose-build-stop": "docker-compose -f ./docker/docker-compose-build.yml down -d"
+		"docker-start": "docker-compose --file ./docker/docker-compose.yml --env-file ./config/database.env --project-name le-bot-en-js up --detach",
+		"docker-stop": "docker-compose --file ./docker/docker-compose.yml --project-name le-bot-en-js down",
+		"docker-compose-build-start": "docker-compose --file ./docker/docker-compose-build.yml --env-file ./config/database.env --project-name le-bot-en-js up --detach --build",
+		"docker-compose-build-stop": "docker-compose --file ./docker/docker-compose-build.yml --project-name le-bot-en-js down"
 	},
 	"repository": {
 		"type": "git",

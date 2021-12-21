@@ -8,8 +8,22 @@ services:
             dockerfile: ./docker/Dockerfile
         container_name: le-bot-en-js
         restart: on-failure
+        depends_on:
+          - postgres-database
         env_file:
             - ../config/bot.env
         volumes:
-            - ../config/reactionRoleConfig.json:/usr/src/app/config/reactionRoleConfig.json
-            - ../forms/:/usr/src/app/forms/
+            - ../config/reactionRoleConfig.json:/usr/src/app/config/reactionRoleConfig.json:ro
+            - ../config/banEmotesAtJoin.json:/usr/src/app/config/banEmotesAtJoin.json:ro
+            - ../forms/:/usr/src/app/forms/:ro
+
+    postgres-database:
+        image: postgres:14.1-alpine3.15
+        container_name: postgres-database
+        restart: always
+        env_file:
+          - ../config/database.env
+        volumes:
+          - ${DATABASE_FILES_PATH:-../pgdata}:${PGDATA:-/var/lib/postgresql/data}
+        ports:
+          - 5432:5432
