@@ -142,7 +142,7 @@ export default async (message, client) => {
 			const description = `${validMessage.content}\n[Aller au message](${validMessage.url}) - ${validMessage.channel}`
 			// Si la description dépasse la limite
 			// autorisée, les liens sont contenus dans des fields
-			if (description.length > 2048) {
+			if (description.length > 4096) {
 				embed.description = validMessage.content
 				embed.fields.push(
 					{
