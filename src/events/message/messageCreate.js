@@ -1,4 +1,4 @@
-import { Collection } from 'discord.js'
+import { Collection, Constants } from 'discord.js'
 import {
 	modifyWrongUsernames,
 	convertDate,
@@ -23,16 +23,22 @@ export default async (message, client) => {
 	// Si c'est un channel no-text
 	if (
 		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
-		message.author !== client.user
+		message.author !== client.user &&
+		message.attachments.size < 1
 	) {
-		if (message.attachments.size < 1) {
-			message.channel.send(`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`)
-				.then(sentmessage => {
-					setTimeout(() => sentmessage.delete(), 7000)
-				})
-			message.delete()
-			return true
-		}
+		const sentMessage = await message.channel.send(
+			`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`,
+		)
+		return Promise.all([
+			message.delete(),
+			setTimeout(
+				() =>
+					sentMessage.delete().catch(error => {
+						if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE) console.error(error)
+					}),
+				7000,
+			),
+		])
 	}
 
 	// Command handler
