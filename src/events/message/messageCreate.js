@@ -20,6 +20,21 @@ export default async (message, client) => {
 	// si le pseudo respecte bien les règles
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
 
+	// Si c'est un channel no-text
+	if (
+		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
+		message.author !== client.user
+	) {
+		if (message.attachments.size < 1) {
+			message.channel.send(`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`)
+				.then(sentmessage => {
+					setTimeout(() => sentmessage.delete(), 7000)
+				})
+			message.delete()
+			return true
+		}
+	}
+
 	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {
 		const args = message.content.slice(client.config.prefix.length).split(/ +/)
