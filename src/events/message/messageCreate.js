@@ -152,7 +152,7 @@ export default async (message, client) => {
 					},
 					{
 						name: 'Channel',
-						value: validMessage.channel,
+						value: validMessage.channel.toString(),
 						inline: true,
 					},
 				)
