@@ -26,8 +26,7 @@ export default async (message, client) => {
 		message.author !== client.user
 	) {
 		if (message.attachments.size < 1) {
-			message.channel
-				.send(`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`)
+			message.channel.send(`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`)
 				.then(sentmessage => {
 					setTimeout(() => sentmessage.delete(), 7000)
 				})

@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
     le-bot-en-js:
         image: tanguychiffoleau/le-bot-en-js:latest
         container_name: le-bot-en-js
