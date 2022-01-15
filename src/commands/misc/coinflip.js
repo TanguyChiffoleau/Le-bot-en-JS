@@ -10,8 +10,8 @@ export default {
 		const random = Math.random()
 
 		let resultat = ''
-		if (random < 0.49) resultat = 'Pile'
-		else if (random > 0.51) resultat = 'Face'
+		if (random < 0.50) resultat = 'Pile'
+		else if (random > 0.50) resultat = 'Face'
 		else resultat = 'Tranche'
 
 		const sentMessage = await message.channel.send('La pièce tourne.')
