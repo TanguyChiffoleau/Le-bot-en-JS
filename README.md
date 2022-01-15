@@ -4,16 +4,16 @@
 
 ## Table des matières
 
-- [Table des matières](#table-des-matières)
-- [À propos](#à-propos)
-- [Mise en place du bot](#mise-en-place-du-bot)
-	- [Création du bot](#création-du-bot)
-	- [Invitation du bot](#invitation-du-bot)
-- [Setup en production](#setup-en-production)
-	- [Setup avec Node.js](#setup-avec-nodejs)
-	- [Setup dans un container avec Docker et Docker Compose](#setup-dans-un-container-avec-docker-et-docker-compose)
-- [Ressources](#ressources)
-- [Contribuer](#contribuer)
+-   [Table des matières](#table-des-matières)
+-   [À propos](#à-propos)
+-   [Mise en place du bot](#mise-en-place-du-bot)
+    -   [Création du bot](#création-du-bot)
+    -   [Invitation du bot](#invitation-du-bot)
+-   [Setup en production](#setup-en-production)
+    -   [Setup avec Node.js](#setup-avec-nodejs)
+    -   [Setup dans un container avec Docker et Docker Compose](#setup-dans-un-container-avec-docker-et-docker-compose)
+-   [Ressources](#ressources)
+-   [Contribuer](#contribuer)
 
 ## À propos
 
@@ -43,8 +43,8 @@ Pour inviter le bot sur un serveur, il faut créer un lien d'invitation. Il est 
 
 L'application est capable de tourner sous plusieurs environnements :
 
-- n'importe quel environnement avec Node.js d'installé
-- dans un container Docker avec Docker Compose
+-   n'importe quel environnement avec Node.js d'installé
+-   dans un container Docker avec Docker Compose
 
 ### Setup avec Node.js
 
@@ -52,15 +52,15 @@ L'application est capable de tourner sous plusieurs environnements :
 
 1. Il est nécessaire d'avoir [Node.js](https://nodejs.org/fr/) 16.6.0 ou plus récent d'installé sur votre machine.
 
-	> Utilisez la commande `node -v` pour vous assurez que Node est bien installé et que sa version est suffisante.
+    > Utilisez la commande `node -v` pour vous assurez que Node est bien installé et que sa version est suffisante.
 
-	> À titre indicatif, l'application tourne sous Node.js v14.16.0 en production.
+    > À titre indicatif, l'application tourne sous Node.js v14.16.0 en production.
 
 2. Téléchargez le code de l'application sur votre machine. _cf. [Télécharger le code de l'application sur votre machine](#download)_
 
 3. Il faut au préalable installer les dépendances de l'application avant de lancer celle-ci en utilisant la commande `npm i`.
 
-	> Toutes les dépendances vont être installées, y compris celles prévues pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
+    > Toutes les dépendances vont être installées, y compris celles prévues pour les développeurs, car le package [dotenv](https://www.npmjs.com/package/dotenv) est nécessaire. Ci toutefois vous avez appliqué les variables d'environnement à l'application par vos propres moyens, seule la commande `npm i --production` est nécessaire.
 
 4. Renommez le fichier `bot.example.env` en `bot.env`, puis modifiez les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
@@ -76,33 +76,35 @@ L'application est capable de tourner sous plusieurs environnements :
 
 > Vous pouvez utiliser un gestionnaire d'application comme [PM2](https://pm2.keymetrics.io/) pour faciliter la gestion de l'application. _cf. [ Managing your bot process with PM2](https://discordjs.guide/improving-dev-environment/pm2.html)_
 
-
 ### Setup dans un container avec Docker et Docker Compose
 
 #### Prérequis
 
 1. Il est nécessaire d'avoir [Docker](https://docs.docker.com/get-docker/) ainsi que [Docker Compose](https://docs.docker.com/compose/install/) d'installé.
-	> Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installées.
+
+    > Utilisez les commandes `docker -v` et `docker-compose -v` pour vérifier que les deux applications soient bien installées.
 
 2. Créez les fichiers `bot.env`, `reactionRoleConfig.json` et `banEmotesAtJoin.json` dans le dossier `config` ainsi que le fichier `docker-compose.yml` dans le dossier `docker` :
-	```bash
-	mdkir config
-	cd config
-	touch bot.env reactionRoleConfig.json banEmotesAtJoin.json
-	cd ..
-	mkdir docker
-	touch docker-compose.yml
-	```
 
-   - Configurez le fichier `bot.env` en ajoutant les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
+    ```bash
+    mdkir config
+    cd config
+    touch bot.env reactionRoleConfig.json banEmotesAtJoin.json
+    cd ..
+    mkdir docker
+    touch docker-compose.yml
+    ```
 
-   - Configurez le fichier `reactionRoleConfig.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
+    - Configurez le fichier `bot.env` en ajoutant les variables d'environnement pour que l'application fonctionne correctement. _cf. [Variables d'environnement](#environnement)_
 
-   - Configurez le fichier `banEmotesAtJoin.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
+    - Configurez le fichier `reactionRoleConfig.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
 
-   - Copiez le contenu du fichier [docker/docker-compose.yml](docker/docker-compose.yml) dans le fichier du même emplacement sur votre machine. Il correspond au fichier de configuration pour `docker-compose`.
+    - Configurez le fichier `banEmotesAtJoin.json`, puis modifiez le fichier pour que le système fonctionne correctement. _cf. [Configuration du sytème de réaction/rôles](#reaction)_
+
+    - Copiez le contenu du fichier [docker/docker-compose.yml](docker/docker-compose.yml) dans le fichier du même emplacement sur votre machine. Il correspond au fichier de configuration pour `docker-compose`.
 
 > La structure des dossiers et fichiers devrait ressembler à ça :
+>
 > ```
 > .
 > ├── config
@@ -191,6 +193,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 #### Fichier bot.env
 
 > Exemple disponible [ici](config/bot.example.env) :
+>
 > ```env
 > DISCORD_TOKEN="DISCORD-SECRET-BOT-TOKEN"
 > COMMANDS_PREFIX="!"
@@ -221,7 +224,6 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | UPGRADE_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                     |
 | NOLOGS_MANAGER_CHANNELS_IDS | ID des channels dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                  |
 
-
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
 </details>
@@ -234,87 +236,91 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 #### Fichier reactionRoleConfig.json
 
 > Exemple disponible [ici](config/reactionRoleConfig.example.json) :
+>
 > ```js
-> [
+> ;[
 > 	{
 > 		// Channel n°1
-> 		"channelID": "123456789123456789",
-> 		"messageArray": [
+> 		channelID: '123456789123456789',
+> 		messageArray: [
 > 			// Message n°1
 > 			{
 > 				// ID du message
-> 				"messageID": "123456789123456789",
+> 				messageID: '123456789123456789',
 > 				// Émoji unicode en clé et ID du rôle en valeur
-> 				"emojiRoleMap": {
-> 					"💸": "123456789123456789",
-> 					"🔧": "123456789123456789"
-> 				}
+> 				emojiRoleMap: {
+> 					'💸': '123456789123456789',
+> 					'🔧': '123456789123456789',
+> 				},
 > 			},
 > 			// Message n°2
 > 			{
 > 				// ID du message
-> 				"messageID": "123456789123456789",
+> 				messageID: '123456789123456789',
 > 				// Émoji unicode en clé et ID du rôle en valeur
-> 				"emojiRoleMap": {
-> 					"🥵": "123456789123456789",
-> 					"✅": "123456789123456789"
-> 				}
-> 			}
-> 		]
+> 				emojiRoleMap: {
+> 					'🥵': '123456789123456789',
+> 					'✅': '123456789123456789',
+> 				},
+> 			},
+> 		],
 > 	},
 > 	{
 > 		// Channel n°2
-> 		"channelID": "123456789123456789",
-> 		"messageArray": [
+> 		channelID: '123456789123456789',
+> 		messageArray: [
 > 			// Message n°1
 > 			{
 > 				// ID du message
-> 				"messageID": "123456789123456789",
+> 				messageID: '123456789123456789',
 > 				// ID de l'émoji custom en clé et ID du rôle en valeur
-> 				"emojiRoleMap": {
-> 					"123456789123456789": "123456789123456789",
-> 					"987654321987654321": "123456789123456789"
-> 				}
+> 				emojiRoleMap: {
+> 					'123456789123456789': '123456789123456789',
+> 					'987654321987654321': '123456789123456789',
+> 				},
 > 			},
 > 			// Message n°2
 > 			{
 > 				// ID du message
-> 				"messageID": "123456789123456789",
+> 				messageID: '123456789123456789',
 > 				// ID de l'émoji custom en clé et ID du rôle en valeur
-> 				"emojiRoleMap": {
-> 					"123456789123456789": "123456789123456789",
-> 					"987654321987654321": "123456789123456789"
-> 				}
-> 			}
-> 		]
-> 	}
+> 				emojiRoleMap: {
+> 					'123456789123456789': '123456789123456789',
+> 					'987654321987654321': '123456789123456789',
+> 				},
+> 			},
+> 		],
+> 	},
 > ]
 > ```
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
 > Pour désactiver le système, le fichier doit être composé d'un tableau (array) **vide** :
+>
 > ```js
-> []
+> ;[]
 > ```
 
 #### Fichier banEmotesAtJoin.json
 
 > Exemple disponible [ici](config/banEmotesAtJoin.example.json) :
+>
 > ```js
-> [
+> ;[
 > 	// Réaction sous forme d'émoji unicode ou son ID, texte de raison
-> 	["🔨", "Reason 1"],
-> 	["🧹", "Reason 2"],
-> 	["123456789123456789", "Reason 3"],
-> 	["123456789123456789", "Reason 4"]
+> 	['🔨', 'Reason 1'],
+> 	['🧹', 'Reason 2'],
+> 	['123456789123456789', 'Reason 3'],
+> 	['123456789123456789', 'Reason 4'],
 > ]
 > ```
 
--  Pour récupérer les émojis :
-   - unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`. ![emoji_unicode](doc/gifs/emoji_unicode.gif)
+-   Pour récupérer les émojis :
 
-   - personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`. ![emoji_custom](doc/gifs/emoji_custom.gif)
+    -   unicode : mettre un `\` avant l'émoji. Exemple : pour `:white_check_mark:`, l'émoji unicode est `✅`. ![emoji_unicode](doc/gifs/emoji_unicode.gif)
+
+    -   personnalisés : mettre un `\` avant l'émoji et récupérer l'ID. Exemple : pour `\<:lul:719519281682972703>`, l'ID est `719519281682972703`. ![emoji_custom](doc/gifs/emoji_custom.gif)
 
 </details>
 
