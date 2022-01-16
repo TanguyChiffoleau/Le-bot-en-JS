@@ -18,6 +18,8 @@ export default () => {
 	client.cooldowns = new Collection()
 	client.config = {
 		prefix: process.env.COMMANDS_PREFIX,
+		discordToken: process.env.DISCORD_TOKEN,
+		clientID: process.env.CLIENT_ID,
 		guildID: process.env.GUILD_ID,
 		reportChannelID: process.env.REPORT_CHANNEL,
 		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
