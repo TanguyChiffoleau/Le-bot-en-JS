@@ -23,11 +23,11 @@
 	"homepage": "https://github.com/TanguyChiffoleau/Le-bot-en-JS#readme",
 	"dependencies": {
 		"bent": "^7.3.12",
-		"discord.js": "^13.3.1"
+		"discord.js": "^13.6.0"
 	},
 	"devDependencies": {
-		"dotenv": "^10.0.0",
-		"eslint": "^8.5.0",
+		"dotenv": "^11.0.0",
+		"eslint": "^8.6.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"prettier": "^2.5.1"

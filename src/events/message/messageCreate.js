@@ -1,4 +1,4 @@
-import { Collection } from 'discord.js'
+import { Collection, Constants } from 'discord.js'
 import {
 	modifyWrongUsernames,
 	convertDate,
@@ -19,6 +19,33 @@ export default async (message, client) => {
 	// Si le message vient d'une guild, on vérifie
 	// si le pseudo respecte bien les règles
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
+
+	// Si c'est un channel no-text
+	if (
+		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
+		message.author !== client.user &&
+		message.attachments.size < 1
+	) {
+		const sentMessage = await message.channel.send(
+			`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`,
+		)
+		return Promise.all([
+			message.delete(),
+			setTimeout(
+				() =>
+					sentMessage.delete().catch(error => {
+						if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE) console.error(error)
+					}),
+				7000,
+			),
+		])
+	}
+
+	// Répondre émote si @bot
+	if (message.mentions.users.has(client.user)) {
+		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
+		if (pingEmoji) message.react(pingEmoji)
+	}
 
 	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {
@@ -142,7 +169,7 @@ export default async (message, client) => {
 			const description = `${validMessage.content}\n[Aller au message](${validMessage.url}) - ${validMessage.channel}`
 			// Si la description dépasse la limite
 			// autorisée, les liens sont contenus dans des fields
-			if (description.length > 2048) {
+			if (description.length > 4096) {
 				embed.description = validMessage.content
 				embed.fields.push(
 					{
@@ -152,7 +179,7 @@ export default async (message, client) => {
 					},
 					{
 						name: 'Channel',
-						value: validMessage.channel,
+						value: validMessage.channel.toString(),
 						inline: true,
 					},
 				)
