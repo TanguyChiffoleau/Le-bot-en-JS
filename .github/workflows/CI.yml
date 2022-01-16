@@ -12,7 +12,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2.4.0
             - name: Uses Node.js 17.3.1
-              uses: actions/setup-node@v2.4.1
+              uses: actions/setup-node@v2.5.1
               with:
                   node-version: 17.3.1
             - run: npm ci
