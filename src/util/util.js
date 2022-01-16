@@ -210,6 +210,45 @@ export const closeGracefully = (signal, client) => {
 export const convertDateForDiscord = date => `<t:${Math.round(new Date(date) / 1000)}>`
 
 /**
+ * Gère les options d'une intéraction (slash-command)
+ * @param {Data} data
+ * @param {Array} options
+ */
+export const manageOptions = (data = null, options = []) => {
+	if (!data) return
+	options.map(option => {
+		const name = option.name ? option.name : option.type
+		if (option.type === 'mentionable')
+			data.addMentionableOption(opt =>
+				opt.setName(name).setDescription(option.optDesc || 'Membre (rôles non compris)'),
+			)
+		else if (option.type === 'input')
+			data.addStringOption(opt =>
+				opt.setName(name).setDescription(option.optDesc || 'Chaîne de caractère'),
+			)
+		else if (option.type === 'int')
+			data.addIntegerOption(opt =>
+				opt.setName(name).setDescription(option.optDesc || 'Entier'),
+			)
+		else if (option.type === 'bool')
+			data.addBooleanOption(opt =>
+				opt.setName(name).setDescription(option.optDesc || 'Choix binaire (booléan)'),
+			)
+		else if (option.type === 'user')
+			data.addUserOption(opt =>
+				opt.setName(name).setDescription(option.optDesc || 'Membre (bots non compris)'),
+			)
+		else if (option.type === 'channel')
+			data.addChannelOption(opt =>
+				opt.setName(name).setDescription(option.optDesc || 'Salon'),
+			)
+		else if (option.type === 'role')
+			data.addRoleOption(opt => opt.setName(name).setDescription(option.optDesc || 'Rôle'))
+	})
+	return data
+}
+
+/**
  * Permet de (re)répondre à une interaction via des paramètres optionnels
  * @param {Interaction} interaction L'interaction à utiliser (requis)
  * @param {string} content Contenu du message à envoyer (optionnel)
