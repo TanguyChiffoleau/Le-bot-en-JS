@@ -21,7 +21,7 @@ export default async (message, client) => {
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
 
 	// Répondre émote si @bot
-	if (message.mentions.users.has(client.user.id)) {
+	if (message.mentions.users.has(client.user)) {
 		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
 		if (pingEmoji) message.react(pingEmoji)
 	}
