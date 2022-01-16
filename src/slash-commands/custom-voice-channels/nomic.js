@@ -3,7 +3,7 @@ import { displayNameAndID, interactionReply } from '../../util/util.js'
 export default {
 	name: 'nomic',
 	description:
-		"Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé",
+		'Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
 	aliases: [],
 	usage: {
 		arguments: null,
@@ -18,38 +18,42 @@ export default {
 
 		// Si l'utilisateur n'est pas dans un channel vocal
 		if (!voiceChannel)
-			return interactionReply({ 
+			return interactionReply({
 				interaction,
 				content: 'tu dois être dans un channel vocal pour utiliser cette commande 😕',
-				isSilent: true
+				isSilent: true,
 			})
 
 		// Si l'utilisateur n'est pas dans un channel vocal personnalisé
 		if (!client.voiceManager.has(voiceChannel.id))
-		return interactionReply({ 
-			interaction,
-			content: 'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
-			isSilent: true
-		})
+			return interactionReply({
+				interaction,
+				content:
+					'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+				isSilent: true,
+			})
 
 		// Check si il y a déjà un channel no-mic
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 		if (existingNoMicChannel)
-			return interactionReply({ 
+			return interactionReply({
 				interaction,
 				content: `il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
-				isSilent: true
+				isSilent: true,
 			})
 
 		// Crée le channel no mic
-		const noMicChannel = await interaction.guild.channels.create(`no mic ${voiceChannel.name}`, {
-			type: 'text',
-			topic: `Channel temporaire créé pour ${displayNameAndID(
-				interaction.member,
-				interaction.user,
-			)}`,
-			parent: voiceChannel.parent,
-		})
+		const noMicChannel = await interaction.guild.channels.create(
+			`no mic ${voiceChannel.name}`,
+			{
+				type: 'text',
+				topic: `Channel temporaire créé pour ${displayNameAndID(
+					interaction.member,
+					interaction.user,
+				)}`,
+				parent: voiceChannel.parent,
+			},
+		)
 
 		// Suppression des permissions existantes sauf
 		// pour les rôles qui peuvent supprimer les messages (modos)
@@ -99,10 +103,10 @@ export default {
 		// Ajout du channel dans la map
 		client.voiceManager.set(voiceChannel.id, noMicChannel)
 
-		return interactionReply({ 
+		return interactionReply({
 			interaction,
 			content: `ton channel a bien été créé : ${noMicChannel} 👌`,
-			isSilent: true
+			isSilent: true,
 		})
 	},
 }
