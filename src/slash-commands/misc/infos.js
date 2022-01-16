@@ -1,4 +1,4 @@
-import { diffDate, interactionReply} from '../../util/util.js'
+import { diffDate, interactionReply } from '../../util/util.js'
 
 // import nodePackage from '../../../package.json'
 import { readFileSync } from 'fs'
@@ -6,7 +6,7 @@ const { version } = JSON.parse(readFileSync('./package.json'))
 
 export default {
 	name: 'infos',
-    description: 'Donne quelques infos et le statut du bot',
+	description: 'Donne quelques infos et le statut du bot',
 	aliases: [],
 	interaction: async (interaction, client) => {
 		const embed = {
@@ -42,5 +42,5 @@ export default {
 		}
 
 		await interactionReply({ interaction, embeds: [embed] })
-	}
+	},
 }

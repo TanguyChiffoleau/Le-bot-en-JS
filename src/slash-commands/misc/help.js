@@ -1,17 +1,18 @@
 import { Util } from 'discord.js'
-import { pluralizeWithoutQuantity } from '../../util/util.js'
+import { pluralizeWithoutQuantity, interactionReply } from '../../util/util.js'
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
-import { interactionReply } from '../../util/util.js'
 
 export default {
 	name: 'help',
 	description: 'Affiche les commandes fixes du bot',
 	aliases: [],
-	options: [{
-        type: 'input',
-        name: 'commande',
-        optDesc: "Nom de la commande où l'on veut des détails"
-    }],
+	options: [
+		{
+			type: 'input',
+			name: 'commande',
+			optDesc: "Nom de la commande où l'on veut des détails",
+		},
+	],
 	usage: {
 		arguments: '[commande]',
 		informations: null,
@@ -36,15 +37,15 @@ export default {
 				})
 			})
 
-			return interactionReply({ 
-				interaction, 
+			return interactionReply({
+				interaction,
 				embeds: [
 					{
 						title: 'Commandes principales disponibles',
 						color: 'ff8000',
 						fields,
 					},
-				]
+				],
 			})
 		}
 

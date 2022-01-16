@@ -4,11 +4,13 @@ export default {
 	name: 'vote',
 	description: 'Créé un embed avec la proposition et des émojis pour voter',
 	aliases: [],
-	options: [{
-        type: 'input',
-		name: 'proposition',
-        optDesc: "Proposition de vote"
-    }],
+	options: [
+		{
+			type: 'input',
+			name: 'proposition',
+			optDesc: 'Proposition de vote',
+		},
+	],
 	usage: {
 		arguments: '<texte>',
 		informations: null,
@@ -17,19 +19,20 @@ export default {
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: [],
-	interaction: async (interaction, client) => {
+	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
 		if (!proposition)
-			return interactionReply({ 
+			return interactionReply({
 				interaction,
-				content: "tu dois entrer une proposition de vote 😕",
+				content: 'tu dois entrer une proposition de vote 😕',
+				isSilent: true,
 			})
 
 		// Interaction user
 		const user = interaction.guild.members.cache.get(interaction.user.id)
-		
+
 		// Envoie du message de vote
-		const sentMessage = await interactionReply({ 
+		const sentMessage = await interactionReply({
 			interaction,
 			embeds: [
 				{
@@ -43,7 +46,14 @@ export default {
 					timestamp: new Date(),
 				},
 			],
-			fetchReply: true
+			fetchReply: true,
+		})
+
+		// Création automatique du thread associé
+		await interaction.channel.threads.create({
+			name: `Vote de ${interaction.member.displayName}`,
+			autoArchiveDuration: 60,
+			reason: `${proposition}`,
 		})
 
 		// Ajout des réactions pour voter

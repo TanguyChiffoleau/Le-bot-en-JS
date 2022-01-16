@@ -4,10 +4,12 @@ export default {
 	name: 'whois',
 	description: 'Donne des infos sur soit ou un autre utilisateur',
 	aliases: [],
-	options: [{
-        type: 'user',
-        optDesc: "Membre"
-    }],
+	options: [
+		{
+			type: 'user',
+			optDesc: 'Membre',
+		},
+	],
 	usage: {
 		arguments: 'user',
 		informations: null,
@@ -15,18 +17,18 @@ export default {
 			{
 				command: 'whois user',
 				explaination: null,
-			}
+			},
 		],
 	},
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: [],
-	interaction: (interaction, client) => {
+	interaction: interaction => {
 		// Acquisition du membre
 		const user = interaction.options.getUser('user') || interaction.user
 		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
-			return interactionReply({ 
+			return interactionReply({
 				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
