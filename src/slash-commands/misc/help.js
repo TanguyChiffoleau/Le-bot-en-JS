@@ -1,26 +1,33 @@
 import { Util } from 'discord.js'
 import { pluralizeWithoutQuantity } from '../../util/util.js'
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
+import { interactionReply } from '../../util/util.js'
 
 export default {
 	name: 'help',
 	description: 'Affiche les commandes fixes du bot',
-	aliases: ['aide'],
+	aliases: [],
+	options: [{
+        type: 'input',
+        name: 'commande',
+        optDesc: "Nom de la commande où l'on veut des détails"
+    }],
 	usage: {
 		arguments: '[commande]',
 		informations: null,
 	},
-	needArguments: false,
+	needArguments: true,
 	guildOnly: false,
 	requirePermissions: [],
-	execute: (client, message, args) => {
+	interaction: (interaction, client) => {
 		// Si aucun argument, on montre la liste des commandes principales
-		if (args.length === 0) {
+		const commandeName = interaction.options.getString('commande')
+		if (!commandeName) {
 			const fields = []
 			client.commandsCategories.forEach((commandsNames, category) => {
 				const commandsDescription = commandsNames.reduce((acc, commandName) => {
 					const command = client.commands.get(commandName)
-					return `${acc}- \`${commandName}\`: ${command.description}.\n`
+					return `${acc}- \`${commandName}\` : ${command.description}.\n`
 				}, '')
 
 				fields.push({
@@ -29,25 +36,26 @@ export default {
 				})
 			})
 
-			return message.channel.send({
+			return interactionReply({ 
+				interaction, 
 				embeds: [
 					{
 						title: 'Commandes principales disponibles',
 						color: 'ff8000',
 						fields,
 					},
-				],
+				]
 			})
 		}
 
 		// Acquisition de la commande
-		const chosenCommand = args[0]
 		const command =
-			client.commands.get(chosenCommand) ||
-			client.commands.find(({ aliases }) => aliases.includes(chosenCommand))
+			client.commands.get(commandeName) ||
+			client.commands.find(({ aliases }) => aliases.includes(commandeName))
 		if (!command)
-			return message.reply({
-				content: `je n'ai pas trouvé la commande \`${chosenCommand}\` 😕`,
+			return interactionReply({
+				interaction,
+				content: `je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
 			})
 
 		// Fait l'intérmédiaire entre la propriété et sa traduction en langage
@@ -107,7 +115,7 @@ export default {
 					name: 'Utilisation',
 					value: `${command.name} ${Util.escapeMarkdown(command.usage.arguments)}${
 						command.usage.informations ? `\n_(${command.usage.informations})_` : ''
-					}\n\nObligatoire: \`<>\` | Optionnel: \`[]\` | "ou": \`|\``,
+					}\n\nObligatoire : \`<>\` | Optionnel : \`[]\` | "ou" : \`|\``,
 				})
 
 			// Ajout des exemples
@@ -124,6 +132,6 @@ export default {
 				})
 		}
 
-		return message.channel.send({ embeds: [embed] })
+		return interactionReply({ interaction, embeds: [embed] })
 	},
 }

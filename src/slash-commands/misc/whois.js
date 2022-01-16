@@ -1,41 +1,33 @@
-import { convertDateForDiscord, diffDate } from '../../util/util.js'
-
-const getMember = (message, mentionOrID) => {
-	if (!mentionOrID) return message.member
-
-	const matches = mentionOrID.match(/^<@!?(\d{17,19})>$|^(\d{17,19})$/)
-	if (!matches) return
-
-	const targetID = matches[1] || matches[2]
-	return message.guild.members.cache.get(targetID)
-}
+import { convertDateForDiscord, diffDate, interactionReply } from '../../util/util.js'
 
 export default {
 	name: 'whois',
 	description: 'Donne des infos sur soit ou un autre utilisateur',
 	aliases: [],
+	options: [{
+        type: 'user',
+        optDesc: "Membre"
+    }],
 	usage: {
-		arguments: '[id|mention]',
+		arguments: 'user',
 		informations: null,
 		examples: [
 			{
-				command: 'whois 208328464216883200',
+				command: 'whois user',
 				explaination: null,
-			},
-			{
-				command: 'whois @Tanguy#3760',
-				explaination: null,
-			},
+			}
 		],
 	},
-	needArguments: false,
+	needArguments: true,
 	guildOnly: true,
 	requirePermissions: [],
-	execute: (client, message, args) => {
-		// Acquisition du membre avec la mention/l'ID
-		const member = getMember(message, args[0])
+	interaction: (interaction, client) => {
+		// Acquisition du membre
+		const user = interaction.options.getUser('user') || interaction.user
+		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
-			return message.reply({
+			return interactionReply({ 
+				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
@@ -88,6 +80,6 @@ export default {
 				inline: true,
 			})
 
-		return message.channel.send({ embeds: [embed] })
+		return interactionReply({ interaction, embeds: [embed] })
 	},
 }
