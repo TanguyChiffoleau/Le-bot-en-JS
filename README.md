@@ -204,6 +204,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > CONFIG_CHANNEL_ID="123456789012345678"
 > UPGRADE_CHANNEL_ID="123456789012345678"
 > NOLOGS_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
+> NOTEXT_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
 > ```
 
 | Variable                    | Description                                                                                                                                                                                                |
@@ -220,6 +221,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | CONFIG_CHANNEL_ID           | ID du channel utilisé pour diriger les formulaires de config en DM vers le bon channel                                                                                                                     |
 | UPGRADE_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                     |
 | NOLOGS_MANAGER_CHANNELS_IDS | ID des channels dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                  |
+| NOTEXT_MANAGER_CHANNELS_IDS | ID des channels dont les messages doivent comporter au moins un attachement (vidéo, photo...) pour ne pas êtres supprimés. Les ID doivent être séparés par une virgule                                     |
 
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
