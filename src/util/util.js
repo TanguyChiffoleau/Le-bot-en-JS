@@ -235,7 +235,8 @@ export const manageOptions = (data = null, options = []) => {
  * @param {MessageEmbed} embeds Embeds
  * @param {MessageAttachment} files Fichier(s) à attacher à la réponse interaction
  * @param {boolean} isSilent 
- * @param {boolean} isUpdate 
+ * @param {boolean} isEdit 
+ * @param {boolean} isDelete 
  * @param {int} timeoutDelete Temps avec suppresion de la réponse à l'interaction (0 = default (pas de suppression)) 
  * @returns {void}
  */
@@ -246,7 +247,8 @@ export const interactionReply = ({
 	embeds = [], 
 	files = [], 
 	isSilent = false, 
-	isUpdate = false, 
+	isEdit = false, 
+	isDelete = false,
 	fetchReply = false, 
 	timeoutDelete = 0 
 }) => {
@@ -263,8 +265,10 @@ export const interactionReply = ({
     if (!interaction) {
         console.error('Interaction manquante')
     } else if (interaction.replied || interaction.deferred) {
-        if (isUpdate) {
+        if (isEdit) {
             interaction.editReply(obj)
+        } else if (isDelete) {
+            interaction.deleteReply(obj)
         } else {
             interaction.followUp(obj)
         }
