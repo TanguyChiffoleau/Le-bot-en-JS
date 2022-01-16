@@ -6,10 +6,12 @@ export default {
 	name: 'config',
 	description: 'Donne le formulaire des configs',
 	aliases: [],
-	options: [{
-        type: 'user',
-        optDesc: "Membre"
-    }],
+	options: [
+		{
+			type: 'user',
+			optDesc: 'Membre',
+		},
+	],
 	usage: {
 		arguments: 'user',
 		informations: null,
@@ -20,8 +22,7 @@ export default {
 			},
 			{
 				command: 'config user',
-				explaination:
-					"envoie le formulaire en DM à l'utilisateur mentionné",
+				explaination: "envoie le formulaire en DM à l'utilisateur mentionné",
 			},
 		],
 	},
@@ -38,7 +39,7 @@ export default {
 		const user = interaction.options.getUser('user') || interaction.user
 		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
-			return interactionReply({ 
+			return interactionReply({
 				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
@@ -62,15 +63,12 @@ export default {
 					name: 'Précisions',
 					value: configDescription,
 				},
-				{
-					name: 'Formulaire',
-					value: config,
-				},
 			],
 		}
 
 		try {
 			await member.send({ embeds: [embed] })
+			await member.send(config)
 		} catch (error) {
 			if (error.code !== Constants.APIErrors.CANNOT_MESSAGE_USER) throw error
 
@@ -88,16 +86,15 @@ export default {
 				})
 		}
 
-		if (member.user.id === interaction.user.id) 
+		if (member.user.id === interaction.user.id)
 			return interactionReply({
 				interaction,
-				content: `formulaire envoyé en message privé 😉`,
-				isSilent: true
+				content: `formulaire envoyé en message privé 👌`,
+				isSilent: true,
 			})
-		else 
-			return interactionReply({
-				interaction,
-				content: `formulaire envoyé en message privé à ${member} 😉`
-			})
+		return interactionReply({
+			interaction,
+			content: `formulaire envoyé en message privé à ${member} 👌`,
+		})
 	},
 }
