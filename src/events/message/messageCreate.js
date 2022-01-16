@@ -39,7 +39,7 @@ export default async (message, client) => {
 				7000,
 			),
 		])
-  }
+	}
 
 	// Répondre émote si @bot
 	if (message.mentions.users.has(client.user)) {
