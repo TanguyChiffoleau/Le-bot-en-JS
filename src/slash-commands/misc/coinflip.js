@@ -9,11 +9,11 @@ export default {
 	guildOnly: false,
 	requirePermissions: [],
 	interaction: async interaction => {
-		const random = Math.random()
+		const random = Math.round(Math.random() * 100)
 
 		let resultat = ''
-		if (random < 0.49) resultat = 'Pile'
-		else if (random > 0.51) resultat = 'Face'
+		if (random < 50) resultat = 'Pile'
+		else if (random > 50) resultat = 'Face'
 		else resultat = 'Tranche'
 
 		await interactionReply({ interaction, content: 'La pièce tourne.' })
