@@ -7,11 +7,11 @@ export default {
 	guildOnly: false,
 	requirePermissions: [],
 	execute: async (client, message) => {
-		const random = Math.random()
+		const random = Math.round(Math.random() * 100)
 
 		let resultat = ''
-		if (random < 0.5) resultat = 'Pile'
-		else if (random > 0.5) resultat = 'Face'
+		if (random < 50) resultat = 'Pile'
+		else if (random > 50) resultat = 'Face'
 		else resultat = 'Tranche'
 
 		const sentMessage = await message.channel.send('La pièce tourne.')
