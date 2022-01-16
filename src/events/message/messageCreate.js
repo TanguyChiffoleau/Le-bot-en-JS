@@ -22,9 +22,7 @@ export default async (message, client) => {
 
 	// Répondre émote si @bot
 	if (message.mentions.users.has(client.user.id)) {
-		const pingEmoji = client.emojis.cache.find(
-			emoji => emoji.name === 'ping',
-		)
+		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
 		if (pingEmoji) message.react(pingEmoji)
 	}
 
