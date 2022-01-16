@@ -20,6 +20,12 @@ export default async (message, client) => {
 	// si le pseudo respecte bien les règles
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
 
+	// Répondre émote si @bot
+	if (message.mentions.users.has(client.user)) {
+		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
+		if (pingEmoji) message.react(pingEmoji)
+	}
+
 	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {
 		const args = message.content.slice(client.config.prefix.length).split(/ +/)
