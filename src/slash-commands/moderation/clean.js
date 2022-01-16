@@ -2,6 +2,7 @@ import {
 	pluralizeWithoutQuantity as pluralize,
 	displayNameAndID,
 	convertDateForDiscord,
+	interactionReply,
 } from '../../util/util.js'
 import { Util } from 'discord.js'
 
@@ -24,62 +25,88 @@ const isEmbedExceedingLimits = embeds =>
 export default {
 	name: 'clean',
 	description: 'Supprime un nombre de messages donné dans le channel',
-	aliases: ['cl'],
+	aliases: [],
+	options: [
+		{
+			type: 'int',
+			name: 'nombre',
+			optDesc: 'Nombre de message à supprimer (1 à 99)',
+		},
+		{
+			type: 'bool',
+			name: 'silent',
+			optDesc: 'Exécuter la commande silencieusement',
+		},
+	],
 	usage: {
-		arguments: '<nombre_messages_à_supprimer> [silent|s]',
-		informations:
-			'Valeur comprise entre 1 et 99. Silent : supprime le message de confirmation après 4 secondes, défaut : false',
+		arguments: '<nombre_messages_à_supprimer>',
+		informations: 'Valeur comprise entre 1 et 99',
 		examples: [
 			{
 				command: 'clean 10',
 				explaination: 'supprime les 10 derniers messages',
-			},
-			{
-				command: 'cooldown 10 silent (= cooldown 10 s)',
-				explaination:
-					'supprime les 10 derniers messages puis supprime le message de confirmation 4 secondes plus tard',
 			},
 		],
 	},
 	needArguments: true,
 	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
-	execute: async (client, message, [number, silent = false]) => {
-		// Acquisition du nombre de messages à supprimer
-		const chosenNumber = parseInt(number, 10)
-		if (!chosenNumber) return message.reply({ content: "tu n'as pas donné un nombre 😕" })
-		if (chosenNumber < 1 || chosenNumber > 99)
-			return message.reply({
-				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
+	interaction: async (interaction, client) => {
+		// Acquisition du nombre de messages à supprimer et du silent
+		const chosenNumber = interaction.options.getInteger('nombre')
+		const isSilent = interaction.options.getBoolean('silent')
+
+		if (!chosenNumber)
+			return interactionReply({
+				interaction,
+				content: "tu n'as pas donné un nombre 😕",
+				isSilent: isSilent,
 			})
-		const numberUsed = chosenNumber + 1
+
+		if (chosenNumber < 1 || chosenNumber > 99)
+			return interactionReply({
+				interaction,
+				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
+				isSilent: isSilent,
+			})
 
 		// Acquisition du channel de logs
-		const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
+		const logsChannel = interaction.guild.channels.cache.get(
+			client.config.logsMessagesChannelID,
+		)
 		if (!logsChannel)
-			return message.reply({ content: "il n'y a pas de channel pour log l'action 😕" })
+			return interactionReply({
+				interaction,
+				content: "il n'y a pas de channel pour log l'action 😕",
+				isSilent: isSilent,
+			})
 
 		// Acquisition des messages et filtrage des épinglés
 		const fetchedMessages = (
-			await message.channel.messages.fetch({ limit: numberUsed })
+			await interaction.channel.messages.fetch({ limit: chosenNumber })
 		).filter(fetchedMessage => !fetchedMessage.pinned)
 
 		// Suppression des messages
-		const deletedMessages = await message.channel.bulkDelete(fetchedMessages, true)
+		const deletedMessages = await interaction.channel.bulkDelete(fetchedMessages, true)
 		// Exclusion du message de la commande
-		deletedMessages.delete(message.id)
+		deletedMessages.delete(interaction.id)
 		if (deletedMessages.size === 0)
-			return message.reply({ content: 'aucun message supprimé 😕' })
+			return interactionReply({
+				interaction,
+				content: 'aucun message supprimé 😕',
+				isSilent: isSilent,
+			})
 
 		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
 		const { size: nbDeletedMessages } = deletedMessages
-		if (!silent || (silent !== 's' && silent !== 'silent'))
-			await message.channel.send(
-				`${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
-					'supprimé',
-					nbDeletedMessages,
-				)} 👌`,
-			)
+		await interactionReply({
+			interaction,
+			content: `${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
+				'supprimé',
+				nbDeletedMessages,
+			)} 👌`,
+			isSilent: isSilent,
+		})
 
 		// Partie logs
 		// Tri décroissant en fonction de l'heure à laquelle le message a été
@@ -108,8 +135,8 @@ export default {
 				{
 					color: '0000ff',
 					author: {
-						name: `${displayNameAndID(message.member, message.author)}`,
-						icon_url: message.author.displayAvatarURL({ dynamic: true }),
+						name: `${displayNameAndID(interaction.member, interaction.user)}`,
+						icon_url: interaction.user.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',
 					description: firstDescription,
@@ -124,12 +151,12 @@ export default {
 					fields: [
 						{
 							name: 'Channel',
-							value: message.channel.toString(),
+							value: interaction.channel.toString(),
 							inline: true,
 						},
 						{
 							name: 'Exécuté par',
-							value: message.member.toString(),
+							value: interaction.member.toString(),
 							inline: true,
 						},
 						{
@@ -155,20 +182,20 @@ export default {
 				{
 					color: '0000ff',
 					author: {
-						name: `${displayNameAndID(message.member, message.author)}`,
-						icon_url: message.author.displayAvatarURL({ dynamic: true }),
+						name: `${displayNameAndID(interaction.member, interaction.user)}`,
+						icon_url: interaction.user.displayAvatarURL({ dynamic: true }),
 					},
 					title: 'Clean',
 					description: text,
 					fields: [
 						{
 							name: 'Channel',
-							value: message.channel.toString(),
+							value: interaction.channel.toString(),
 							inline: true,
 						},
 						{
 							name: 'Exécuté par',
-							value: message.member.toString(),
+							value: interaction.member.toString(),
 							inline: true,
 						},
 						{
