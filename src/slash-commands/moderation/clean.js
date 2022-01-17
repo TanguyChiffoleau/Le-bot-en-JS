@@ -25,7 +25,6 @@ const isEmbedExceedingLimits = embeds =>
 export default {
 	name: 'clean',
 	description: 'Supprime un nombre de messages donné dans le channel',
-	aliases: [],
 	options: [
 		{
 			type: 'int',
@@ -38,18 +37,6 @@ export default {
 			optDesc: 'Exécuter la commande silencieusement',
 		},
 	],
-	usage: {
-		arguments: '<nombre_messages_à_supprimer>',
-		informations: 'Valeur comprise entre 1 et 99',
-		examples: [
-			{
-				command: 'clean 10',
-				explaination: 'supprime les 10 derniers messages',
-			},
-		],
-	},
-	needArguments: true,
-	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
 	interaction: async (interaction, client) => {
 		// Acquisition du nombre de messages à supprimer et du silent

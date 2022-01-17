@@ -4,7 +4,6 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
 	name: 'cooldown',
 	description: 'Active le mode lent sur le channel',
-	aliases: [],
 	options: [
 		{
 			type: 'int',
@@ -22,23 +21,6 @@ export default {
 			optDesc: 'Exécuter la commande silencieusement',
 		},
 	],
-	usage: {
-		arguments: '[attente_du_cooldown] [durée_du_cooldown] [silent]',
-		informations:
-			'Les valeurs sont en secondes. Valeurs par défaut : durée = 5x60, valeur = 30',
-		examples: [
-			{
-				command: 'cooldown 20',
-				explaination: 'cooldown de 20 secondes pendant une durée indéfinie',
-			},
-			{
-				command: 'cooldown 20 50',
-				explaination: 'cooldown de 20 secondes pendant 50 secondes',
-			},
-		],
-	},
-	needArguments: true,
-	guildOnly: true,
 	requirePermissions: ['MANAGE_MESSAGES'],
 	interaction: async interaction => {
 		const attente = interaction.options.getInteger('attente')

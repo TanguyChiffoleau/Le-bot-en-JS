@@ -4,14 +4,6 @@ export default {
 	name: 'nomic',
 	description:
 		'Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
-	aliases: [],
-	usage: {
-		arguments: null,
-		informations: 'Crée un channel textuel pour les utilisateurs sans microphone',
-		examples: [],
-	},
-	needArguments: false,
-	guildOnly: true,
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const voiceChannel = interaction.member.voice.channel

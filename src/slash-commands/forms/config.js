@@ -5,29 +5,12 @@ import { interactionReply } from '../../util/util.js'
 export default {
 	name: 'config',
 	description: 'Donne le formulaire des configs',
-	aliases: [],
 	options: [
 		{
 			type: 'user',
 			optDesc: 'Membre',
 		},
 	],
-	usage: {
-		arguments: 'user',
-		informations: null,
-		examples: [
-			{
-				command: 'config',
-				explaination: "envoie le formulaire en DM à l'utilisateur en message éphémère",
-			},
-			{
-				command: 'config user',
-				explaination: "envoie le formulaire en DM à l'utilisateur mentionné",
-			},
-		],
-	},
-	needArguments: false,
-	guildOnly: true,
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const [config, configDescription] = await Promise.all([

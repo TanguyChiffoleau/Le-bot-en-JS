@@ -7,7 +7,7 @@ const { version } = JSON.parse(readFileSync('./package.json'))
 export default {
 	name: 'infos',
 	description: 'Donne quelques infos et le statut du bot',
-	aliases: [],
+	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const embed = {
 			color: '01579B',

@@ -3,25 +3,12 @@ import { convertDateForDiscord, diffDate, interactionReply } from '../../util/ut
 export default {
 	name: 'whois',
 	description: 'Donne des infos sur soit ou un autre utilisateur',
-	aliases: [],
 	options: [
 		{
 			type: 'user',
 			optDesc: 'Membre',
 		},
 	],
-	usage: {
-		arguments: 'user',
-		informations: null,
-		examples: [
-			{
-				command: 'whois user',
-				explaination: null,
-			},
-		],
-	},
-	needArguments: true,
-	guildOnly: true,
 	requirePermissions: [],
 	interaction: interaction => {
 		// Acquisition du membre

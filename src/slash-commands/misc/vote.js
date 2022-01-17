@@ -3,7 +3,6 @@ import { interactionReply } from '../../util/util.js'
 export default {
 	name: 'vote',
 	description: 'Créé un embed avec la proposition et des émojis pour voter',
-	aliases: [],
 	options: [
 		{
 			type: 'input',
@@ -11,13 +10,6 @@ export default {
 			optDesc: 'Proposition de vote',
 		},
 	],
-	usage: {
-		arguments: '<texte>',
-		informations: null,
-		examples: [],
-	},
-	needArguments: true,
-	guildOnly: true,
 	requirePermissions: [],
 	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
