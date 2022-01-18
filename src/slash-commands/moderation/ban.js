@@ -55,6 +55,12 @@ export default {
 				content: 'tu ne peux pas te bannir toi-même 😬',
 			})
 
+		if (!member.bannable)
+			return interactionReply({
+				interaction,
+				content: 'tu ne peux pas bannir ce membre 😬',
+			})
+
 		// Lecture du message de ban
 		const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
 
