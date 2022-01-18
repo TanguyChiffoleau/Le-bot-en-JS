@@ -1,6 +1,6 @@
 {
 	"name": "le-bot-en-js",
-	"version": "3.8.0",
+	"version": "3.9.1",
 	"description": "Le bot discord en JS.",
 	"main": "src/index.js",
 	"scripts": {
