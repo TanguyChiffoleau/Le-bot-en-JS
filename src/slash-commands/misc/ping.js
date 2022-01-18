@@ -6,9 +6,12 @@ export default {
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		await interactionReply({ interaction, content: '🏓 Pong ?' })
+		const start = new Date()
+		await interactionReply({ interaction, content: '🏓 Pong ?', isEdit: true })
+		const editLatency = Math.round(new Date() - start)
 		return interactionReply({
 			interaction,
-			content: `Réponse API : **${client.ws.ping} ms**`,
+			content: `Modification d'un message : **${editLatency} ms**\nRéponse API : **${client.ws.ping} ms**`,
 			isEdit: true,
 		})
 	},
