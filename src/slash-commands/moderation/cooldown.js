@@ -71,6 +71,7 @@ export default {
 				content: `Channel en slowmode de ${convertSecondsToString(
 					attente,
 				)} pour une durée indéfinie 👌`,
+				isSilent: isSilent,
 			})
 
 		// Sinon on donne le temps du slowmode
@@ -87,7 +88,11 @@ export default {
 		if (interaction.channel.rateLimitPerUser > 0) {
 			// On le clear et on envoie un message de confirmation
 			await interaction.channel.setRateLimitPerUser(0)
-			return interactionReply({ interaction, content: 'Slowmode désactivé 👌' })
+			return interactionReply({
+				interaction,
+				content: 'Slowmode désactivé 👌',
+				isSilent: isSilent,
+			})
 		}
 	},
 }
