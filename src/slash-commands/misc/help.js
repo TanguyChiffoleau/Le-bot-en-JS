@@ -49,21 +49,34 @@ export default {
 				content: `je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
 			})
 
+		const options = Object.entries(command.options[0])
+		const fields = []
+
+		let optionsDescription = ''
+		for (const [optionKey, optionValue] of options)
+			optionsDescription += `- \`${optionKey}\` : ${optionValue}\n`
+
+		fields.push(
+			{
+				name: 'Options',
+				value: optionsDescription,
+			},
+			{
+				name: 'Permissions nécessaires',
+				value:
+					command.requirePermissions.reduce(
+						(acc, permission) => `${acc}> \`${permission}\`\n`,
+						'',
+					) || 'Ne nécessite aucune permission',
+			},
+		)
+
 		// Création de l'embed avec les options
 		const embed = {
 			title: command.name,
 			color: 'ff8000',
 			description: command.description,
-			fields: [
-				{
-					name: 'Permissions nécessaires',
-					value:
-						command.requirePermissions.reduce(
-							(acc, permission) => `${acc}> \`${permission}\`\n`,
-							'',
-						) || 'Ne nécessite aucune permission',
-				},
-			],
+			fields,
 		}
 
 		return interactionReply({ interaction, embeds: [embed] })
