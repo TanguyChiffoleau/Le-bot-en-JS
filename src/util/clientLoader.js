@@ -33,6 +33,7 @@ export default () => {
 		noLogsManagerChannelIDs: process.env.NOLOGS_MANAGER_CHANNELS_IDS
 			? process.env.NOLOGS_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
+		mutedRoleID: process.env.MUTED_ROLE_ID,
 	}
 	client.cache = {
 		// Messages supprimés par le bot pour ne pas
