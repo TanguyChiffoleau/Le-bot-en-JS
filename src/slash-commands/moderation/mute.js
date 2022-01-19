@@ -13,7 +13,7 @@ export default {
 		{
 			type: 'int',
 			name: 'durée',
-			optDesc: 'Nombre de secondes de la durée',
+			optDesc: 'Nombre de minutes de la durée',
 		},
 		{
 			type: 'input',
