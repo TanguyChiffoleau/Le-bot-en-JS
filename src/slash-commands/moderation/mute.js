@@ -61,11 +61,11 @@ export default {
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
-		// if (user.id === interaction.user.id)
-		// 	return interactionReply({
-		// 		interaction,
-		// 		content: 'tu ne peux pas te mute toi-même 😬',
-		// 	})
+		if (user.id === interaction.user.id)
+			return interactionReply({
+				interaction,
+				content: 'tu ne peux pas te mute toi-même 😬',
+			})
 
 		// Acquisition du rôle muted
 		const mutedRole = client.config.mutedRoleID
