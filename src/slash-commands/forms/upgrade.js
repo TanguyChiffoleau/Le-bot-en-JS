@@ -72,7 +72,7 @@ export default {
 		if (member.user.id === interaction.user.id)
 			return interactionReply({
 				interaction,
-				content: `formulaire envoyé en message privé 👌`,
+				content: 'formulaire envoyé en message privé 👌',
 				isSilent: true,
 			})
 		return interactionReply({
