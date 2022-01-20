@@ -46,7 +46,7 @@ export default {
 		// Utilisation de la lib 'ms' afin de pouvoir définir
 		// un temps de rappel sous la forme : 1h, 2 days, 3m, etc.
 		// https://www.npmjs.com/package/ms
-		const setRemind = await setTimeout(
+		const setRemind = setTimeout(
 			() =>
 				interactionReply({
 					interaction,
@@ -64,7 +64,9 @@ export default {
 		else
 			await interactionReply({
 				interaction,
-				content: 'Rappel défini 👌',
+				content: `Rappel défini prévu pour le <t:${Math.round(
+					new Date(Date.now() + ms(temps)).getTime() / 1000,
+				)}> 👌`,
 				isSilent: isSilent,
 			})
 	},
