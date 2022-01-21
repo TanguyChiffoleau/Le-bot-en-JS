@@ -68,9 +68,10 @@ export default {
 
 			// Si pas d'erreur, message de confirmation du mute
 			if (unmuteAction instanceof GuildMember) {
-				await interactionReply({
+				const unmuteMessage = await interactionReply({
 					interaction,
-					content: `🔊 \`${user.tag}\` est unmute\nRaison : ${reason}`,
+					content: `🔊 \`${user.tag}\` est unmute\n📄 Raison : ${reason}`,
+					fetchReply: true,
 				})
 				await member
 					.send({
@@ -95,16 +96,10 @@ export default {
 					})
 					.catch(async error => {
 						if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
-							return interactionReply({
-								interaction,
-								content: 'les messages privés sont bloqués 😕',
-							})
+							return unmuteMessage.react('⛔')
 
 						console.error(error)
-						await interactionReply({
-							interaction,
-							content: "le message privé n'a pas été envoyé 😕",
-						})
+						await unmuteMessage.react('⚠️')
 						return error
 					})
 			}

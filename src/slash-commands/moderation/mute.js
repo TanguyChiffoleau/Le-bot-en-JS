@@ -13,7 +13,7 @@ export default {
 		{
 			type: 'int',
 			name: 'durée',
-			optDesc: 'Nombre de minutes de la durée',
+			optDesc: 'Durée du mute (en minutes)',
 		},
 		{
 			type: 'input',
@@ -75,50 +75,6 @@ export default {
 				content: "il n'y a pas de rôle muted 😕",
 			})
 
-		// Lecture du message de mute
-		const muteDM = await readFile('./forms/mute.md', { encoding: 'utf8' })
-
-		// Envoi du message de mute en message privé
-		const DMMessage = await member
-			.send({
-				embeds: [
-					{
-						color: '#C27C0E',
-						title: 'Mute',
-						description: muteDM,
-						author: {
-							name: interaction.guild.name,
-							icon_url: interaction.guild.iconURL({ dynamic: true }),
-							url: interaction.guild.vanityURL,
-						},
-						fields: [
-							{
-								name: 'Raison',
-								value: reason,
-							},
-							{
-								name: 'Durée',
-								value: `${duree} minute(s)`,
-							},
-						],
-					},
-				],
-			})
-			.catch(async error => {
-				if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
-					return interactionReply({
-						interaction,
-						content: 'les messages privés sont bloqués 😕',
-					})
-
-				console.error(error)
-				await interactionReply({
-					interaction,
-					content: "le message privé n'a pas été envoyé 😕",
-				})
-				return error
-			})
-
 		// Ajout du rôle muted
 		const muteAction = await member.roles.add(mutedRole)
 
@@ -143,33 +99,63 @@ export default {
 						],
 					})
 					.catch(async error => {
-						if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
-							return interactionReply({
-								interaction,
-								content: 'les messages privés sont bloqués 😕',
-							})
-
-						console.error(error)
-						await interactionReply({
-							interaction,
-							content: "le message privé n'a pas été envoyé 😕",
-						})
+						await console.error(error)
 						return error
 					})
 			}
 		}, `${duree * 60000}`)
 
 		// Si pas d'erreur, message de confirmation du mute
-		if (muteAction instanceof GuildMember)
-			await interactionReply({
+		if (muteAction instanceof GuildMember) {
+			const muteMessage = await interactionReply({
 				interaction,
-				content: `🔇 \`${user.tag}\` est mute pendant ${duree} minute(s)\nRaison : ${reason}`,
+				content: `🔇 \`${user.tag}\` est mute pendant ${duree} minute(s)\n📄 Raison : ${reason}`,
+				fetchReply: true,
 			})
 
-		// Si au moins une erreur, throw
-		if (muteAction instanceof Error || DMMessage instanceof Error)
-			throw new Error(
-				'Sending message and/or banning member failed. See precedents logs for more informations.',
-			)
+			// Lecture du message de mute
+			const muteDM = await readFile('./forms/mute.md', { encoding: 'utf8' })
+
+			// Envoi du message de mute en message privé
+			const DMMessage = await member
+				.send({
+					embeds: [
+						{
+							color: '#C27C0E',
+							title: 'Mute',
+							description: muteDM,
+							author: {
+								name: interaction.guild.name,
+								icon_url: interaction.guild.iconURL({ dynamic: true }),
+								url: interaction.guild.vanityURL,
+							},
+							fields: [
+								{
+									name: 'Raison',
+									value: reason,
+								},
+								{
+									name: 'Durée',
+									value: `${duree} minute(s)`,
+								},
+							],
+						},
+					],
+				})
+				.catch(async error => {
+					if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
+						return muteMessage.react('⛔')
+
+					console.error(error)
+					await muteMessage.react('⚠️')
+					return error
+				})
+
+			// Si au moins une erreur, throw
+			if (muteAction instanceof Error || DMMessage instanceof Error)
+				throw new Error(
+					'Sending message and/or banning member failed. See precedents logs for more informations.',
+				)
+		}
 	},
 }
