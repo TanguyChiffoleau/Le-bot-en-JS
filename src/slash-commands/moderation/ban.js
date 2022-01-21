@@ -88,16 +88,12 @@ export default {
 			})
 			.catch(async error => {
 				if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
-					return interactionReply({
+					await interactionReply({
 						interaction,
 						content: `les messages privés sont bloqués 😕`,
 					})
 
 				console.error(error)
-				await interactionReply({
-					interaction,
-					content: `le message privé n'a pas été envoyé 😕`,
-				})
 				return error
 			})
 
@@ -116,7 +112,10 @@ export default {
 
 		// Si pas d'erreur, message de confirmation du ban
 		if (banAction instanceof GuildMember)
-			await interactionReply({ interaction, content: `🔨 \`${user.tag}\` a été banni` })
+			await interactionReply({
+				interaction,
+				content: `🔨 \`${user.tag}\` a été banni\n📄 Raison : ${reason}`,
+			})
 
 		// Si au moins une erreur, throw
 		if (banAction instanceof Error || DMMessage instanceof Error)
