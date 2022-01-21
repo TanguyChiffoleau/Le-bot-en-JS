@@ -114,7 +114,7 @@ export default {
 		if (banAction instanceof GuildMember)
 			await interactionReply({
 				interaction,
-				content: `🔨 \`${user.tag}\` a été banni\n📄 Raison : ${reason}`,
+				content: `🔨 \`${user.tag}\` a été banni\n📄 **Raison :** ${reason}`,
 			})
 
 		// Si au moins une erreur, throw

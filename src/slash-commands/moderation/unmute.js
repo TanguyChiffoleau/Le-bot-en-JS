@@ -70,7 +70,7 @@ export default {
 			if (unmuteAction instanceof GuildMember) {
 				const unmuteMessage = await interactionReply({
 					interaction,
-					content: `🔊 \`${user.tag}\` est unmute\n📄 Raison : ${reason}`,
+					content: `🔊 \`${user.tag}\` est unmute\n📄 **Raison :** ${reason}`,
 					fetchReply: true,
 				})
 				await member

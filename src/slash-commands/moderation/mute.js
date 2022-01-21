@@ -109,7 +109,7 @@ export default {
 		if (muteAction instanceof GuildMember) {
 			const muteMessage = await interactionReply({
 				interaction,
-				content: `🔇 \`${user.tag}\` est mute pendant ${duree} minute(s)\n📄 Raison : ${reason}`,
+				content: `🔇 \`${user.tag}\` est mute pendant **${duree} minute(s)**\n📄 **Raison :** ${reason}`,
 				fetchReply: true,
 			})
 
