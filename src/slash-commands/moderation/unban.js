@@ -39,24 +39,25 @@ export default {
 		const unbanAction = await interaction.guild.members
 			.unban(interaction.options.getString('id'))
 			.catch(async error => {
-				console.error(error)
+				switch (error.code) {
+					case Constants.APIErrors.MISSING_PERMISSIONS:
+						return interactionReply({
+							interaction,
+							content: `tu n'as pas la permission de débannir cet utilisateur 😕`,
+						})
 
-				if (error.code === Constants.APIErrors.MISSING_PERMISSIONS)
-					return interactionReply({
-						interaction,
-						content: `tu n'as pas la permission de débannir cet utilisateur 😕`,
-					})
+					case Constants.APIErrors.UNKNOWN_BAN:
+						return interactionReply({
+							interaction,
+							content: "l'utilisateur n'est pas banni 😬",
+						})
 
-				if (error.code === Constants.APIErrors.UNKNOWN_BAN)
-					return interactionReply({
-						interaction,
-						content: "l'utilisateur n'est pas banni 😬",
-					})
-
-				await interactionReply({
-					interaction,
-					content: `je n'arrive pas à débannir \`${userId}\` 😕`,
-				})
+					default:
+						await interactionReply({
+							interaction,
+							content: `je n'arrive pas à débannir \`${userId}\` 😕`,
+						})
+				}
 
 				return error
 			})
