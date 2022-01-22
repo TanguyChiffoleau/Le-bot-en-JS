@@ -17,7 +17,7 @@ export default {
 		// Acquisition du membre
 		const user = interaction.options.getUser('membre') || interaction.user
 		const member = interaction.guild.members.cache.get(user.id)
-		console.log(member.tag)
+
 		if (!member)
 			return interaction.reply({
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
