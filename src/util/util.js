@@ -1,16 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
-import {
-	GuildMember,
-	Client,
-	User,
-	MessageEmbed,
-	MessageButton,
-	MessageSelectMenu,
-	Interaction,
-	MessageAttachment,
-} from 'discord.js'
+import { GuildMember, Client, User } from 'discord.js'
 
 /**
  * Gère l'ajout de "s" à la fin d'un mot en fonction de la quantité
@@ -208,90 +199,3 @@ export const closeGracefully = (signal, client) => {
  * @param {Date} date
  */
 export const convertDateForDiscord = date => `<t:${Math.round(new Date(date) / 1000)}>`
-
-/**
- * Gère les options d'une intéraction (slash-command)
- * @param {Data} data
- * @param {Array} options
- */
-export const manageOptions = (data = null, options = []) => {
-	if (!data) return
-	options.map(option => {
-		const name = option.name ? option.name : option.type
-		if (option.type === 'mentionable')
-			data.addMentionableOption(opt =>
-				opt.setName(name).setDescription(option.optDesc || 'Membre (rôles non compris)'),
-			)
-		else if (option.type === 'input')
-			data.addStringOption(opt =>
-				opt.setName(name).setDescription(option.optDesc || 'Chaîne de caractère'),
-			)
-		else if (option.type === 'int')
-			data.addIntegerOption(opt =>
-				opt.setName(name).setDescription(option.optDesc || 'Entier'),
-			)
-		else if (option.type === 'bool')
-			data.addBooleanOption(opt =>
-				opt.setName(name).setDescription(option.optDesc || 'Choix binaire (booléan)'),
-			)
-		else if (option.type === 'user')
-			data.addUserOption(opt =>
-				opt.setName(name).setDescription(option.optDesc || 'Membre (bots non compris)'),
-			)
-		else if (option.type === 'channel')
-			data.addChannelOption(opt =>
-				opt.setName(name).setDescription(option.optDesc || 'Salon'),
-			)
-		else if (option.type === 'role')
-			data.addRoleOption(opt => opt.setName(name).setDescription(option.optDesc || 'Rôle'))
-	})
-	return data
-}
-
-/**
- * Permet de (re)répondre à une interaction via des paramètres optionnels
- * @param {Interaction} interaction L'interaction à utiliser (requis)
- * @param {string} content Contenu du message à envoyer (optionnel)
- * @param {MessageButton|MessageSelectMenu} components Bouton/Menu déroulant
- * @param {MessageEmbed} embeds Embeds
- * @param {MessageAttachment} files Fichier(s) à attacher à la réponse interaction
- * @param {boolean} isSilent
- * @param {boolean} isEdit
- * @param {boolean} isDelete
- * @param {int} timeoutDelete Temps avec suppresion de la réponse à l'interaction (0 = default (pas de suppression))
- * @returns {void}
- */
-export const interactionReply = ({
-	interaction,
-	content = null,
-	components = [],
-	embeds = [],
-	files = [],
-	isSilent = false,
-	isEdit = false,
-	isDelete = false,
-	fetchReply = false,
-	timeoutDelete = 0,
-}) => {
-	const obj = {
-		components,
-		ephemeral: isSilent,
-		embeds,
-		files,
-	}
-
-	if (content) obj.content = content
-
-	if (!interaction) console.error('Interaction manquante')
-	else if (interaction.replied || interaction.deferred)
-		if (isEdit) interaction.editReply(obj)
-		else if (isDelete) interaction.deleteReply(obj)
-		else interaction.followUp(obj)
-	else interaction.reply(obj)
-
-	if (fetchReply || timeoutDelete <= 0) return interaction.fetchReply()
-
-	setTimeout(() => {
-		interaction.deleteReply().catch(console.error)
-	}, timeoutDelete)
-}
