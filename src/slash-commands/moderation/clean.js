@@ -2,9 +2,9 @@ import {
 	pluralizeWithoutQuantity as pluralize,
 	displayNameAndID,
 	convertDateForDiscord,
-	interactionReply,
 } from '../../util/util.js'
 import { Util } from 'discord.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 const isEmbedExceedingLimits = embeds =>
 	embeds.reduce((acc, { title, description, fields, footer, author }) => {
@@ -23,38 +23,36 @@ const isEmbedExceedingLimits = embeds =>
 	}, 0) > 6000
 
 export default {
-	name: 'clean',
-	description: 'Supprime un nombre de messages donné dans le channel',
-	options: [
-		{
-			type: 'int',
-			name: 'nombre',
-			optDesc: 'Nombre de message à supprimer (1 à 99)',
-		},
-		{
-			type: 'bool',
-			name: 'silent',
-			optDesc: 'Exécuter la commande silencieusement',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('clean')
+		.setDescription('Supprime un nombre de messages donné dans le channel')
+		.addIntegerOption(option =>
+			option
+				.setName('nombre')
+				.setDescription('Nombre de message à supprimer (1 à 99)')
+				.setRequired(true),
+		)
+		.addBooleanOption(option =>
+			option.setName('silent').setDescription('Exécuter la commande silencieusement'),
+		),
 	requirePermissions: ['MANAGE_MESSAGES'],
 	interaction: async (interaction, client) => {
 		// Acquisition du nombre de messages à supprimer et du silent
 		const chosenNumber = interaction.options.getInteger('nombre')
-		const isSilent = interaction.options.getBoolean('silent')
+		const ephemeral = interaction.options.getBoolean('silent')
 
 		if (!chosenNumber)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu n'as pas donné un nombre 😕",
-				isSilent: isSilent,
+				ephemeral: ephemeral,
 			})
 
 		if (chosenNumber < 1 || chosenNumber > 99)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
-				isSilent: isSilent,
+				ephemeral: ephemeral,
 			})
 
 		// Acquisition du channel de logs
@@ -62,10 +60,10 @@ export default {
 			client.config.logsMessagesChannelID,
 		)
 		if (!logsChannel)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "il n'y a pas de channel pour log l'action 😕",
-				isSilent: isSilent,
+				ephemeral: ephemeral,
 			})
 
 		// Acquisition des messages et filtrage des épinglés
@@ -78,21 +76,21 @@ export default {
 		// Exclusion du message de la commande
 		deletedMessages.delete(interaction.id)
 		if (deletedMessages.size === 0)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'aucun message supprimé 😕',
-				isSilent: isSilent,
+				ephemeral: ephemeral,
 			})
 
 		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
 		const { size: nbDeletedMessages } = deletedMessages
-		await interactionReply({
+		await interaction.reply({
 			interaction,
 			content: `${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
 				'supprimé',
 				nbDeletedMessages,
 			)} 👌`,
-			isSilent: isSilent,
+			ephemeral: ephemeral,
 		})
 
 		// Partie logs

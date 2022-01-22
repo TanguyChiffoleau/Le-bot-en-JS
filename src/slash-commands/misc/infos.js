@@ -1,12 +1,14 @@
-import { diffDate, interactionReply } from '../../util/util.js'
+import { diffDate } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 // import nodePackage from '../../../package.json'
 import { readFileSync } from 'fs'
 const { version } = JSON.parse(readFileSync('./package.json'))
 
 export default {
-	name: 'infos',
-	description: 'Donne quelques infos et le statut du bot',
+	data: new SlashCommandBuilder()
+		.setName('infos')
+		.setDescription('Donne quelques infos et le statut du bot'),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const embed = {
@@ -41,6 +43,6 @@ export default {
 			],
 		}
 
-		await interactionReply({ interaction, embeds: [embed] })
+		await interaction.reply({ interaction, embeds: [embed] })
 	},
 }

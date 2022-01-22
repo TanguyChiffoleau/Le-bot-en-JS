@@ -1,21 +1,18 @@
-import { convertDateForDiscord, diffDate, interactionReply } from '../../util/util.js'
+import { convertDateForDiscord, diffDate } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'whois',
-	description: 'Donne des infos sur soit ou un autre utilisateur',
-	options: [
-		{
-			type: 'user',
-			optDesc: 'Membre',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('whois')
+		.setDescription('Donne des infos sur soit ou un autre utilisateur')
+		.addUserOption(option => option.setName('membre').setDescription('Membre')),
 	requirePermissions: [],
 	interaction: interaction => {
 		// Acquisition du membre
-		const user = interaction.options.getUser('user') || interaction.user
+		const user = interaction.options.getUser('membre') || interaction.user
 		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
@@ -69,6 +66,6 @@ export default {
 				inline: true,
 			})
 
-		return interactionReply({ interaction, embeds: [embed] })
+		return interaction.reply({ interaction, embeds: [embed] })
 	},
 }

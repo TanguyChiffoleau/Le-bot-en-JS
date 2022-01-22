@@ -1,54 +1,48 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 import { readFile } from 'fs/promises'
 import { Constants, GuildMember } from 'discord.js'
 
 export default {
-	name: 'mute',
-	description: 'Mute un utilisateur',
-	options: [
-		{
-			type: 'user',
-			optDesc: 'Membre',
-		},
-		{
-			type: 'int',
-			name: 'durée',
-			optDesc: 'Durée du mute (en minutes)',
-		},
-		{
-			type: 'input',
-			name: 'raison',
-			optDesc: 'Raison du mute',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('mute')
+		.setDescription('Mute un membre')
+		.addUserOption(option =>
+			option.setName('membre').setDescription('Membre').setRequired(true),
+		)
+		.addIntegerOption(option =>
+			option.setName('durée').setDescription('Durée du mute (en minutes)').setRequired(true),
+		)
+		.addStringOption(option =>
+			option.setName('raison').setDescription('Raison du mute').setRequired(true),
+		),
 	requirePermissions: ['MUTE_MEMBERS'],
 	interaction: async (interaction, client) => {
 		// Acquisition du membre et de la raison du ban
-		const user = interaction.options.getUser('user')
+		const user = interaction.options.getUser('membre')
 		const author = interaction.guild.members.cache.get(interaction.user.id)
 		const duree = interaction.options.getInteger('durée')
 		const reason = interaction.options.getString('raison')
 
 		if (!author.permissions.has('MUTE_MEMBERS'))
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (!user)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois mentionner un membre 😬',
 			})
 
 		if (duree === null)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois entrer une valeur de durée 😬',
 			})
 
 		if (!reason)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois donner une raison 😬',
 			})
@@ -56,13 +50,13 @@ export default {
 		const member = interaction.guild.members.cache.get(user.id)
 
 		if (!member)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu ne peux pas te mute toi-même 😬',
 			})
@@ -70,7 +64,7 @@ export default {
 		// Acquisition du rôle muted
 		const mutedRole = client.config.mutedRoleID
 		if (!mutedRole)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "il n'y a pas de rôle muted 😕",
 			})
@@ -107,7 +101,7 @@ export default {
 
 		// Si pas d'erreur, message de confirmation du mute
 		if (muteAction instanceof GuildMember) {
-			const muteMessage = await interactionReply({
+			const muteMessage = await interaction.reply({
 				interaction,
 				content: `🔇 \`${user.tag}\` est mute pendant **${duree} minute(s)**\n📄 **Raison :** ${reason}`,
 				fetchReply: true,

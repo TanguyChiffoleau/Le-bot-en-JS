@@ -1,13 +1,12 @@
 import { readdir } from 'fs/promises'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { removeFileExtension, manageOptions } from '../util/util.js'
+import { removeFileExtension } from '../util/util.js'
 
 export default async client => {
-	const clientId = client.config.clientID
+	const clientId = client.user.id
 	const guildId = client.config.guildID
-	const rest = new REST({ version: '9' }).setToken(client.config.discordToken)
+	const rest = new REST({ version: '9' }).setToken(client.token)
 	const commands = []
 
 	// Dossier des commandes
@@ -29,12 +28,8 @@ export default async client => {
 					await import(`../slash-commands/${commandCategory}/${commandFile}`)
 				).default
 
-				const slashCommand = new SlashCommandBuilder()
-					.setName(command.name)
-					.setDescription(command.description)
-
-				commands.push(manageOptions(slashCommand, command.options))
-				client.commands.set(command.name, command)
+				commands.push(command.data.toJSON())
+				client.commands.set(command.data.name, command)
 
 				try {
 					console.log('Started refreshing application (/) commands')

@@ -1,97 +1,109 @@
-import { convertSecondsToString, interactionReply } from '../../util/util.js'
+import { convertSecondsToString } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export default {
-	name: 'cooldown',
-	description: 'Active le mode lent sur le channel',
-	options: [
-		{
-			type: 'int',
-			name: 'attente',
-			optDesc: "Nom de secondes d'attente",
-		},
-		{
-			type: 'int',
-			name: 'durée',
-			optDesc: 'Nombre de secondes de la durée',
-		},
-		{
-			type: 'bool',
-			name: 'silent',
-			optDesc: 'Exécuter la commande silencieusement',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('cooldown')
+		.setDescription('Gère le mode lent sur le channel')
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('clear')
+				.setDescription('Supprime le mode lent sur le channel')
+				.addBooleanOption(option =>
+					option.setName('silent').setDescription('Exécuter la commande silencieusement'),
+				),
+		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('set')
+				.setDescription('Défini le mode lent sur le channel')
+				.addIntegerOption(option =>
+					option
+						.setName('délai')
+						.setDescription('Délai entre chaque message (en secondes)')
+						.setRequired(true),
+				)
+				.addIntegerOption(option =>
+					option
+						.setName('durée')
+						.setDescription('Durée du slowmode (en secondes)')
+						.setRequired(true),
+				)
+				.addBooleanOption(option =>
+					option.setName('silent').setDescription('Exécuter la commande silencieusement'),
+				),
+		),
 	requirePermissions: ['MANAGE_MESSAGES'],
 	interaction: async interaction => {
-		const attente = interaction.options.getInteger('attente')
-		const duree = interaction.options.getInteger('durée')
-		const isSilent = interaction.options.getBoolean('silent')
+		const ephemeral = interaction.options.getBoolean('silent')
+		if (interaction.options.getSubcommand() === 'set') {
+			const delai = interaction.options.getInteger('délai')
+			const duree = interaction.options.getInteger('durée')
 
-		if (attente === null)
-			return interactionReply({
+			if (delai === null)
+				return interaction.reply({
+					interaction,
+					content: 'tu dois entrer une valeur de délai 😬',
+					ephemeral: true,
+				})
+
+			// On ajoute le cooldown
+			// Erreur si le channel est déjà en slowmode
+			if (interaction.channel.rateLimitPerUser > 0)
+				return interaction.reply({
+					interaction,
+					content: 'Ce channel est déjà en slowmode 😕',
+					ephemeral: ephemeral,
+				})
+
+			await interaction.channel.setRateLimitPerUser(delai)
+
+			// Si il n'y pas de temps du slowmode,
+			// le slowmode reste jusqu'au prochain clear
+			if (!duree)
+				return interaction.reply({
+					interaction,
+					content: `Channel en slowmode de ${convertSecondsToString(
+						delai,
+					)} pour une durée indéfinie 👌`,
+					ephemeral: ephemeral,
+				})
+
+			// Sinon on donne le temps du slowmode
+			await interaction.reply({
 				interaction,
-				content: "tu dois entrer une valeur d'attente 😬",
-				isSilent: true,
+				content: `Channel en slowmode de ${convertSecondsToString(
+					delai,
+				)} pendant ${convertSecondsToString(duree)} 👌`,
 			})
 
-		// Supprime le cooldown avec 0 seconde
-		if (attente === 0) {
+			// on attend le montant défini
+			await wait(duree * 1000)
+			// Si le channel est encore en slowmode
 			if (interaction.channel.rateLimitPerUser > 0) {
+				// On le clear et on envoie un message de confirmation
 				await interaction.channel.setRateLimitPerUser(0)
-				return interactionReply({
+				return interaction.followUp({
 					interaction,
 					content: 'Slowmode désactivé 👌',
-					isSilent: isSilent,
+					ephemeral: ephemeral,
+				})
+			}
+		} else if (interaction.options.getSubcommand() === 'clear') {
+			if (interaction.channel.rateLimitPerUser > 0) {
+				await interaction.channel.setRateLimitPerUser(0)
+				return interaction.reply({
+					interaction,
+					content: 'Slowmode désactivé 👌',
+					ephemeral: ephemeral,
 				})
 			}
 
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "Ce channel n'est pas en slowmode 😕",
-				isSilent: isSilent,
-			})
-		}
-
-		// On ajoute le cooldown
-		// Erreur si le channel est déjà en slowmode
-		if (interaction.channel.rateLimitPerUser > 0)
-			return interactionReply({
-				interaction,
-				content: 'Ce channel est déjà en slowmode 😕',
-				isSilent: isSilent,
-			})
-
-		await interaction.channel.setRateLimitPerUser(attente)
-
-		// Si il n'y pas de temps du slowmode,
-		// le slowmode reste jusqu'au prochain clear
-		if (!duree)
-			return interactionReply({
-				interaction,
-				content: `Channel en slowmode de ${convertSecondsToString(
-					attente,
-				)} pour une durée indéfinie 👌`,
-				isSilent: isSilent,
-			})
-
-		// Sinon on donne le temps du slowmode
-		await interactionReply({
-			interaction,
-			content: `Channel en slowmode de ${convertSecondsToString(
-				attente,
-			)} pendant ${convertSecondsToString(duree)} 👌`,
-		})
-
-		// on attend le montant défini
-		await wait(attente * 1000)
-		// Si le channel est encore en slowmode
-		if (interaction.channel.rateLimitPerUser > 0) {
-			// On le clear et on envoie un message de confirmation
-			await interaction.channel.setRateLimitPerUser(0)
-			return interactionReply({
-				interaction,
-				content: 'Slowmode désactivé 👌',
-				isSilent: isSilent,
+				ephemeral: ephemeral,
 			})
 		}
 	},

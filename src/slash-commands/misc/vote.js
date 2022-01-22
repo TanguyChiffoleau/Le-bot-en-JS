@@ -1,20 +1,17 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'vote',
-	description: 'Créé un embed avec la proposition et des émojis pour voter',
-	options: [
-		{
-			type: 'input',
-			name: 'proposition',
-			optDesc: 'Proposition de vote',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('vote')
+		.setDescription('Créé un embed avec la proposition et des émojis pour voter')
+		.addStringOption(option =>
+			option.setName('proposition').setDescription('Proposition de vote').setRequired(true),
+		),
 	requirePermissions: [],
 	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
 		if (!proposition)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois entrer une proposition de vote 😕',
 				isSilent: true,
@@ -24,7 +21,7 @@ export default {
 		const user = interaction.guild.members.cache.get(interaction.user.id)
 
 		// Envoie du message de vote
-		const sentMessage = await interactionReply({
+		const sentMessage = await interaction.reply({
 			interaction,
 			embeds: [
 				{
@@ -44,8 +41,8 @@ export default {
 		// Création automatique du thread associé
 		await interaction.channel.threads.create({
 			name: `Vote de ${interaction.member.displayName}`,
-			autoArchiveDuration: 60,
-			reason: `${proposition}`,
+			autoArchiveDuration: 1440,
+			reason: proposition,
 		})
 
 		// Ajout des réactions pour voter

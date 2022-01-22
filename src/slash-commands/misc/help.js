@@ -1,16 +1,15 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
 export default {
-	name: 'help',
-	description: 'Affiche les commandes fixes du bot',
-	options: [
-		{
-			type: 'input',
-			name: 'commande',
-			optDesc: "Nom de la commande où l'on veut des détails",
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('help')
+		.setDescription('Affiche les commandes fixes du bot')
+		.addStringOption(option =>
+			option
+				.setName('commande')
+				.setDescription("Nom de la commande où l'on veut des détails"),
+		),
 	requirePermissions: [],
 	interaction: (interaction, client) => {
 		// Si aucun argument, on montre la liste des commandes principales
@@ -20,7 +19,7 @@ export default {
 			client.commandsCategories.forEach((commandsNames, category) => {
 				const commandsDescription = commandsNames.reduce((acc, commandName) => {
 					const command = client.commands.get(commandName)
-					return `${acc}- \`${commandName}\` : ${command.description}.\n`
+					return `${acc}- \`${commandName}\` : ${command.data.description}.\n`
 				}, '')
 
 				fields.push({
@@ -29,7 +28,7 @@ export default {
 				})
 			})
 
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				embeds: [
 					{
@@ -44,16 +43,16 @@ export default {
 		// Acquisition de la commande
 		const command = client.commands.get(commandeName)
 		if (!command)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: `je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
 			})
 
 		// Création de l'embed avec les options
 		const embed = {
-			title: command.name,
+			title: command.data.name,
 			color: 'ff8000',
-			description: command.description,
+			description: command.data.description,
 			fields: [
 				{
 					name: 'Permissions nécessaires',
@@ -66,12 +65,32 @@ export default {
 			],
 		}
 
-		if (command.options) {
-			const options = Object.entries(command.options[0])
+		// Fait l'intérmédiaire entre le type de la commande
+		// et sa traduction en langage
+		const commandType = {
+			1: 'SUB_COMMAND',
+			2: 'SUB_COMMAND_GROUP',
+			3: 'STRING',
+			4: 'INTEGER',
+			5: 'BOOLEAN',
+			6: 'USER',
+			7: 'CHANNEL',
+			8: 'ROLE',
+			9: 'MENTIONABLE',
+			10: 'NUMBER',
+		}
+
+		if (command.data.options) {
+			const options = Object.entries(command.data.options[0])
 
 			let optionsDescription = ''
 			for (const [optionKey, optionValue] of options)
-				optionsDescription += `- \`${optionKey}\` : ${optionValue}\n`
+				if (optionKey === 'type')
+					optionsDescription += `- \`${optionKey}\` : ${
+						commandType[command.data.options[0].type]
+					}\n`
+				else if (optionKey === 'name' || optionKey === 'description')
+					optionsDescription += `- \`${optionKey}\` : ${optionValue}\n`
 
 			embed.fields.push({
 				name: 'Options',
@@ -79,6 +98,6 @@ export default {
 			})
 		}
 
-		return interactionReply({ interaction, embeds: [embed] })
+		return interaction.reply({ interaction, embeds: [embed] })
 	},
 }

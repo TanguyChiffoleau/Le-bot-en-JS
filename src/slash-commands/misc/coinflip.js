@@ -1,8 +1,7 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'coinflip',
-	description: 'Coinflip! (pile ou face)',
+	data: new SlashCommandBuilder().setName('coinflip').setDescription('Coinflip! (pile ou face)'),
 	requirePermissions: [],
 	interaction: async interaction => {
 		const random = Math.round(Math.random() * 100)
@@ -12,12 +11,11 @@ export default {
 		else if (random > 50) resultat = 'Face'
 		else resultat = 'Tranche'
 
-		await interactionReply({ interaction, content: 'La pièce tourne.' })
-		await interactionReply({ interaction, content: 'La pièce tourne..', isEdit: true })
-		return interactionReply({
+		await interaction.reply({ interaction, content: 'La pièce tourne.' })
+		await interaction.editReply({ interaction, content: 'La pièce tourne..' })
+		return interaction.editReply({
 			interaction,
 			content: `La pièce tourne... **${resultat}** !`,
-			isEdit: true,
 		})
 	},
 }

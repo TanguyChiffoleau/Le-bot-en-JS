@@ -1,41 +1,37 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 import { Constants, GuildMember } from 'discord.js'
 
 export default {
-	name: 'unmute',
-	description: 'Unmute un utilisateur',
-	options: [
-		{
-			type: 'user',
-			optDesc: 'Membre',
-		},
-		{
-			type: 'input',
-			name: 'raison',
-			optDesc: "Raison de l'unmute",
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('unmute')
+		.setDescription('Unmute un utilisateur')
+		.addUserOption(option =>
+			option.setName('membre').setDescription('Membre').setRequired(true),
+		)
+		.addStringOption(option =>
+			option.setName('raison').setDescription("Raison de l'unmute").setRequired(true),
+		),
 	requirePermissions: ['MUTE_MEMBERS'],
 	interaction: async (interaction, client) => {
 		// Acquisition du membre et de la raison du ban
-		const user = interaction.options.getUser('user')
+		const user = interaction.options.getUser('membre')
 		const author = interaction.guild.members.cache.get(interaction.user.id)
 		const reason = interaction.options.getString('raison')
 
 		if (!author.permissions.has('MUTE_MEMBERS'))
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (!user)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois mentionner un membre 😬',
 			})
 
 		if (!reason)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois donner une raison 😬',
 			})
@@ -43,13 +39,13 @@ export default {
 		const member = interaction.guild.members.cache.get(user.id)
 
 		if (!member)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu ne peux pas t'unmute toi-même 😬",
 			})
@@ -57,7 +53,7 @@ export default {
 		// Acquisition du rôle muted
 		const mutedRole = client.config.mutedRoleID
 		if (!mutedRole)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "il n'y a pas de rôle muted 😕",
 			})
@@ -68,7 +64,7 @@ export default {
 
 			// Si pas d'erreur, message de confirmation du mute
 			if (unmuteAction instanceof GuildMember) {
-				const unmuteMessage = await interactionReply({
+				const unmuteMessage = await interaction.reply({
 					interaction,
 					content: `🔊 \`${user.tag}\` est unmute\n📄 **Raison :** ${reason}`,
 					fetchReply: true,
@@ -110,7 +106,7 @@ export default {
 					'Sending message and/or banning member failed. See precedents logs for more informations.',
 				)
 		} else {
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "le membre n'est pas muté 😕",
 			})

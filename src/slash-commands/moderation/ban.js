@@ -1,126 +1,186 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 import { readFile } from 'fs/promises'
 import { Constants, GuildMember } from 'discord.js'
 
 export default {
-	name: 'ban',
-	description: 'Banni un membre',
-	options: [
-		{
-			type: 'user',
-			optDesc: 'Membre',
-		},
-		{
-			type: 'input',
-			name: 'raison',
-			optDesc: 'Raison du bannissement',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('ban')
+		.setDescription('Banni un membre')
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('by-user')
+				.setDescription('Banni un membre')
+				.addUserOption(option =>
+					option.setName('membre').setDescription('Membre').setRequired(true),
+				)
+				.addStringOption(option =>
+					option
+						.setName('raison')
+						.setDescription('Raison du bannissement')
+						.setRequired(true),
+				),
+		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('by-user-id')
+				.setDescription('Banni un membre')
+				.addStringOption(option =>
+					option
+						.setName('id')
+						.setDescription("Discord ID de l'utilisateur")
+						.setRequired(true),
+				)
+				.addStringOption(option =>
+					option
+						.setName('raison')
+						.setDescription('Raison du bannissement')
+						.setRequired(true),
+				),
+		),
 	requirePermissions: ['BAN_MEMBERS'],
 	interaction: async interaction => {
-		// Acquisition du membre et de la raison du ban
-		const user = interaction.options.getUser('user')
-		const author = interaction.guild.members.cache.get(interaction.user.id)
+		let user = ''
+		let author = ''
 		const reason = interaction.options.getString('raison')
 
+		if (interaction.options.getSubcommand() === 'by-user') {
+			user = interaction.options.getUser('membre')
+			author = interaction.guild.members.cache.get(interaction.user.id)
+		} else if (interaction.options.getSubcommand() === 'by-user-id') {
+			user = interaction.options.getString('id')
+			author = interaction.guild.members.cache.get(interaction.user.id)
+		}
+
 		if (!author.permissions.has('BAN_MEMBERS'))
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (!user)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
-				content: 'tu dois mentionner un membre 😬',
+				content: 'tu dois donner un membre 😬',
 			})
 
 		if (!reason)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois donner une raison 😬',
 			})
 
 		const member = interaction.guild.members.cache.get(user.id)
 
-		if (!member)
-			return interactionReply({
+		if (!member && interaction.options.getSubcommand() === 'by-user')
+			return interaction.reply({
 				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu ne peux pas te bannir toi-même 😬',
 			})
 
-		if (!member.bannable)
-			return interactionReply({
-				interaction,
-				content: 'tu ne peux pas bannir ce membre 😬',
-			})
-
-		// Lecture du message de ban
-		const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
-
-		// Envoi du message de bannissement en message privé
-		const DMMessage = await member
-			.send({
-				embeds: [
-					{
-						color: '#C27C0E',
-						title: 'Bannissement',
-						description: banDM,
-						author: {
-							name: interaction.guild.name,
-							icon_url: interaction.guild.iconURL({ dynamic: true }),
-							url: interaction.guild.vanityURL,
-						},
-						fields: [
-							{
-								name: 'Raison du bannissement',
-								value: reason,
-							},
-						],
-					},
-				],
-			})
-			.catch(async error => {
-				if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
-					await interactionReply({
-						interaction,
-						content: `les messages privés sont bloqués 😕`,
-					})
-
-				console.error(error)
-				return error
-			})
-
-		// Ban du membre
-		const banAction = await member
-			.ban({ days: 7, reason: `${interaction.user.tag} : ${reason}` })
-			.catch(async error => {
-				console.error(error)
-				await interactionReply({
+		if (interaction.options.getSubcommand() === 'by-user')
+			if (!member.bannable)
+				return interaction.reply({
 					interaction,
-					content: `je n'arrive pas à bannir ${member} 😕`,
+					content: 'tu ne peux pas bannir ce membre 😬',
 				})
 
-				return error
-			})
+		// Envoi du message de bannissement en message privé
+		if (interaction.options.getSubcommand() === 'by-user') {
+			// Lecture du message de ban
+			const banDM = await readFile('./forms/ban.md', { encoding: 'utf8' })
+			const DMMessage = await member
+				.send({
+					embeds: [
+						{
+							color: '#C27C0E',
+							title: 'Bannissement',
+							description: banDM,
+							author: {
+								name: interaction.guild.name,
+								icon_url: interaction.guild.iconURL({ dynamic: true }),
+								url: interaction.guild.vanityURL,
+							},
+							fields: [
+								{
+									name: 'Raison du bannissement',
+									value: reason,
+								},
+							],
+						},
+					],
+				})
+				.catch(async error => {
+					if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
+						await interaction.reply({
+							interaction,
+							content: `les messages privés sont bloqués 😕`,
+						})
 
-		// Si pas d'erreur, message de confirmation du ban
-		if (banAction instanceof GuildMember)
-			await interactionReply({
+					console.error(error)
+					return error
+				})
+
+			// Ban du membre
+			const banAction = await member
+				.ban({ days: 7, reason: `${interaction.user.tag} : ${reason}` })
+				.catch(async error => {
+					console.error(error)
+					await interaction.reply({
+						interaction,
+						content: `je n'arrive pas à bannir ${member} 😕`,
+					})
+
+					return error
+				})
+
+			// Si pas d'erreur, message de confirmation du ban
+			if (banAction instanceof GuildMember)
+				await interaction.reply({
+					interaction,
+					content: `🔨 \`${user.tag}\` a été banni\n📄 **Raison :** ${reason}`,
+				})
+
+			// Si au moins une erreur, throw
+			if (banAction instanceof Error || DMMessage instanceof Error)
+				throw new Error(
+					'Sending message and/or banning member failed. See precedents logs for more informations.',
+				)
+		} else {
+			let userById = ''
+			if (interaction.guild.members.cache.get(user))
+				userById = interaction.guild.members.cache.get(user).user.tag
+			else userById = user
+
+			// Ban de l'utilisateur
+			const banAction = await interaction.guild.members
+				.ban(user, { days: 7, reason: `${interaction.user.tag} : ${reason}` })
+				.catch(async error => {
+					console.error(error)
+					await interaction.reply({
+						interaction,
+						content: `je n'arrive pas à bannir \`${userById}\` 😕`,
+					})
+
+					return error
+				})
+
+			// Message de confirmation du ban
+			await interaction.reply({
 				interaction,
-				content: `🔨 \`${user.tag}\` a été banni\n📄 **Raison :** ${reason}`,
+				content: `🔨 \`${userById}\` a été banni\n📄 **Raison :** ${reason}`,
 			})
 
-		// Si au moins une erreur, throw
-		if (banAction instanceof Error || DMMessage instanceof Error)
-			throw new Error(
-				'Sending message and/or banning member failed. See precedents logs for more informations.',
-			)
+			// Si au moins une erreur, throw
+			if (banAction instanceof Error)
+				throw new Error(
+					'Sending message and/or banning member failed. See precedents logs for more informations.',
+				)
+		}
 	},
 }

@@ -1,16 +1,13 @@
-import { interactionReply } from '../../util/util.js'
-import { Constants, GuildMember } from 'discord.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
+import { Constants } from 'discord.js'
 
 export default {
-	name: 'unban',
-	description: 'Débanni un membre',
-	options: [
-		{
-			type: 'input',
-			name: 'id',
-			optDesc: 'Discord ID du membre',
-		},
-	],
+	data: new SlashCommandBuilder()
+		.setName('unban')
+		.setDescription('Débanni un utilisateur')
+		.addStringOption(option =>
+			option.setName('id').setDescription('Discord ID du membre').setRequired(true),
+		),
 	requirePermissions: ['BAN_MEMBERS'],
 	interaction: async interaction => {
 		// Acquisition de l'utilisateur
@@ -18,19 +15,19 @@ export default {
 		const userId = interaction.options.getString('id')
 
 		if (!author.permissions.has('BAN_MEMBERS'))
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (!interaction.options.getString('id'))
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: "tu dois donner l'ID d'un utilisateur 😬",
 			})
 
 		if (interaction.options.getString('id') === interaction.user.id)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu ne peux pas te débannir toi-même 😬',
 			})
@@ -41,19 +38,19 @@ export default {
 			.catch(async error => {
 				switch (error.code) {
 					case Constants.APIErrors.MISSING_PERMISSIONS:
-						return interactionReply({
+						return interaction.reply({
 							interaction,
 							content: `tu n'as pas la permission de débannir cet utilisateur 😕`,
 						})
 
 					case Constants.APIErrors.UNKNOWN_BAN:
-						return interactionReply({
+						return interaction.reply({
 							interaction,
 							content: "l'utilisateur n'est pas banni 😬",
 						})
 
 					default:
-						await interactionReply({
+						await interaction.reply({
 							interaction,
 							content: `je n'arrive pas à débannir \`${userId}\` 😕`,
 						})
@@ -62,9 +59,8 @@ export default {
 				return error
 			})
 
-		// Si pas d'erreur, message de confirmation du ban
-		if (unbanAction instanceof GuildMember)
-			await interactionReply({ interaction, content: `🔓 \`${userId}\` a été débanni` })
+		// Message de confirmation du ban
+		await interaction.reply({ interaction, content: `🔓 \`${userId}\` a été débanni` })
 
 		// Si au moins une erreur, throw
 		if (unbanAction instanceof Error)

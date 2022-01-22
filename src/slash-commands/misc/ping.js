@@ -1,18 +1,18 @@
-import { interactionReply } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'ping',
-	description: "Donne le ping de l'API ainsi que du bot",
+	data: new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription("Donne le ping de l'API ainsi que du bot"),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
-		await interactionReply({ interaction, content: '🏓 Pong ?' })
+		await interaction.reply({ interaction, content: '🏓 Pong ?' })
 		const start = new Date()
-		await interactionReply({ interaction, content: '🏓 Pong ?', isEdit: true })
+		await interaction.editReply({ interaction, content: '🏓 Pong ?' })
 		const editLatency = Math.round(new Date() - start)
-		return interactionReply({
+		return interaction.editReply({
 			interaction,
 			content: `Modification d'un message : **${editLatency} ms**\nRéponse API : **${client.ws.ping} ms**`,
-			isEdit: true,
 		})
 	},
 }

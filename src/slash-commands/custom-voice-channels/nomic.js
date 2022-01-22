@@ -1,37 +1,40 @@
-import { displayNameAndID, interactionReply } from '../../util/util.js'
+import { displayNameAndID } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'nomic',
-	description:
-		'Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
+	data: new SlashCommandBuilder()
+		.setName('nomic')
+		.setDescription(
+			'Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
+		),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const voiceChannel = interaction.member.voice.channel
 
 		// Si l'utilisateur n'est pas dans un channel vocal
 		if (!voiceChannel)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: 'tu dois être dans un channel vocal pour utiliser cette commande 😕',
-				isSilent: true,
+				ephemeral: true,
 			})
 
 		// Si l'utilisateur n'est pas dans un channel vocal personnalisé
 		if (!client.voiceManager.has(voiceChannel.id))
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content:
 					'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
-				isSilent: true,
+				ephemeral: true,
 			})
 
 		// Check si il y a déjà un channel no-mic
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 		if (existingNoMicChannel)
-			return interactionReply({
+			return interaction.reply({
 				interaction,
 				content: `il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
-				isSilent: true,
+				ephemeral: true,
 			})
 
 		// Crée le channel no mic
@@ -95,10 +98,10 @@ export default {
 		// Ajout du channel dans la map
 		client.voiceManager.set(voiceChannel.id, noMicChannel)
 
-		return interactionReply({
+		return interaction.reply({
 			interaction,
 			content: `ton channel a bien été créé : ${noMicChannel} 👌`,
-			isSilent: true,
+			ephemeral: true,
 		})
 	},
 }
