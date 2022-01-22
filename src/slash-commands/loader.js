@@ -28,7 +28,7 @@ export default async client => {
 							await import(`../slash-commands/${commandCategory}/${commandFile}`)
 						).default
 
-						client.commands.set(command.name, command)
+						client.commands.set(command.data.name, command)
 						return command.data.toJSON()
 					}),
 				)
