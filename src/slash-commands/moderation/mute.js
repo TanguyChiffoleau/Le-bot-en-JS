@@ -28,21 +28,6 @@ export default {
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
-		if (!user)
-			return interaction.reply({
-				content: 'tu dois mentionner un membre 😬',
-			})
-
-		if (duree === null)
-			return interaction.reply({
-				content: 'tu dois entrer une valeur de durée 😬',
-			})
-
-		if (!reason)
-			return interaction.reply({
-				content: 'tu dois donner une raison 😬',
-			})
-
 		const member = interaction.guild.members.cache.get(user.id)
 
 		if (!member)

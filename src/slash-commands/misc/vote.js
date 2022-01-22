@@ -10,11 +10,6 @@ export default {
 	requirePermissions: [],
 	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
-		if (!proposition)
-			return interaction.reply({
-				content: 'tu dois entrer une proposition de vote 😕',
-				isSilent: true,
-			})
 
 		// Interaction user
 		const user = interaction.guild.members.cache.get(interaction.user.id)

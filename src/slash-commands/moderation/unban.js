@@ -19,11 +19,6 @@ export default {
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
-		if (!interaction.options.getString('id'))
-			return interaction.reply({
-				content: "tu dois donner l'ID d'un utilisateur 😬",
-			})
-
 		if (interaction.options.getString('id') === interaction.user.id)
 			return interaction.reply({
 				content: 'tu ne peux pas te débannir toi-même 😬',
