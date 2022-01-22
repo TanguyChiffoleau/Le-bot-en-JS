@@ -43,14 +43,12 @@ export default {
 
 		if (!chosenNumber)
 			return interaction.reply({
-				interaction,
 				content: "tu n'as pas donné un nombre 😕",
 				ephemeral: ephemeral,
 			})
 
 		if (chosenNumber < 1 || chosenNumber > 99)
 			return interaction.reply({
-				interaction,
 				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
 				ephemeral: ephemeral,
 			})
@@ -61,7 +59,6 @@ export default {
 		)
 		if (!logsChannel)
 			return interaction.reply({
-				interaction,
 				content: "il n'y a pas de channel pour log l'action 😕",
 				ephemeral: ephemeral,
 			})
@@ -77,7 +74,6 @@ export default {
 		deletedMessages.delete(interaction.id)
 		if (deletedMessages.size === 0)
 			return interaction.reply({
-				interaction,
 				content: 'aucun message supprimé 😕',
 				ephemeral: ephemeral,
 			})
@@ -85,7 +81,6 @@ export default {
 		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
 		const { size: nbDeletedMessages } = deletedMessages
 		await interaction.reply({
-			interaction,
 			content: `${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
 				'supprimé',
 				nbDeletedMessages,

@@ -12,7 +12,6 @@ export default {
 		const proposition = interaction.options.getString('proposition')
 		if (!proposition)
 			return interaction.reply({
-				interaction,
 				content: 'tu dois entrer une proposition de vote 😕',
 				isSilent: true,
 			})
@@ -22,7 +21,6 @@ export default {
 
 		// Envoie du message de vote
 		const sentMessage = await interaction.reply({
-			interaction,
 			embeds: [
 				{
 					color: '00FF00',

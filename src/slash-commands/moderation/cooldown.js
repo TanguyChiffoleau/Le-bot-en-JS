@@ -43,7 +43,6 @@ export default {
 
 			if (delai === null)
 				return interaction.reply({
-					interaction,
 					content: 'tu dois entrer une valeur de délai 😬',
 					ephemeral: true,
 				})
@@ -52,7 +51,6 @@ export default {
 			// Erreur si le channel est déjà en slowmode
 			if (interaction.channel.rateLimitPerUser > 0)
 				return interaction.reply({
-					interaction,
 					content: 'Ce channel est déjà en slowmode 😕',
 					ephemeral: ephemeral,
 				})
@@ -63,7 +61,6 @@ export default {
 			// le slowmode reste jusqu'au prochain clear
 			if (!duree)
 				return interaction.reply({
-					interaction,
 					content: `Channel en slowmode de ${convertSecondsToString(
 						delai,
 					)} pour une durée indéfinie 👌`,
@@ -72,7 +69,6 @@ export default {
 
 			// Sinon on donne le temps du slowmode
 			await interaction.reply({
-				interaction,
 				content: `Channel en slowmode de ${convertSecondsToString(
 					delai,
 				)} pendant ${convertSecondsToString(duree)} 👌`,
@@ -85,7 +81,6 @@ export default {
 				// On le clear et on envoie un message de confirmation
 				await interaction.channel.setRateLimitPerUser(0)
 				return interaction.followUp({
-					interaction,
 					content: 'Slowmode désactivé 👌',
 					ephemeral: ephemeral,
 				})
@@ -94,14 +89,12 @@ export default {
 			if (interaction.channel.rateLimitPerUser > 0) {
 				await interaction.channel.setRateLimitPerUser(0)
 				return interaction.reply({
-					interaction,
 					content: 'Slowmode désactivé 👌',
 					ephemeral: ephemeral,
 				})
 			}
 
 			return interaction.reply({
-				interaction,
 				content: "Ce channel n'est pas en slowmode 😕",
 				ephemeral: ephemeral,
 			})

@@ -43,6 +43,6 @@ export default {
 			],
 		}
 
-		await interaction.reply({ interaction, embeds: [embed] })
+		await interaction.reply({ embeds: [embed] })
 	},
 }

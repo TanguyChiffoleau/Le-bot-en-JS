@@ -29,7 +29,6 @@ export default {
 			})
 
 			return interaction.reply({
-				interaction,
 				embeds: [
 					{
 						title: 'Commandes principales disponibles',
@@ -44,7 +43,6 @@ export default {
 		const command = client.commands.get(commandeName)
 		if (!command)
 			return interaction.reply({
-				interaction,
 				content: `je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
 			})
 
@@ -98,6 +96,6 @@ export default {
 			})
 		}
 
-		return interaction.reply({ interaction, embeds: [embed] })
+		return interaction.reply({ embeds: [embed] })
 	},
 }

@@ -13,7 +13,6 @@ export default {
 		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
 			return interaction.reply({
-				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
@@ -66,6 +65,6 @@ export default {
 				inline: true,
 			})
 
-		return interaction.reply({ interaction, embeds: [embed] })
+		return interaction.reply({ embeds: [embed] })
 	},
 }

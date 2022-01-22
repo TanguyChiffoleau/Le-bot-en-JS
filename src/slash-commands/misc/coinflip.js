@@ -11,10 +11,9 @@ export default {
 		else if (random > 50) resultat = 'Face'
 		else resultat = 'Tranche'
 
-		await interaction.reply({ interaction, content: 'La pièce tourne.' })
-		await interaction.editReply({ interaction, content: 'La pièce tourne..' })
+		await interaction.reply({ content: 'La pièce tourne.' })
+		await interaction.editReply({ content: 'La pièce tourne..' })
 		return interaction.editReply({
-			interaction,
 			content: `La pièce tourne... **${resultat}** !`,
 		})
 	},

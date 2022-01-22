@@ -6,12 +6,11 @@ export default {
 		.setDescription("Donne le ping de l'API ainsi que du bot"),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
-		await interaction.reply({ interaction, content: '🏓 Pong ?' })
+		await interaction.reply({ content: '🏓 Pong ?' })
 		const start = new Date()
-		await interaction.editReply({ interaction, content: '🏓 Pong ?' })
+		await interaction.editReply({ content: '🏓 Pong ?' })
 		const editLatency = Math.round(new Date() - start)
 		return interaction.editReply({
-			interaction,
 			content: `Modification d'un message : **${editLatency} ms**\nRéponse API : **${client.ws.ping} ms**`,
 		})
 	},

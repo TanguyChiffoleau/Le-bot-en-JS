@@ -25,25 +25,21 @@ export default {
 
 		if (!author.permissions.has('MUTE_MEMBERS'))
 			return interaction.reply({
-				interaction,
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (!user)
 			return interaction.reply({
-				interaction,
 				content: 'tu dois mentionner un membre 😬',
 			})
 
 		if (duree === null)
 			return interaction.reply({
-				interaction,
 				content: 'tu dois entrer une valeur de durée 😬',
 			})
 
 		if (!reason)
 			return interaction.reply({
-				interaction,
 				content: 'tu dois donner une raison 😬',
 			})
 
@@ -51,13 +47,11 @@ export default {
 
 		if (!member)
 			return interaction.reply({
-				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
 			return interaction.reply({
-				interaction,
 				content: 'tu ne peux pas te mute toi-même 😬',
 			})
 
@@ -65,7 +59,6 @@ export default {
 		const mutedRole = client.config.mutedRoleID
 		if (!mutedRole)
 			return interaction.reply({
-				interaction,
 				content: "il n'y a pas de rôle muted 😕",
 			})
 
@@ -102,7 +95,6 @@ export default {
 		// Si pas d'erreur, message de confirmation du mute
 		if (muteAction instanceof GuildMember) {
 			const muteMessage = await interaction.reply({
-				interaction,
 				content: `🔇 \`${user.tag}\` est mute pendant **${duree} minute(s)**\n📄 **Raison :** ${reason}`,
 				fetchReply: true,
 			})

@@ -53,19 +53,16 @@ export default {
 
 		if (!author.permissions.has('BAN_MEMBERS'))
 			return interaction.reply({
-				interaction,
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (!user)
 			return interaction.reply({
-				interaction,
 				content: 'tu dois donner un membre 😬',
 			})
 
 		if (!reason)
 			return interaction.reply({
-				interaction,
 				content: 'tu dois donner une raison 😬',
 			})
 
@@ -73,20 +70,17 @@ export default {
 
 		if (!member && interaction.options.getSubcommand() === 'by-user')
 			return interaction.reply({
-				interaction,
 				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
 			return interaction.reply({
-				interaction,
 				content: 'tu ne peux pas te bannir toi-même 😬',
 			})
 
 		if (interaction.options.getSubcommand() === 'by-user')
 			if (!member.bannable)
 				return interaction.reply({
-					interaction,
 					content: 'tu ne peux pas bannir ce membre 😬',
 				})
 
@@ -118,7 +112,6 @@ export default {
 				.catch(async error => {
 					if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
 						await interaction.reply({
-							interaction,
 							content: `les messages privés sont bloqués 😕`,
 						})
 
@@ -132,7 +125,6 @@ export default {
 				.catch(async error => {
 					console.error(error)
 					await interaction.reply({
-						interaction,
 						content: `je n'arrive pas à bannir ${member} 😕`,
 					})
 
@@ -142,7 +134,6 @@ export default {
 			// Si pas d'erreur, message de confirmation du ban
 			if (banAction instanceof GuildMember)
 				await interaction.reply({
-					interaction,
 					content: `🔨 \`${user.tag}\` a été banni\n📄 **Raison :** ${reason}`,
 				})
 
@@ -163,7 +154,6 @@ export default {
 				.catch(async error => {
 					console.error(error)
 					await interaction.reply({
-						interaction,
 						content: `je n'arrive pas à bannir \`${userById}\` 😕`,
 					})
 
@@ -172,7 +162,6 @@ export default {
 
 			// Message de confirmation du ban
 			await interaction.reply({
-				interaction,
 				content: `🔨 \`${userById}\` a été banni\n📄 **Raison :** ${reason}`,
 			})
 
