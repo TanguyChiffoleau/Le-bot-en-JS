@@ -22,7 +22,7 @@ export default async client => {
 					commandFiles.map(removeFileExtension),
 				)
 
-				const test = await Promise.all(
+				return Promise.all(
 					commandFiles.map(async commandFile => {
 						const command = (
 							await import(`../slash-commands/${commandCategory}/${commandFile}`)
@@ -32,8 +32,6 @@ export default async client => {
 						return command.data.toJSON()
 					}),
 				)
-
-				return test
 			}),
 		)
 	).flat()
