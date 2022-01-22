@@ -7,42 +7,46 @@ export default async client => {
 	const clientId = client.user.id
 	const guildId = client.config.guildID
 	const rest = new REST({ version: '9' }).setToken(client.token)
-	const commands = []
 
 	// Dossier des commandes
 	const commandsDir = (await readdir('./src/slash-commands')).filter(dir => !dir.endsWith('.js'))
 
-	// Pour chaque catégorie de commandes
-	commandsDir.forEach(async commandCategory => {
-		// Acquisition des commandes
-		const commandFiles = await readdir(`./src/slash-commands/${commandCategory}`)
+	const commands = (
+		await Promise.all(
+			commandsDir.map(async commandCategory => {
+				const commandFiles = await readdir(`./src/slash-commands/${commandCategory}`)
 
-		// Ajout dans la map utilisée pour la commande "roles"
-		client.commandsCategories.set(commandCategory, commandFiles.map(removeFileExtension))
+				// Ajout dans la map utilisée pour la commande "roles"
+				client.commandsCategories.set(
+					commandCategory,
+					commandFiles.map(removeFileExtension),
+				)
 
-		// Pour chaque commande, on l'acquérit et on
-		// l'ajoute dans la map des commandes
-		Promise.all(
-			commandFiles.map(async commandFile => {
-				const command = (
-					await import(`../slash-commands/${commandCategory}/${commandFile}`)
-				).default
+				const test = await Promise.all(
+					commandFiles.map(async commandFile => {
+						const command = (
+							await import(`../slash-commands/${commandCategory}/${commandFile}`)
+						).default
 
-				commands.push(command.data.toJSON())
-				client.commands.set(command.data.name, command)
+						client.commands.set(command.name, command)
+						return command.data.toJSON()
+					}),
+				)
 
-				try {
-					console.log('Started refreshing application (/) commands')
-
-					await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-						body: commands,
-					})
-
-					console.log('Successfully reloaded application (/) commands')
-				} catch (error) {
-					console.error(error)
-				}
+				return test
 			}),
 		)
-	})
+	).flat()
+
+	try {
+		console.log('Started refreshing application (/) commands')
+
+		await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+			body: commands,
+		})
+
+		console.log('Successfully reloaded application (/) commands')
+	} catch (error) {
+		console.error(error)
+	}
 }
