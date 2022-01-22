@@ -25,10 +25,7 @@ export default {
 						.setRequired(true),
 				)
 				.addIntegerOption(option =>
-					option
-						.setName('durée')
-						.setDescription('Durée du slowmode (en secondes)')
-						.setRequired(true),
+					option.setName('durée').setDescription('Durée du slowmode (en secondes)'),
 				)
 				.addBooleanOption(option =>
 					option.setName('silent').setDescription('Exécuter la commande silencieusement'),
@@ -40,12 +37,6 @@ export default {
 		if (interaction.options.getSubcommand() === 'set') {
 			const delai = interaction.options.getInteger('délai')
 			const duree = interaction.options.getInteger('durée')
-
-			if (delai === null)
-				return interaction.reply({
-					content: 'tu dois entrer une valeur de délai 😬',
-					ephemeral: true,
-				})
 
 			// On ajoute le cooldown
 			// Erreur si le channel est déjà en slowmode

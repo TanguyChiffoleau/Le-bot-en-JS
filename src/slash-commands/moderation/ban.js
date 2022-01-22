@@ -56,16 +56,6 @@ export default {
 				content: "tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
-		if (!user)
-			return interaction.reply({
-				content: 'tu dois donner un membre 😬',
-			})
-
-		if (!reason)
-			return interaction.reply({
-				content: 'tu dois donner une raison 😬',
-			})
-
 		const member = interaction.guild.members.cache.get(user.id)
 
 		if (!member && interaction.options.getSubcommand() === 'by-user')

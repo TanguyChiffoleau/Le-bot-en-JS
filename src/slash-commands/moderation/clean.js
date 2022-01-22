@@ -41,12 +41,6 @@ export default {
 		const chosenNumber = interaction.options.getInteger('nombre')
 		const ephemeral = interaction.options.getBoolean('silent')
 
-		if (!chosenNumber)
-			return interaction.reply({
-				content: "tu n'as pas donné un nombre 😕",
-				ephemeral: ephemeral,
-			})
-
 		if (chosenNumber < 1 || chosenNumber > 99)
 			return interaction.reply({
 				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
