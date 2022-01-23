@@ -44,7 +44,7 @@ export default {
 		if (chosenNumber < 1 || chosenNumber > 99)
 			return interaction.reply({
 				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
-				ephemeral: ephemeral,
+				ephemeral: true,
 			})
 
 		// Acquisition du channel de logs
@@ -54,7 +54,7 @@ export default {
 		if (!logsChannel)
 			return interaction.reply({
 				content: "il n'y a pas de channel pour log l'action 😕",
-				ephemeral: ephemeral,
+				ephemeral: true,
 			})
 
 		// Acquisition des messages et filtrage des épinglés
@@ -69,7 +69,7 @@ export default {
 		if (deletedMessages.size === 0)
 			return interaction.reply({
 				content: 'aucun message supprimé 😕',
-				ephemeral: ephemeral,
+				ephemeral: true,
 			})
 
 		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
