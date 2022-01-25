@@ -34,6 +34,7 @@ export default () => {
 		noTextManagerChannelIDs: process.env.NOTEXT_MANAGER_CHANNELS_IDS
 			? process.env.NOTEXT_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
+		joinRoleID: process.env.JOIN_ROLE_ID,
 	}
 	client.cache = {
 		// Messages supprimés par le bot pour ne pas

@@ -51,6 +51,14 @@ export default async (guildMember, client) => {
 	// Si le membre n'est pas bannisable, réaction avec 🚫
 	if (!guildMember.bannable) return sentMessage.react('🚫')
 
+	const joinRole = client.config.joinRoleID
+
+	if (!guildMember.roles.cache.has(joinRole)) guildMember.roles.add(joinRole)
+
+	await setTimeout(() => {
+		guildMember.roles.remove(joinRole)
+	}, 900000)
+
 	// Lecture du fichier de configuration
 	const emotesConfig = new Map(JSON.parse(await readFile('./config/banEmotesAtJoin.json')))
 
