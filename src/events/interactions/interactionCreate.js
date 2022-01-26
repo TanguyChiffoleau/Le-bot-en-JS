@@ -7,4 +7,19 @@ export default async (interaction, client) => {
 				content: `Impossible de trouver la commande "${interaction.commandName}"`,
 			})
 	}
+
+	if (interaction.isButton())
+		if (client.interactionRoleMap.has(interaction.message.id)) {
+			// Partie système de réaction/role
+			const interactionRoleMap = client.interactionRoleMap.get(interaction.message.id)
+			const roleID = interactionRoleMap[interaction.customId]
+			const guildMember = await interaction.guild.members.fetch(interaction.user)
+
+			if (guildMember.roles.cache.has(roleID)) await guildMember.roles.remove(roleID)
+			else guildMember.roles.add(roleID)
+
+			// deferUpdate() afin que le bouton ne réponde pas une erreur
+			// mais agisse comme un système de switch
+			return interaction.deferUpdate()
+		}
 }

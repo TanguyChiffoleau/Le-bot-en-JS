@@ -6,10 +6,18 @@ export const once = true
 export default async client => {
 	console.log('The client is ready to start working')
 
-	// Lecture et en place du système de réactions
+	// Lecture et en place du système de réactions / boutons
 	// puis ajout des émojis (peut prendre du temps)
+	const interactionRoleConfig = JSON.parse(await readFile('./config/interactionRoleConfig.json'))
+	client.interactionRoleMap = new Map()
 	const reactionRoleConfig = JSON.parse(await readFile('./config/reactionRoleConfig.json'))
 	client.reactionRoleMap = new Map()
+
+	// Pour chaque message / boutons
+	// Ajout dans la map pour être utilisé dans les events
+	for (const { messageArray } of interactionRoleConfig)
+		for (const { messageID, interactionRoleMap } of messageArray)
+			client.interactionRoleMap.set(messageID, interactionRoleMap)
 
 	// Pour chaque channel
 	for (const { channelID, messageArray } of reactionRoleConfig) {

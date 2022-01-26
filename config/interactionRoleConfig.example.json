@@ -1,0 +1,22 @@
+[
+	{
+		"messageArray": [
+			{
+				"messageID": "123456789123456789",
+				"interactionRoleMap": {
+					"interactionCustomId": "123456789123456789"
+				}
+			}
+		]
+	},
+	{
+		"messageArray": [
+			{
+				"messageID": "123456789123456789",
+				"interactionRoleMap": {
+					"interactionCustomId": "123456789123456789"
+				}
+			}
+		]
+	}
+]
