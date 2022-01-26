@@ -16,13 +16,13 @@ const run = async () => {
 
 	const client = prepareClient()
 
+	await eventsLoader(client)
+
 	await client.login(process.env.DISCORD_TOKEN)
 
 	await commandsLoader(client)
 
 	await slashCommandsLoader(client)
-
-	await eventsLoader(client)
 
 	console.log('Setup finished')
 
