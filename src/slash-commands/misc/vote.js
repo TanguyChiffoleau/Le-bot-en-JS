@@ -36,18 +36,11 @@ export default {
 	requirePermissions: [],
 	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
-
-		let messageId = ''
-		if (interaction.options.getSubcommand() === 'edit')
-			messageId = interaction.options.getString('id')
-
-		// Interaction user
 		const user = interaction.guild.members.cache.get(interaction.user.id)
 
-		let sentMessage = ''
 		if (interaction.options.getSubcommand() === 'create') {
 			// Envoie du message de vote
-			sentMessage = await interaction.reply({
+			const sentMessage = await interaction.reply({
 				embeds: [
 					{
 						color: '00FF00',
@@ -57,7 +50,9 @@ export default {
 						},
 						title: 'Nouveau vote',
 						description: `\`\`\`${proposition}\`\`\``,
-						timestamp: new Date(),
+						footer: {
+							text: `Vote posté le ${convertDate(new Date())}`,
+						},
 					},
 				],
 				fetchReply: true,
@@ -75,31 +70,35 @@ export default {
 			await sentMessage.react('🤷')
 			await sentMessage.react('⌛')
 			return sentMessage.react('❌')
-		}
+		} else if (interaction.options.getSubcommand() === 'edit') {
+			const messageId = interaction.options.getString('id')
+			await interaction.channel.messages.fetch(messageId).then(
+				msg =>
+					msg.edit({
+						embeds: [
+							{
+								color: '00FF00',
+								author: {
+									name: `${interaction.member.displayName} (ID ${interaction.member.id})`,
+									icon_url: user.displayAvatarURL({ dynamic: true }),
+								},
+								title: 'Nouveau vote (édité)',
+								description: `\`\`\`${proposition}\`\`\``,
+								footer: {
+									text: `Vote posté le ${convertDate(
+										msg.createdAt,
+									)}\net édité le ${convertDate(new Date())}`,
+								},
+							},
+						],
+						fetchReply: true,
+					}),
 
-		await interaction.channel.messages.fetch(messageId).then(
-			msg =>
-				msg.edit({
-					embeds: [
-						{
-							color: '00FF00',
-							author: {
-								name: `${interaction.member.displayName} (ID ${interaction.member.id})`,
-								icon_url: user.displayAvatarURL({ dynamic: true }),
-							},
-							title: 'Nouveau vote (édité)',
-							description: `\`\`\`${proposition}\`\`\``,
-							footer: {
-								text: `Vote posté le ${convertDate(
-									msg.createdAt,
-								)}\net édité le ${convertDate(new Date())}`,
-							},
-						},
-					],
-					fetchReply: true,
+				await interaction.reply({
+					content: 'Proposition de vote éditée 👌',
+					ephemeral: true,
 				}),
-
-			await interaction.reply({ content: 'Proposition de vote éditée 👌', ephemeral: true }),
-		)
+			)
+		}
 	},
 }
