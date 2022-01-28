@@ -161,7 +161,7 @@ export default async (message, client) => {
 			}
 
 			if (validMessage.editedAt)
-				embed.footer.text += ` et modifié le ${convertDate(validMessage.editedAt)}`
+				embed.footer.text += `\net édité le ${convertDate(validMessage.editedAt)}`
 
 			if (message.author !== validMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
