@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { convertDate } from '../../util/util.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -62,18 +63,18 @@ export default {
 				fetchReply: true,
 			})
 
-			// Ajout des réactions pour voter
-			await sentMessage.react('✅')
-			await sentMessage.react('🤷')
-			await sentMessage.react('⌛')
-			await sentMessage.react('❌')
-
 			// Création automatique du thread associé
-			return interaction.channel.threads.create({
+			await interaction.channel.threads.create({
 				name: `Vote de ${interaction.member.displayName}`,
 				autoArchiveDuration: 1440,
 				reason: proposition,
 			})
+
+			// Ajout des réactions pour voter
+			await sentMessage.react('✅')
+			await sentMessage.react('🤷')
+			await sentMessage.react('⌛')
+			return sentMessage.react('❌')
 		}
 
 		await interaction.channel.messages.fetch(messageId).then(
@@ -88,7 +89,11 @@ export default {
 							},
 							title: 'Nouveau vote (édité)',
 							description: `\`\`\`${proposition}\`\`\``,
-							timestamp: new Date(),
+							footer: {
+								text: `Vote posté le ${convertDate(
+									msg.createdAt,
+								)}\net édité le ${convertDate(new Date())}`,
+							},
 						},
 					],
 					fetchReply: true,
