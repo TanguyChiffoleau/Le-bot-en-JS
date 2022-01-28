@@ -14,6 +14,12 @@ export default {
 						.setName('proposition')
 						.setDescription('Proposition de vote')
 						.setRequired(true),
+				)
+				.addBooleanOption(option =>
+					option
+						.setName('thread')
+						.setDescription('Voulez-vous créer un thread associé ?')
+						.setRequired(true),
 				),
 		)
 		.addSubcommand(subcommand =>
@@ -37,6 +43,7 @@ export default {
 	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
 		const user = interaction.guild.members.cache.get(interaction.user.id)
+		const thread = interaction.options.getBoolean('thread')
 
 		if (interaction.options.getSubcommand() === 'create') {
 			// Envoie du message de vote
@@ -59,11 +66,12 @@ export default {
 			})
 
 			// Création automatique du thread associé
-			await interaction.channel.threads.create({
-				name: `Vote de ${interaction.member.displayName}`,
-				autoArchiveDuration: 1440,
-				reason: proposition,
-			})
+			if (thread)
+				await interaction.channel.threads.create({
+					name: `Vote de ${interaction.member.displayName}`,
+					autoArchiveDuration: 1440,
+					reason: proposition,
+				})
 
 			// Ajout des réactions pour voter
 			await sentMessage.react('✅')
