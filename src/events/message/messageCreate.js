@@ -40,7 +40,7 @@ export default async (message, client) => {
 			if (now < expirationTime) {
 				const timeLeft = expirationTime - now
 				const sentMessage = await message.reply({
-					content: `merci d'attendre ${(timeLeft / 1000).toFixed(
+					content: `Merci d'attendre ${(timeLeft / 1000).toFixed(
 						1,
 					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
 				})
@@ -54,7 +54,7 @@ export default async (message, client) => {
 
 		// Rejets de la commandes
 		if (command.needArguments && !args.length)
-			return message.reply({ content: "tu n'as pas donné d'argument(s) 😕" })
+			return message.reply({ content: "Tu n'as pas donné d'argument(s) 😕" })
 
 		if (command.guildOnly && !message.guild)
 			return message.reply({
@@ -66,7 +66,7 @@ export default async (message, client) => {
 			!message.member.permissionsIn(message.channel).has(command.requirePermissions)
 		)
 			return message.reply({
-				content: "tu n'as pas les permissions d'effectuer cette commande 😕",
+				content: "Tu n'as pas les permissions d'effectuer cette commande 😕",
 			})
 
 		// Exécution de la commande
@@ -74,7 +74,7 @@ export default async (message, client) => {
 			await message.channel.sendTyping()
 			return command.execute(client, message, args)
 		} catch (error) {
-			message.reply({ content: 'il y a eu une erreur en exécutant la commande 😬' })
+			message.reply({ content: 'Il y a eu une erreur en exécutant la commande 😬' })
 			console.error(error)
 		}
 

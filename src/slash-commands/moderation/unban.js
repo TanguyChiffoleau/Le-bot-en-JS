@@ -16,12 +16,12 @@ export default {
 
 		if (!author.permissions.has('BAN_MEMBERS'))
 			return interaction.reply({
-				content: "tu n'as pas la permission d'effectuer cette commande 😬",
+				content: "Tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		if (interaction.options.getString('id') === interaction.user.id)
 			return interaction.reply({
-				content: 'tu ne peux pas te débannir toi-même 😬',
+				content: 'Tu ne peux pas te débannir toi-même 😬',
 			})
 
 		// Unban du membre
@@ -31,17 +31,17 @@ export default {
 				switch (error.code) {
 					case Constants.APIErrors.MISSING_PERMISSIONS:
 						return interaction.reply({
-							content: `tu n'as pas la permission de débannir cet utilisateur 😕`,
+							content: `Tu n'as pas la permission de débannir cet utilisateur 😕`,
 						})
 
 					case Constants.APIErrors.UNKNOWN_BAN:
 						return interaction.reply({
-							content: "l'utilisateur n'est pas banni 😬",
+							content: "L'utilisateur n'est pas banni 😬",
 						})
 
 					default:
 						await interaction.reply({
-							content: `je n'arrive pas à débannir \`${userId}\` 😕`,
+							content: `Je n'arrive pas à débannir \`${userId}\` 😕`,
 						})
 				}
 
@@ -54,7 +54,7 @@ export default {
 		// Si au moins une erreur, throw
 		if (unbanAction instanceof Error)
 			throw new Error(
-				'Sending message and/or banning member failed. See precedents logs for more informations.',
+				'Sending message and / or banning member failed. See precedents logs for more informations.',
 			)
 	},
 }

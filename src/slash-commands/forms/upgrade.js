@@ -19,7 +19,7 @@ export default {
 		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
 			return interaction.reply({
-				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
 			})
 
 		const embed = {
@@ -53,22 +53,22 @@ export default {
 			if (member === interaction.user)
 				interaction.reply({
 					content:
-						"je n'ai pas réussi à envoyer le message privé, tu as dû sûrement me bloquer / désactiver tes messages provenant du serveur 😬",
+						"Je n'ai pas réussi à envoyer le message privé, tu m'as sûrement bloqué / désactivé tes messages provenant du serveur 😬",
 				})
 			else
 				interaction.reply({
 					content:
-						"je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué / désactivé les messages provenant du serveur 😬",
+						"Je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué / désactivé les messages provenant du serveur 😬",
 				})
 		}
 
 		if (member.user.id === interaction.user.id)
 			return interaction.reply({
-				content: 'formulaire envoyé en message privé 👌',
+				content: 'Formulaire envoyé en message privé 👌',
 				ephemeral: true,
 			})
 		return interaction.reply({
-			content: `formulaire envoyé en message privé à ${member} 👌`,
+			content: `Formulaire envoyé en message privé à ${member} 👌`,
 		})
 	},
 }

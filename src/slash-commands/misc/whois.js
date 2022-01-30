@@ -13,7 +13,7 @@ export default {
 		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
 			return interaction.reply({
-				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
 			})
 
 		// Création de l'embed

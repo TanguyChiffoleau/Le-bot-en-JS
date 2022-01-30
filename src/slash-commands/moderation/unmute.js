@@ -20,26 +20,26 @@ export default {
 
 		if (!author.permissions.has('MUTE_MEMBERS'))
 			return interaction.reply({
-				content: "tu n'as pas la permission d'effectuer cette commande 😬",
+				content: "Tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		const member = interaction.guild.members.cache.get(user.id)
 
 		if (!member)
 			return interaction.reply({
-				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
 			return interaction.reply({
-				content: "tu ne peux pas t'unmute toi-même 😬",
+				content: "Tu ne peux pas t'unmute toi-même 😬",
 			})
 
 		// Acquisition du rôle muted
 		const mutedRole = client.config.mutedRoleID
 		if (!mutedRole)
 			return interaction.reply({
-				content: "il n'y a pas de rôle muted 😕",
+				content: "Il n'y a pas de rôle Muted 😕",
 			})
 
 		// Suppression du rôle muted et envoi du message privé
@@ -86,11 +86,11 @@ export default {
 			// Si au moins une erreur, throw
 			if (unmuteAction instanceof Error)
 				throw new Error(
-					'Sending message and/or banning member failed. See precedents logs for more informations.',
+					'Sending message and / or banning member failed. See precedents logs for more informations.',
 				)
 		} else {
 			return interaction.reply({
-				content: "le membre n'est pas muté 😕",
+				content: "Le membre n'est pas muté 😕",
 			})
 		}
 	},

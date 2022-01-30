@@ -14,7 +14,7 @@ export default {
 		// Si l'utilisateur n'est pas dans un channel vocal
 		if (!voiceChannel)
 			return interaction.reply({
-				content: 'tu dois être dans un channel vocal pour utiliser cette commande 😕',
+				content: 'Tu dois être dans un channel vocal pour utiliser cette commande 😕',
 				ephemeral: true,
 			})
 
@@ -22,7 +22,7 @@ export default {
 		if (!client.voiceManager.has(voiceChannel.id))
 			return interaction.reply({
 				content:
-					'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+					'Tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
 				ephemeral: true,
 			})
 
@@ -30,7 +30,7 @@ export default {
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 		if (existingNoMicChannel)
 			return interaction.reply({
-				content: `il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
+				content: `Il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
 				ephemeral: true,
 			})
 
@@ -96,7 +96,7 @@ export default {
 		client.voiceManager.set(voiceChannel.id, noMicChannel)
 
 		return interaction.reply({
-			content: `ton channel a bien été créé : ${noMicChannel} 👌`,
+			content: `Ton channel a bien été créé : ${noMicChannel} 👌`,
 			ephemeral: true,
 		})
 	},

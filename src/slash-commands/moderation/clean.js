@@ -43,7 +43,7 @@ export default {
 
 		if (chosenNumber < 1 || chosenNumber > 99)
 			return interaction.reply({
-				content: "tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
+				content: "Tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
 				ephemeral: true,
 			})
 
@@ -53,7 +53,7 @@ export default {
 		)
 		if (!logsChannel)
 			return interaction.reply({
-				content: "il n'y a pas de channel pour log l'action 😕",
+				content: "Il n'y a pas de channel pour log l'action 😕",
 				ephemeral: true,
 			})
 
@@ -68,7 +68,7 @@ export default {
 		deletedMessages.delete(interaction.id)
 		if (deletedMessages.size === 0)
 			return interaction.reply({
-				content: 'aucun message supprimé 😕',
+				content: 'Aucun message supprimé 😕',
 				ephemeral: true,
 			})
 

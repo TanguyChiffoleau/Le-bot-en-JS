@@ -43,7 +43,7 @@ export default {
 		const command = client.commands.get(commandeName)
 		if (!command)
 			return interaction.reply({
-				content: `je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
+				content: `Je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
 			})
 
 		// Création de l'embed avec les options

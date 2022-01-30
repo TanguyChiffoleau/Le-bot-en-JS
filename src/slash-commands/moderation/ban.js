@@ -53,25 +53,25 @@ export default {
 
 		if (!author.permissions.has('BAN_MEMBERS'))
 			return interaction.reply({
-				content: "tu n'as pas la permission d'effectuer cette commande 😬",
+				content: "Tu n'as pas la permission d'effectuer cette commande 😬",
 			})
 
 		const member = interaction.guild.members.cache.get(user.id)
 
 		if (!member && interaction.options.getSubcommand() === 'by-user')
 			return interaction.reply({
-				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
 			})
 
 		if (user.id === interaction.user.id)
 			return interaction.reply({
-				content: 'tu ne peux pas te bannir toi-même 😬',
+				content: 'Tu ne peux pas te bannir toi-même 😬',
 			})
 
 		if (interaction.options.getSubcommand() === 'by-user')
 			if (!member.bannable)
 				return interaction.reply({
-					content: 'tu ne peux pas bannir ce membre 😬',
+					content: 'Tu ne peux pas bannir ce membre 😬',
 				})
 
 		// Envoi du message de bannissement en message privé
@@ -102,7 +102,7 @@ export default {
 				.catch(async error => {
 					if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
 						await interaction.reply({
-							content: `les messages privés sont bloqués 😕`,
+							content: `Les messages privés sont bloqués 😕`,
 						})
 
 					console.error(error)
@@ -115,7 +115,7 @@ export default {
 				.catch(async error => {
 					console.error(error)
 					await interaction.reply({
-						content: `je n'arrive pas à bannir ${member} 😕`,
+						content: `Je n'arrive pas à bannir ${member} 😕`,
 					})
 
 					return error
@@ -130,7 +130,7 @@ export default {
 			// Si au moins une erreur, throw
 			if (banAction instanceof Error || DMMessage instanceof Error)
 				throw new Error(
-					'Sending message and/or banning member failed. See precedents logs for more informations.',
+					'Sending message and / or banning member failed. See precedents logs for more informations.',
 				)
 		} else {
 			let userById = ''
@@ -144,7 +144,7 @@ export default {
 				.catch(async error => {
 					console.error(error)
 					await interaction.reply({
-						content: `je n'arrive pas à bannir \`${userById}\` 😕`,
+						content: `Je n'arrive pas à bannir \`${userById}\` 😕`,
 					})
 
 					return error
@@ -158,7 +158,7 @@ export default {
 			// Si au moins une erreur, throw
 			if (banAction instanceof Error)
 				throw new Error(
-					'Sending message and/or banning member failed. See precedents logs for more informations.',
+					'Sending message and / or banning member failed. See precedents logs for more informations.',
 				)
 		}
 	},
