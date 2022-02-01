@@ -1,4 +1,4 @@
-import { Collection } from 'discord.js'
+import { Collection, Constants } from 'discord.js'
 import {
 	modifyWrongUsernames,
 	convertDate,
@@ -19,6 +19,40 @@ export default async (message, client) => {
 	// Si le message vient d'une guild, on vérifie
 	// si le pseudo respecte bien les règles
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
+
+	// Si c'est un channel autre que blabla
+	if (
+		message.channel.id !== client.config.blablaChannelID &&
+		message.member.roles.cache.has(client.config.joinRoleID)
+	)
+		message.member.roles.remove(client.config.joinRoleID)
+
+	// Si c'est un channel no-text
+	if (
+		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
+		message.author !== client.user &&
+		message.attachments.size < 1
+	) {
+		const sentMessage = await message.channel.send(
+			`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`,
+		)
+		return Promise.all([
+			message.delete(),
+			setTimeout(
+				() =>
+					sentMessage.delete().catch(error => {
+						if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE) console.error(error)
+					}),
+				7000,
+			),
+		])
+	}
+
+	// Répondre émote si @bot
+	if (message.mentions.users.has(client.user.id)) {
+		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
+		if (pingEmoji) message.react(pingEmoji)
+	}
 
 	// Command handler
 	if (message.content.startsWith(client.config.prefix)) {

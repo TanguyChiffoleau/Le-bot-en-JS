@@ -23,15 +23,20 @@ export default () => {
 		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 		logsMessagesChannelID: process.env.LOGS_MESSAGES_CHANNEL,
 		logsBansChannelID: process.env.LOGS_BANS_CHANNEL,
+		mutedRoleID: process.env.MUTED_ROLE_ID,
+		joinRoleID: process.env.JOIN_ROLE_ID,
+		configChannelID: process.env.CONFIG_CHANNEL_ID,
+		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
+		blablaChannelID: process.env.BLABLA_CHANNEL_ID,
 		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
-		configChannelID: process.env.CONFIG_CHANNEL_ID,
-		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
 		noLogsManagerChannelIDs: process.env.NOLOGS_MANAGER_CHANNELS_IDS
 			? process.env.NOLOGS_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
-		mutedRoleID: process.env.MUTED_ROLE_ID,
+		noTextManagerChannelIDs: process.env.NOTEXT_MANAGER_CHANNELS_IDS
+			? process.env.NOTEXT_MANAGER_CHANNELS_IDS.split(/, */)
+			: [],
 	}
 	client.cache = {
 		// Messages supprimés par le bot pour ne pas
