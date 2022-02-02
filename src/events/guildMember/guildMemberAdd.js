@@ -56,7 +56,7 @@ export default async (guildMember, client) => {
 	if (!guildMember.roles.cache.has(joinRole)) guildMember.roles.add(joinRole)
 
 	await setTimeout(() => {
-		guildMember.roles.remove(joinRole)
+		guildMember.roles.remove(joinRole).catch(error => console.error(error))
 	}, 900000)
 
 	// Lecture du fichier de configuration
