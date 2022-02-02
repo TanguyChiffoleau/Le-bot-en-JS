@@ -23,9 +23,13 @@ export default {
 
 		// Vérification si l'utilisateur a bien un rôle staff
 		const user = interaction.guild.members.cache.get(interaction.user.id)
-		const userRoles = roleID => user.roles.cache.has(roleID)
 
-		if (client.config.staffManagerRolesIDs.every(userRoles) !== true)
+		let permission = 0
+		client.config.staffManagerRolesIDs.forEach(roleID => {
+			if (user.roles.cache.has(roleID)) permission += 1
+		})
+
+		if (permission === 0)
 			return interaction.reply({
 				content: "Tu n'as pas la permission d'effectuer cette commande 😬",
 			})
