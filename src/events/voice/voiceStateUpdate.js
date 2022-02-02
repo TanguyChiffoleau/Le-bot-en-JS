@@ -41,7 +41,7 @@ const handleJoin = async (newState, client) => {
 
 		// Création du channel vocal
 		const createdChannel = await newState.guild.channels.create(
-			`vocal de ${member.displayName}`,
+			`Vocal de ${member.displayName}`,
 			{
 				type: 'GUILD_VOICE',
 				parent: newState.channel.parent,

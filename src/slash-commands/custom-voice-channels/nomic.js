@@ -1,50 +1,51 @@
 import { displayNameAndID } from '../../util/util.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'nomic',
-	description:
-		"Créé un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé. N'est visible que par les membres connectés au salon vocal personnalisé",
-	aliases: [],
-	usage: {
-		arguments: null,
-		informations: 'Créé un channel textuel pour les utilisateurs sans microphone',
-		examples: [],
-	},
-	needArguments: false,
-	guildOnly: true,
+	data: new SlashCommandBuilder()
+		.setName('nomic')
+		.setDescription(
+			'Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
+		),
 	requirePermissions: [],
-	execute: async (client, message) => {
-		const voiceChannel = message.member.voice.channel
+	interaction: async (interaction, client) => {
+		const voiceChannel = interaction.member.voice.channel
 
 		// Si l'utilisateur n'est pas dans un channel vocal
 		if (!voiceChannel)
-			return message.reply({
-				content: 'tu dois être dans un channel vocal pour utiliser cette commande 😕',
+			return interaction.reply({
+				content: 'Tu dois être dans un channel vocal pour utiliser cette commande 😕',
+				ephemeral: true,
 			})
 
 		// Si l'utilisateur n'est pas dans un channel vocal personnalisé
 		if (!client.voiceManager.has(voiceChannel.id))
-			return message.reply({
+			return interaction.reply({
 				content:
-					'tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+					'Tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+				ephemeral: true,
 			})
 
 		// Check si il y a déjà un channel no-mic
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 		if (existingNoMicChannel)
-			return message.reply({
-				content: `il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
+			return interaction.reply({
+				content: `Il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
+				ephemeral: true,
 			})
 
 		// Crée le channel no mic
-		const noMicChannel = await message.guild.channels.create(`no mic ${voiceChannel.name}`, {
-			type: 'text',
-			topic: `Channel temporaire créé pour ${displayNameAndID(
-				message.member,
-				message.author,
-			)})`,
-			parent: voiceChannel.parent,
-		})
+		const noMicChannel = await interaction.guild.channels.create(
+			`no mic ${voiceChannel.name}`,
+			{
+				type: 'text',
+				topic: `Channel temporaire créé pour ${displayNameAndID(
+					interaction.member,
+					interaction.user,
+				)}`,
+				parent: voiceChannel.parent,
+			},
+		)
 
 		// Suppression des permissions existantes sauf
 		// pour les rôles qui peuvent supprimer les messages (modos)
@@ -73,7 +74,7 @@ export default {
 				}),
 			),
 			// Setup les permissions (pas d'accès) pour le role everyone
-			noMicChannel.permissionOverwrites.edit(message.guild.id, {
+			noMicChannel.permissionOverwrites.edit(interaction.guild.id, {
 				CREATE_INSTANT_INVITE: false,
 				MANAGE_CHANNELS: false,
 				MANAGE_ROLES: false,
@@ -94,6 +95,9 @@ export default {
 		// Ajout du channel dans la map
 		client.voiceManager.set(voiceChannel.id, noMicChannel)
 
-		return message.reply({ content: `ton channel a bien été créé : ${noMicChannel} 👌` })
+		return interaction.reply({
+			content: `Ton channel a bien été créé : ${noMicChannel} 👌`,
+			ephemeral: true,
+		})
 	},
 }
