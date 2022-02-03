@@ -25,7 +25,7 @@ export default async (message, client) => {
 		message.channel.id !== client.config.blablaChannelID &&
 		message.member.roles.cache.has(client.config.joinRoleID)
 	)
-		message.member.roles.remove(client.config.joinRoleID)
+		message.member.roles.remove(client.config.joinRoleID).catch(error => console.error(error))
 
 	// Si c'est un channel no-text
 	if (
@@ -195,7 +195,7 @@ export default async (message, client) => {
 			}
 
 			if (validMessage.editedAt)
-				embed.footer.text += `\net édité le ${convertDate(validMessage.editedAt)}`
+				embed.footer.text += `\nÉdité le ${convertDate(validMessage.editedAt)}`
 
 			if (message.author !== validMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
