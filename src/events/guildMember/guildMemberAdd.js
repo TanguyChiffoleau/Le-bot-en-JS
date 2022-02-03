@@ -1,6 +1,7 @@
 import { convertDateForDiscord, diffDate, modifyWrongUsernames } from '../../util/util.js'
 import { readFile } from 'fs/promises'
 import { Constants, Message, GuildMember, MessageEmbed } from 'discord.js'
+import ms from 'ms'
 
 const removeAddedReactions = reactions => Promise.all(reactions.map(reaction => reaction.remove()))
 
@@ -57,7 +58,7 @@ export default async (guildMember, client) => {
 
 	await setTimeout(() => {
 		guildMember.roles.remove(joinRole).catch(error => console.error(error))
-	}, 900000)
+	}, ms(client.config.timeoutJoin))
 
 	// Lecture du fichier de configuration
 	const emotesConfig = new Map(JSON.parse(await readFile('./config/banEmotesAtJoin.json')))
