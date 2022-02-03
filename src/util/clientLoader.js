@@ -23,11 +23,14 @@ export default () => {
 		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 		logsMessagesChannelID: process.env.LOGS_MESSAGES_CHANNEL,
 		logsBansChannelID: process.env.LOGS_BANS_CHANNEL,
+		joinRoleID: process.env.JOIN_ROLE_ID,
+		configChannelID: process.env.CONFIG_CHANNEL_ID,
+		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
+		blablaChannelID: process.env.BLABLA_CHANNEL_ID,
+		timeoutJoin: process.env.TIMEOUT_JOIN,
 		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
-		configChannelID: process.env.CONFIG_CHANNEL_ID,
-		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
 		noLogsManagerChannelIDs: process.env.NOLOGS_MANAGER_CHANNELS_IDS
 			? process.env.NOLOGS_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],

@@ -194,32 +194,39 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > ```env
 > DISCORD_TOKEN="DISCORD-SECRET-BOT-TOKEN"
 > COMMANDS_PREFIX="!"
+> TIMEZONE="Europe/Paris"
 > GUILD_ID="123456789012345678"
 > LEAVE_JOIN_CHANNEL_ID="123456789012345678"
 > REPORT_CHANNEL="123456789012345678"
 > LOGS_MESSAGES_CHANNEL="123456789012345678"
 > LOGS_BANS_CHANNEL="123456789012345678"
-> VOICE_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
-> TIMEZONE="Europe/Paris"
+> JOIN_ROLE_ID="123456789012345678"
+> TIMEOUT_JOIN="30m"
 > CONFIG_CHANNEL_ID="123456789012345678"
 > UPGRADE_CHANNEL_ID="123456789012345678"
-> NOLOGS_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
-> NOTEXT_MANAGER_CHANNELS_IDS="123456789012345678", "123456789012345678", "123456789012345678"
+> BLABLA_CHANNEL_ID="123456789012345678"
+> VOICE_MANAGER_CHANNELS_IDS=123456789012345678, 123456789012345678, 123456789012345678
+> NOLOGS_MANAGER_CHANNELS_IDS=123456789012345678, 123456789012345678, 123456789012345678
+> NOTEXT_MANAGER_CHANNELS_IDS=123456789012345678, 123456789012345678, 123456789012345678
+
 > ```
 
 | Variable                    | Description                                                                                                                                                                                                |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | DISCORD_TOKEN               | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)                                                                                           |
 | COMMANDS_PREFIX             | Préfixe utilisé pour intéragir avec le bot                                                                                                                                                                 |
+| TIMEZONE                    | Fuseau horaire utilisé pour le formatage des dates. Variable optionnelle, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
 | GUILD_ID                    | ID du serveur (= guild) sur lequel le bot est utilisé                                                                                                                                                      |
 | LEAVE_JOIN_CHANNEL_ID       | ID du channel dans lequel seront postés les messages de départ/arrivée                                                                                                                                     |
 | REPORT_CHANNEL              | ID du channel dans lequel seront postés les messages de signalement                                                                                                                                        |
 | LOGS_MESSAGES_CHANNEL       | ID du channel dans lequel seront postés les logs de messages                                                                                                                                               |
 | LOGS_BANS_CHANNEL           | ID du channel dans lequel seront postés les logs de bans                                                                                                                                                   |
-| VOICE_MANAGER_CHANNELS_IDS  | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                       |
-| TIMEZONE                    | Fuseau horaire utilisé pour le formatage des dates. Variable optionnelle, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
+| JOIN_ROLE_ID                | ID du rôle d'arrivée sur le serveur                                                                                                                                                                        |
+| TIMEOUT_JOIN                | Délai de retrait du rôle d'arrivée. Format respectant la librairie [ms npmjs](https://www.npmjs.com/package/ms)                                                                                            |
 | CONFIG_CHANNEL_ID           | ID du channel utilisé pour diriger les formulaires de config en DM vers le bon channel                                                                                                                     |
 | UPGRADE_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                     |
+| BLABLA_CHANNEL_ID           | ID du channel de chat général                                                                                                                                                                              |
+| VOICE_MANAGER_CHANNELS_IDS  | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                       |
 | NOLOGS_MANAGER_CHANNELS_IDS | ID des channels dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                  |
 | NOTEXT_MANAGER_CHANNELS_IDS | ID des channels dont les messages doivent comporter au moins un attachement (vidéo, photo...) pour ne pas êtres supprimés. Les ID doivent être séparés par une virgule                                     |
 
