@@ -20,13 +20,6 @@ export default async (message, client) => {
 	// si le pseudo respecte bien les règles
 	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
 
-	// Si c'est un channel autre que blabla
-	if (
-		message.channel.id !== client.config.blablaChannelID &&
-		message.member.roles.cache.has(client.config.joinRoleID)
-	)
-		message.member.roles.remove(client.config.joinRoleID)
-
 	// Si c'est un channel no-text
 	if (
 		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
