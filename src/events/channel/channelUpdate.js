@@ -17,5 +17,5 @@ export default (oldChannel, newChannel, client) => {
 	if (!noMicChannel) return
 
 	// Rename du channel avec no mic + le nouveau nom du vocal
-	return noMicChannel.edit({ name: `no mic ${voiceChannelName}` })
+	return noMicChannel.edit({ name: `No Mic ${voiceChannelName}` })
 }
