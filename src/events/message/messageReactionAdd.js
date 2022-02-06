@@ -1,4 +1,6 @@
 import { convertDateForDiscord } from '../../util/util.js'
+import { Constants } from 'discord.js'
+import ms from 'ms'
 
 export default async (messageReaction, user, client) => {
 	const { message, emoji } = messageReaction
@@ -17,8 +19,23 @@ export default async (messageReaction, user, client) => {
 	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
 		const emojiRoleMap = client.reactionRoleMap.get(message.id)
-		const roleID = emojiRoleMap[emoji.id || emoji.name]
+		const resolvedEmoji = emoji.id || emoji.name
+		const { id: roleID, giveJoinRole = false } = emojiRoleMap[resolvedEmoji]
 		const guildMember = await message.guild.members.fetch(user)
+
+		// Système rôle arrivant
+		if (giveJoinRole) {
+			const joinRole = client.config.joinRoleID
+			await guildMember.roles.add(joinRole)
+
+			setTimeout(
+				() =>
+					guildMember.roles.remove(joinRole).catch(error => {
+						if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
+					}),
+				ms(client.config.timeoutJoin),
+			)
+		}
 
 		return guildMember.roles.add(roleID)
 	}

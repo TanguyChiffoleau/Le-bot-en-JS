@@ -253,46 +253,39 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > 			{
 > 				// ID du message
 > 				"messageID": "123456789123456789",
-> 				// Émoji unicode en clé et ID du rôle en valeur
+> 				// Émoji unicode en clé, objet avec "id" en valeur
 > 				"emojiRoleMap": {
-> 					"💸": "123456789123456789",
-> 					"🔧": "123456789123456789"
+> 					"💸": { "id": "123456789123456789" },
+> 					"🔧": { "id": "123456789123456789" }
 > 				}
 > 			},
 > 			// Message n°2
 > 			{
 > 				// ID du message
 > 				"messageID": "123456789123456789",
-> 				// Émoji unicode en clé et ID du rôle en valeur
+> 				// Émoji unicode en clé, objet avec "id" et giveJoinRole en valeur
 > 				"emojiRoleMap": {
-> 					"🥵": "123456789123456789",
-> 					"✅": "123456789123456789"
+> 					"🥵": { "id": "123456789123456789" },
+> 					"✅": { "id": "123456789123456789", "giveJoinRole": true }
 > 				}
 > 			}
 > 		]
 > 	},
 > 	{
-> 		// Channel n°2
 > 		"channelID": "123456789123456789",
 > 		"messageArray": [
-> 			// Message n°1
 > 			{
-> 				// ID du message
 > 				"messageID": "123456789123456789",
-> 				// ID de l'émoji custom en clé et ID du rôle en valeur
 > 				"emojiRoleMap": {
-> 					"123456789123456789": "123456789123456789",
-> 					"987654321987654321": "123456789123456789"
+> 					"123456789123456789": { "id": "123456789123456789" },
+> 					"987654321987654321": { "id": "123456789123456789" }
 > 				}
 > 			},
-> 			// Message n°2
 > 			{
-> 				// ID du message
 > 				"messageID": "123456789123456789",
-> 				// ID de l'émoji custom en clé et ID du rôle en valeur
 > 				"emojiRoleMap": {
-> 					"123456789123456789": "123456789123456789",
-> 					"987654321987654321": "123456789123456789"
+> 					"123456789123456789": { "id": "123456789123456789" },
+> 					"987654321987654321": { "id": "123456789123456789", "giveJoinRole": true }
 > 				}
 > 			}
 > 		]

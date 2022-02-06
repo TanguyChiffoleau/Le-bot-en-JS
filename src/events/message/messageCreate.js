@@ -17,15 +17,19 @@ export default async (message, client) => {
 	if (message.partial) await message.fetch()
 
 	// Si le message vient d'une guild, on vérifie
-	// si le pseudo respecte bien les règles
-	if (message.member) modifyWrongUsernames(message.member).catch(() => null)
+	if (message.member) {
+		// si le pseudo respecte bien les règles
+		modifyWrongUsernames(message.member).catch(() => null)
 
-	// Si c'est un channel autre que blabla
-	if (
-		message.channel.id !== client.config.blablaChannelID &&
-		message.member.roles.cache.has(client.config.joinRoleID)
-	)
-		message.member.roles.remove(client.config.joinRoleID).catch(error => console.error(error))
+		// Si c'est un channel autre que blabla
+		if (
+			message.channel.id !== client.config.blablaChannelID &&
+			message.member.roles.cache.has(client.config.joinRoleID)
+		)
+			message.member.roles.remove(client.config.joinRoleID).catch(error => {
+				if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
+			})
+	}
 
 	// Si c'est un channel no-text
 	if (

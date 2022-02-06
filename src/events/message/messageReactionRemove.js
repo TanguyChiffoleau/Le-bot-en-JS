@@ -15,8 +15,15 @@ export default async (messageReaction, user, client) => {
 	// Partie système de réaction/role
 	if (client.reactionRoleMap.has(message.id)) {
 		const emojiRoleMap = client.reactionRoleMap.get(message.id)
-		const roleID = emojiRoleMap[emoji.id || emoji.name]
+		const resolvedEmoji = emoji.id || emoji.name
+		const { id: roleID, giveJoinRole = false } = emojiRoleMap[resolvedEmoji]
 		const guildMember = await message.guild.members.fetch(user)
+
+		// Système rôle arrivant
+		if (giveJoinRole) {
+			const joinRole = client.config.joinRoleID
+			guildMember.roles.remove(joinRole)
+		}
 
 		return guildMember.roles.remove(roleID)
 	}
