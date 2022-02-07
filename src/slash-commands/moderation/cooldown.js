@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable default-case */
 import { convertSecondsToString } from '../../util/util.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -7,12 +9,7 @@ export default {
 		.setName('cooldown')
 		.setDescription('Gère le mode lent sur le channel')
 		.addSubcommand(subcommand =>
-			subcommand
-				.setName('clear')
-				.setDescription('Supprime le mode lent sur le channel')
-				.addBooleanOption(option =>
-					option.setName('silent').setDescription('Exécuter la commande silencieusement'),
-				),
+			subcommand.setName('clear').setDescription('Supprime le mode lent sur le channel'),
 		)
 		.addSubcommand(subcommand =>
 			subcommand
@@ -26,69 +23,64 @@ export default {
 				)
 				.addIntegerOption(option =>
 					option.setName('durée').setDescription('Durée du slowmode (en secondes)'),
-				)
-				.addBooleanOption(option =>
-					option.setName('silent').setDescription('Exécuter la commande silencieusement'),
 				),
 		),
 	requirePermissions: ['MANAGE_MESSAGES'],
 	interaction: async interaction => {
-		const ephemeral = interaction.options.getBoolean('silent')
-		if (interaction.options.getSubcommand() === 'set') {
-			const delai = interaction.options.getInteger('délai')
-			const duree = interaction.options.getInteger('durée')
+		switch (interaction.options.getSubcommand()) {
+			case 'set':
+				const delai = interaction.options.getInteger('délai')
+				const duree = interaction.options.getInteger('durée')
 
-			// On ajoute le cooldown
-			// Erreur si le channel est déjà en slowmode
-			if (interaction.channel.rateLimitPerUser > 0)
-				return interaction.reply({
-					content: 'Ce channel est déjà en slowmode 😕',
-					ephemeral: ephemeral,
-				})
+				// On ajoute le cooldown
+				// Erreur si le channel est déjà en slowmode
+				if (interaction.channel.rateLimitPerUser > 0)
+					return interaction.reply({
+						content: 'Ce channel est déjà en slowmode 😕',
+						ephemeral: true,
+					})
 
-			await interaction.channel.setRateLimitPerUser(delai)
+				await interaction.channel.setRateLimitPerUser(delai)
 
-			// Si il n'y pas de temps du slowmode,
-			// le slowmode reste jusqu'au prochain clear
-			if (!duree)
-				return interaction.reply({
+				// Si il n'y pas de temps du slowmode,
+				// le slowmode reste jusqu'au prochain clear
+				if (!duree)
+					return interaction.reply({
+						content: `Channel en slowmode de ${convertSecondsToString(
+							delai,
+						)} pour une durée indéfinie 👌`,
+					})
+
+				// Sinon on donne le temps du slowmode
+				await interaction.reply({
 					content: `Channel en slowmode de ${convertSecondsToString(
 						delai,
-					)} pour une durée indéfinie 👌`,
-					ephemeral: ephemeral,
+					)} pendant ${convertSecondsToString(duree)} 👌`,
 				})
 
-			// Sinon on donne le temps du slowmode
-			await interaction.reply({
-				content: `Channel en slowmode de ${convertSecondsToString(
-					delai,
-				)} pendant ${convertSecondsToString(duree)} 👌`,
-			})
+				// on attend le montant défini
+				await wait(duree * 1000)
+				// Si le channel est encore en slowmode
+				if (interaction.channel.rateLimitPerUser > 0) {
+					// On le clear et on envoie un message de confirmation
+					await interaction.channel.setRateLimitPerUser(0)
+					return interaction.channel.send({
+						content: 'Slowmode désactivé 👌',
+					})
+				}
+				break
+			case 'clear':
+				if (interaction.channel.rateLimitPerUser > 0) {
+					await interaction.channel.setRateLimitPerUser(0)
+					return interaction.reply({
+						content: 'Slowmode désactivé 👌',
+					})
+				}
 
-			// on attend le montant défini
-			await wait(duree * 1000)
-			// Si le channel est encore en slowmode
-			if (interaction.channel.rateLimitPerUser > 0) {
-				// On le clear et on envoie un message de confirmation
-				await interaction.channel.setRateLimitPerUser(0)
-				return interaction.followUp({
-					content: 'Slowmode désactivé 👌',
-					ephemeral: ephemeral,
-				})
-			}
-		} else if (interaction.options.getSubcommand() === 'clear') {
-			if (interaction.channel.rateLimitPerUser > 0) {
-				await interaction.channel.setRateLimitPerUser(0)
 				return interaction.reply({
-					content: 'Slowmode désactivé 👌',
-					ephemeral: ephemeral,
+					content: "Ce channel n'est pas en slowmode 😕",
+					ephemeral: true,
 				})
-			}
-
-			return interaction.reply({
-				content: "Ce channel n'est pas en slowmode 😕",
-				ephemeral: ephemeral,
-			})
 		}
 	},
 }
