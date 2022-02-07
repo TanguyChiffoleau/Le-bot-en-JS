@@ -1,4 +1,4 @@
-import { Collection, Constants } from 'discord.js'
+import { Constants } from 'discord.js'
 import {
 	modifyWrongUsernames,
 	convertDate,
@@ -58,66 +58,8 @@ export default async (message, client) => {
 		if (pingEmoji) message.react(pingEmoji)
 	}
 
-	// Command handler
-	if (message.content.startsWith(client.config.prefix)) {
-		const args = message.content.slice(client.config.prefix.length).split(/ +/)
-		const commandName = args.shift().toLowerCase()
-		const command =
-			client.commands.get(commandName) ||
-			client.commands.find(({ aliases }) => aliases.includes(commandName))
-
-		if (!command) return
-
-		// Partie cooldown
-		if (!client.cooldowns.has(commandName)) client.cooldowns.set(command.name, new Collection())
-		const now = Date.now()
-		const timestamps = client.cooldowns.get(command.name)
-		const cooldownAmount = (command.cooldown || 4) * 1000
-		if (timestamps.has(message.author.id)) {
-			const expirationTime = timestamps.get(message.author.id) + cooldownAmount
-			if (now < expirationTime) {
-				const timeLeft = expirationTime - now
-				const sentMessage = await message.reply({
-					content: `Merci d'attendre ${(timeLeft / 1000).toFixed(
-						1,
-					)} seconde(s) de plus avant de réutiliser la commande \`${command.name}\`.`,
-				})
-
-				// Suppression du message
-				return client.cache.deleteMessagesID.add(sentMessage.id)
-			}
-		}
-		timestamps.set(message.author.id, now)
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
-
-		// Rejets de la commandes
-		if (command.needArguments && !args.length)
-			return message.reply({ content: "Tu n'as pas donné d'argument(s) 😕" })
-
-		if (command.guildOnly && !message.guild)
-			return message.reply({
-				content: 'Je ne peux pas exécuter cette commande dans les messages privés 😕',
-			})
-
-		if (
-			command.requirePermissions.length > 0 &&
-			!message.member.permissionsIn(message.channel).has(command.requirePermissions)
-		)
-			return message.reply({
-				content: "Tu n'as pas les permissions d'effectuer cette commande 😕",
-			})
-
-		// Exécution de la commande
-		try {
-			await message.channel.sendTyping()
-			return command.execute(client, message, args)
-		} catch (error) {
-			message.reply({ content: 'Il y a eu une erreur en exécutant la commande 😬' })
-			console.error(error)
-		}
-
-		// Partie citation
-	} else if (message.guild) {
+	// Partie citation
+	if (message.guild) {
 		// Regex pour match les liens discord
 		const regexGlobal =
 			/https:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/g
