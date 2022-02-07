@@ -80,9 +80,16 @@ export default {
 			return sentMessage.react('❌')
 		} else if (interaction.options.getSubcommand() === 'edit') {
 			const messageId = interaction.options.getString('id')
-			await interaction.channel.messages.fetch(messageId).then(
-				msg =>
-					msg.edit({
+
+			return interaction.channel.messages.fetch(messageId).then(msg => {
+				if (msg.interaction.commandName !== 'vote')
+					return interaction.reply({
+						content: "Le message initial n'est pas un vote 😕",
+						ephemeral: true,
+					})
+
+				return msg
+					.edit({
 						embeds: [
 							{
 								color: '00FF00',
@@ -100,13 +107,14 @@ export default {
 							},
 						],
 						fetchReply: true,
-					}),
-
-				await interaction.reply({
-					content: 'Proposition de vote éditée 👌',
-					ephemeral: true,
-				}),
-			)
+					})
+					.then(
+						interaction.reply({
+							content: 'Proposition de vote éditée 👌',
+							ephemeral: true,
+						}),
+					)
+			})
 		}
 	},
 }
