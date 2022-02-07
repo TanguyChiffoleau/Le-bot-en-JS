@@ -14,6 +14,7 @@ export default {
 		if (!member)
 			return interaction.reply({
 				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
+				ephemeral: true,
 			})
 
 		// Création de l'embed

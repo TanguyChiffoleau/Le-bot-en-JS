@@ -44,6 +44,7 @@ export default {
 		if (!command)
 			return interaction.reply({
 				content: `Je n'ai pas trouvé la commande \`${commandeName}\` 😕`,
+				ephemeral: true,
 			})
 
 		// Création de l'embed avec les options

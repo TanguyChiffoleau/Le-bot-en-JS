@@ -20,6 +20,7 @@ export default {
 		if (!member)
 			return interaction.reply({
 				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
+				ephemeral: true,
 			})
 
 		const embed = {
@@ -54,10 +55,12 @@ export default {
 				return interaction.reply({
 					content:
 						"Je n'ai pas réussi à envoyer le message privé, tu m'as sûrement bloqué / désactivé tes messages provenant du serveur 😬",
+					ephemeral: true,
 				})
 			return interaction.reply({
 				content:
 					"Je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué / désactivé les messages provenant du serveur 😬",
+				ephemeral: true,
 			})
 		}
 
