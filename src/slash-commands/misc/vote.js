@@ -71,7 +71,8 @@ export default {
 				if (thread)
 					await interaction.channel.threads.create({
 						name: `Vote de ${interaction.member.displayName}`,
-						autoArchiveDuration: 1440,
+						// Archivage après 24H
+						autoArchiveDuration: 24 * 60,
 						reason: proposition,
 					})
 
