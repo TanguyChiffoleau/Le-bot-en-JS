@@ -49,21 +49,20 @@ export default {
 			await member.send({ embeds: [embed] })
 			await member.send(config)
 		} catch (error) {
-			if (error.code !== Constants.APIErrors.CANNOT_MESSAGE_USER) throw error
-
-			if (member === interaction.user)
-				interaction.reply({
-					content:
-						"Je n'ai pas réussi à envoyer le message privé, tu m'as sûrement bloqué / désactivé tes messages provenant du serveur 😬",
-				})
-			else
-				interaction.reply({
-					content:
-						"Je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué / désactivé les messages provenant du serveur 😬",
-				})
+			if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER)
+				if (member.user === interaction.user)
+					return interaction.reply({
+						content:
+							"Je n'ai pas réussi à envoyer le message privé, tu m'as sûrement bloqué / désactivé tes messages provenant du serveur 😬",
+					})
+				else
+					return interaction.reply({
+						content:
+							"Je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué / désactivé les messages provenant du serveur 😬",
+					})
 		}
 
-		if (member.user.id === interaction.user.id)
+		if (member.user === interaction.user)
 			return interaction.reply({
 				content: 'Formulaire envoyé en message privé 👌',
 				ephemeral: true,
