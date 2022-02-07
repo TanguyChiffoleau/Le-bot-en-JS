@@ -1,5 +1,4 @@
 import prepareClient from './util/clientLoader.js'
-import commandsLoader from './commands/loader.js'
 import slashCommandsLoader from './slash-commands/loader.js'
 import eventsLoader from './events/loader.js'
 import { closeGracefully } from './util/util.js'
@@ -19,8 +18,6 @@ const run = async () => {
 	await eventsLoader(client)
 
 	await client.login(process.env.DISCORD_TOKEN)
-
-	await commandsLoader(client)
 
 	await slashCommandsLoader(client)
 
