@@ -102,7 +102,7 @@ export default {
 								footer: {
 									text: `Vote posté le ${convertDate(
 										msg.createdAt,
-									)}\net édité le ${convertDate(new Date())}`,
+									)}\nÉdité le ${convertDate(new Date())}`,
 								},
 							},
 						],
