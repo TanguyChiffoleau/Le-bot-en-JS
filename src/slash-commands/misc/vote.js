@@ -118,6 +118,12 @@ export default {
 						ephemeral: true,
 					})
 
+				if (message.interaction.user !== interaction.member.user)
+					return interaction.reply({
+						content: "Vous n'avez pas initié ce vote 😕",
+						ephemeral: true,
+					})
+
 				// Modification du message
 				await message.edit({
 					embeds: [
