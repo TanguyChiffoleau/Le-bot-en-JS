@@ -1,6 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { Constants } from 'discord.js'
 import { convertDate } from '../../util/util.js'
 
 export default {
@@ -82,9 +83,29 @@ export default {
 				await sentMessage.react('⌛')
 				return sentMessage.react('❌')
 			case 'edit':
-				const message = await interaction.channel.messages.fetch(
-					interaction.options.getString('id'),
-				)
+				const receivedID = interaction.options.getString('id')
+				const matchID = receivedID.match(/^(\d{17,19})$/)
+				if (!matchID)
+					return interaction.reply({
+						content: "Tu ne m'as pas donné un ID valide 😕",
+						ephemeral: true,
+					})
+
+				const message = await interaction.channel.messages
+					.fetch(matchID[0])
+					.catch(error => {
+						if (error.code === Constants.APIErrors.UNKNOWN_MESSAGE) {
+							interaction.reply({
+								content: "Je n'ai pas trouvé ce message dans ce channel 😕",
+								ephemeral: true,
+							})
+
+							return error
+						}
+
+						throw error
+					})
+				if (message instanceof Error) return
 
 				if (!message.interaction || message.interaction.commandName !== 'vote')
 					return interaction.reply({
