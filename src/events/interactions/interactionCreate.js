@@ -12,6 +12,7 @@ export default (interaction, client) => {
 		)
 			return interaction.reply({
 				content: "Tu n'as pas les permissions d'effectuer cette commande 😕",
+				ephemeral: true,
 			})
 
 		return command.interaction(interaction, client)
