@@ -8,7 +8,7 @@ export default (interaction, client) => {
 
 		if (
 			command.requirePermissions.length > 0 &&
-			interaction.member.permissionsIn(interaction.channel).has(command.requirePermissions)
+			!interaction.member.permissionsIn(interaction.channel).has(command.requirePermissions)
 		)
 			return interaction.reply({
 				content: "Tu n'as pas les permissions d'effectuer cette commande 😕",
