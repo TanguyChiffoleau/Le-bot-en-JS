@@ -46,16 +46,16 @@ export default {
 				// le slowmode reste jusqu'au prochain clear
 				if (!duree)
 					return interaction.reply({
-						content: `Channel en slowmode de ${convertSecondsToString(
+						content: `Slowmode activé 👌\nDélai entre chaque message : ${convertSecondsToString(
 							delai,
-						)} pour une durée indéfinie 👌`,
+						)}\nDurée : indéfinie`,
 					})
 
 				// Sinon on donne le temps du slowmode
 				await interaction.reply({
-					content: `Channel en slowmode de ${convertSecondsToString(
+					content: `Slowmode activé 👌\nDélai entre chaque message : ${convertSecondsToString(
 						delai,
-					)} pendant ${convertSecondsToString(duree)} 👌`,
+					)}\nDurée : ${convertSecondsToString(duree)}`,
 				})
 
 				// on attend le montant défini
