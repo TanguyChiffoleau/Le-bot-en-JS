@@ -36,7 +36,7 @@ export default {
 
 		// Crée le channel no mic
 		const noMicChannel = await interaction.guild.channels.create(
-			`no mic ${voiceChannel.name}`,
+			`No-mic ${voiceChannel.name}`,
 			{
 				type: 'text',
 				topic: `Channel temporaire créé pour ${displayNameAndID(

@@ -179,6 +179,6 @@ export default async (guildMember, client) => {
 	// Si au moins une erreur, throw
 	if (banAction instanceof Error || DMMessage instanceof Error)
 		throw new Error(
-			'Sending message and/or banning member failed. See precedents logs for more informations.',
+			"L'envoi d'un message et / ou le bannissement d'un membre a échoué. Voir les logs précédents pour plus d'informations.",
 		)
 }

@@ -53,7 +53,7 @@ export default async (ban, client) => {
 		}
 	else
 		logEmbed.footer = {
-			text: `Membre débanni`,
+			text: 'Membre débanni',
 		}
 
 	return logsChannel.send({ embeds: [logEmbed] })

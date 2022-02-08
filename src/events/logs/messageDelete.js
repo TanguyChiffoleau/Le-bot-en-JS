@@ -77,7 +77,7 @@ export default async (message, client) => {
 	} else {
 		logEmbed.color = '00FF00'
 		logEmbed.footer = {
-			text: `Message supprimé par l'auteur du message`,
+			text: "Message supprimé par l'auteur du message",
 		}
 	}
 

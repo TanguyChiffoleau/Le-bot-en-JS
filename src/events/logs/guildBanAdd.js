@@ -57,7 +57,7 @@ export default async (ban, client) => {
 		}
 	else
 		logEmbed.footer = {
-			text: `Membre banni`,
+			text: 'Membre banni',
 		}
 
 	// Raison du bannissement

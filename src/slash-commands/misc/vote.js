@@ -120,7 +120,7 @@ export default {
 
 				if (message.interaction.user !== interaction.member.user)
 					return interaction.reply({
-						content: "Vous n'avez pas initié ce vote 😕",
+						content: "Tu n'as pas initié ce vote 😕",
 						ephemeral: true,
 					})
 
@@ -135,19 +135,19 @@ export default {
 									dynamic: true,
 								}),
 							},
-							title: 'Nouveau vote (édité)',
+							title: 'Nouveau vote (modifié)',
 							description: `\`\`\`${proposition}\`\`\``,
 							footer: {
 								text: `Vote posté le ${convertDate(
 									message.createdAt,
-								)}\nÉdité le ${convertDate(new Date())}`,
+								)}\nModifié le ${convertDate(new Date())}`,
 							},
 						},
 					],
 				})
 
 				return interaction.reply({
-					content: 'Proposition de vote éditée 👌',
+					content: 'Proposition de vote modifiée 👌',
 					ephemeral: true,
 				})
 		}

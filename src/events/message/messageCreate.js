@@ -38,7 +38,7 @@ export default async (message, client) => {
 		message.attachments.size < 1
 	) {
 		const sentMessage = await message.channel.send(
-			`<@${message.author.id}>, tu dois mettre une image/vidéo 😕`,
+			`<@${message.author.id}>, tu dois mettre une image / vidéo 😕`,
 		)
 		return Promise.all([
 			message.delete(),
@@ -141,7 +141,7 @@ export default async (message, client) => {
 			}
 
 			if (validMessage.editedAt)
-				embed.footer.text += `\nÉdité le ${convertDate(validMessage.editedAt)}`
+				embed.footer.text += `\nModifié le ${convertDate(validMessage.editedAt)}`
 
 			if (message.author !== validMessage.author) {
 				embed.footer.icon_url = message.author.displayAvatarURL({ dynamic: true })
