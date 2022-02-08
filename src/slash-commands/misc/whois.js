@@ -1,42 +1,20 @@
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
-
-const getMember = (message, mentionOrID) => {
-	if (!mentionOrID) return message.member
-
-	const matches = mentionOrID.match(/^<@!?(\d{17,19})>$|^(\d{17,19})$/)
-	if (!matches) return
-
-	const targetID = matches[1] || matches[2]
-	return message.guild.members.cache.get(targetID)
-}
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
-	name: 'whois',
-	description: 'Donne des infos sur soit ou un autre utilisateur',
-	aliases: [],
-	usage: {
-		arguments: '[id|mention]',
-		informations: null,
-		examples: [
-			{
-				command: 'whois 208328464216883200',
-				explaination: null,
-			},
-			{
-				command: 'whois @Tanguy#3760',
-				explaination: null,
-			},
-		],
-	},
-	needArguments: false,
-	guildOnly: true,
+	data: new SlashCommandBuilder()
+		.setName('whois')
+		.setDescription('Donne des infos sur soit ou un autre utilisateur')
+		.addUserOption(option => option.setName('membre').setDescription('Membre')),
 	requirePermissions: [],
-	execute: (client, message, args) => {
-		// Acquisition du membre avec la mention/l'ID
-		const member = getMember(message, args[0])
+	interaction: interaction => {
+		// Acquisition du membre
+		const user = interaction.options.getUser('membre') || interaction.user
+		const member = interaction.guild.members.cache.get(user.id)
 		if (!member)
-			return message.reply({
-				content: "je n'ai pas trouvé cet utilisateur, vérifiez la mention ou l'ID 😕",
+			return interaction.reply({
+				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
+				ephemeral: true,
 			})
 
 		// Création de l'embed
@@ -88,6 +66,6 @@ export default {
 				inline: true,
 			})
 
-		return message.channel.send({ embeds: [embed] })
+		return interaction.reply({ embeds: [embed] })
 	},
 }
