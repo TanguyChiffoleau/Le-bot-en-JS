@@ -58,6 +58,7 @@ export default {
 						"Je n'ai pas réussi à envoyer le message privé, tu m'as sûrement bloqué / désactivé tes messages provenant du serveur 😬",
 					ephemeral: true,
 				})
+
 			return interaction.reply({
 				content:
 					"Je n'ai pas réussi à envoyer le DM, l'utilisateur mentionné m'a sûrement bloqué / désactivé les messages provenant du serveur 😬",
@@ -70,6 +71,7 @@ export default {
 				content: 'Formulaire envoyé en message privé 👌',
 				ephemeral: true,
 			})
+
 		return interaction.reply({
 			content: `Formulaire envoyé en message privé à ${member} 👌`,
 		})
