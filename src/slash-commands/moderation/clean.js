@@ -73,7 +73,7 @@ export default {
 			})
 
 		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
-		const { size: nbDeletedMessages } = deletedMessages
+		const nbDeletedMessages = deletedMessages.size
 		await interaction.reply({
 			content: `${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
 				'supprimé',
