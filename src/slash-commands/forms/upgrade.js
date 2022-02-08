@@ -23,6 +23,7 @@ export default {
 				ephemeral: true,
 			})
 
+		// Création de l'embed
 		const embed = {
 			color: '#C27C0E',
 			title: 'Formulaire upgrade',
@@ -45,6 +46,7 @@ export default {
 			],
 		}
 
+		// Envoi du formulaire (en deux parties)
 		try {
 			await member.send({ embeds: [embed] })
 			await member.send(upgrade)

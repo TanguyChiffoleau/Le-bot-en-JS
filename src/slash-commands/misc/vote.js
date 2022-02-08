@@ -48,6 +48,7 @@ export default {
 		const thread = interaction.options.getBoolean('thread')
 
 		switch (interaction.options.getSubcommand()) {
+			// Nouveau vote
 			case 'create':
 				// Envoie du message de vote
 				const sentMessage = await interaction.reply({
@@ -82,6 +83,8 @@ export default {
 				await sentMessage.react('🤷')
 				await sentMessage.react('⌛')
 				return sentMessage.react('❌')
+
+			// Modification d'un vote
 			case 'edit':
 				const receivedID = interaction.options.getString('id')
 				const matchID = receivedID.match(/^(\d{17,19})$/)
@@ -91,6 +94,7 @@ export default {
 						ephemeral: true,
 					})
 
+				// Fetch du message
 				const message = await interaction.channel.messages
 					.fetch(matchID[0])
 					.catch(error => {
@@ -105,14 +109,16 @@ export default {
 
 						throw error
 					})
-				if (message instanceof Error) return
 
+				// Handle des mauvais cas
+				if (message instanceof Error) return
 				if (!message.interaction || message.interaction.commandName !== 'vote')
 					return interaction.reply({
 						content: "Le message initial n'est pas un vote 😕",
 						ephemeral: true,
 					})
 
+				// Modification du message
 				await message.edit({
 					embeds: [
 						{

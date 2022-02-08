@@ -17,13 +17,13 @@ export default {
 		// Acquisition du membre
 		const user = interaction.options.getUser('membre') || interaction.user
 		const member = interaction.guild.members.cache.get(user.id)
-
 		if (!member)
 			return interaction.reply({
 				content: "Je n'ai pas trouvé cet utilisateur, vérifie la mention ou l'ID 😕",
 				ephemeral: true,
 			})
 
+		// Création de l'embed
 		const embed = {
 			color: '#C27C0E',
 			title: 'Formulaire config',
@@ -46,6 +46,7 @@ export default {
 			],
 		}
 
+		// Envoi du formulaire (en deux parties
 		try {
 			await member.send({ embeds: [embed] })
 			await member.send(config)

@@ -28,6 +28,7 @@ export default {
 	requirePermissions: ['MANAGE_MESSAGES'],
 	interaction: async interaction => {
 		switch (interaction.options.getSubcommand()) {
+			// Ajout d'un cooldown
 			case 'set':
 				const delai = interaction.options.getInteger('délai')
 				const duree = interaction.options.getInteger('durée')
@@ -68,7 +69,10 @@ export default {
 						content: 'Slowmode désactivé 👌',
 					})
 				}
-				break
+
+				return
+
+			// Suppression du cooldown
 			case 'clear':
 				if (interaction.channel.rateLimitPerUser > 0) {
 					await interaction.channel.setRateLimitPerUser(0)
