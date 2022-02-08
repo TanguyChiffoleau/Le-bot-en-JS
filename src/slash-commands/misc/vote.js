@@ -132,7 +132,6 @@ export default {
 							},
 						},
 					],
-					fetchReply: true,
 				})
 
 				return interaction.reply({
