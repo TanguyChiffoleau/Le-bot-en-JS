@@ -217,18 +217,18 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | COMMANDS_PREFIX             | Préfixe utilisé pour intéragir avec le bot                                                                                                                                                                 |
 | TIMEZONE                    | Fuseau horaire utilisé pour le formatage des dates. Variable optionnelle, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
 | GUILD_ID                    | ID du serveur (= guild) sur lequel le bot est utilisé                                                                                                                                                      |
-| LEAVE_JOIN_CHANNEL_ID       | ID du channel dans lequel seront postés les messages de départ/arrivée                                                                                                                                     |
-| REPORT_CHANNEL              | ID du channel dans lequel seront postés les messages de signalement                                                                                                                                        |
-| LOGS_MESSAGES_CHANNEL       | ID du channel dans lequel seront postés les logs de messages                                                                                                                                               |
-| LOGS_BANS_CHANNEL           | ID du channel dans lequel seront postés les logs de bans                                                                                                                                                   |
+| LEAVE_JOIN_CHANNEL_ID       | ID du salon dans lequel seront postés les messages de départ/arrivée                                                                                                                                       |
+| REPORT_CHANNEL              | ID du salon dans lequel seront postés les messages de signalement                                                                                                                                          |
+| LOGS_MESSAGES_CHANNEL       | ID du salon dans lequel seront postés les logs de messages                                                                                                                                                 |
+| LOGS_BANS_CHANNEL           | ID du salon dans lequel seront postés les logs de bans                                                                                                                                                     |
 | JOIN_ROLE_ID                | ID du rôle d'arrivée sur le serveur                                                                                                                                                                        |
 | TIMEOUT_JOIN                | Délai de retrait du rôle d'arrivée. Format respectant la librairie [ms npmjs](https://www.npmjs.com/package/ms)                                                                                            |
-| CONFIG_CHANNEL_ID           | ID du channel utilisé pour diriger les formulaires de config en DM vers le bon channel                                                                                                                     |
-| UPGRADE_CHANNEL_ID          | ID du channel utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                     |
-| BLABLA_CHANNEL_ID           | ID du channel de chat général                                                                                                                                                                              |
-| VOICE_MANAGER_CHANNELS_IDS  | ID des channels vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                       |
-| NOLOGS_MANAGER_CHANNELS_IDS | ID des channels dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                  |
-| NOTEXT_MANAGER_CHANNELS_IDS | ID des channels dont les messages doivent comporter au moins un attachement (vidéo, photo...) pour ne pas êtres supprimés. Les ID doivent être séparés par une virgule                                     |
+| CONFIG_CHANNEL_ID           | ID du salon utilisé pour diriger les formulaires de config en DM vers le bon channel                                                                                                                       |
+| UPGRADE_CHANNEL_ID          | ID du salon utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                       |
+| BLABLA_CHANNEL_ID           | ID du salon de chat général                                                                                                                                                                                |
+| VOICE_MANAGER_CHANNELS_IDS  | ID des salons vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                         |
+| NOLOGS_MANAGER_CHANNELS_IDS | ID des salons dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                    |
+| NOTEXT_MANAGER_CHANNELS_IDS | ID des salons dont les messages doivent comporter au moins un attachement (vidéo, photo...) pour ne pas êtres supprimés. Les ID doivent être séparés par une virgule                                       |
 
 
 > Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
@@ -246,7 +246,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > ```js
 > [
 > 	{
-> 		// Channel n°1
+> 		// Salon n°1
 > 		"channelID": "123456789123456789",
 > 		"messageArray": [
 > 			// Message n°1

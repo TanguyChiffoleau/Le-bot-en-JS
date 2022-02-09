@@ -100,7 +100,7 @@ export default {
 					.catch(error => {
 						if (error.code === Constants.APIErrors.UNKNOWN_MESSAGE) {
 							interaction.reply({
-								content: "Je n'ai pas trouvé ce message dans ce channel 😕",
+								content: "Je n'ai pas trouvé ce message dans ce salon 😕",
 								ephemeral: true,
 							})
 

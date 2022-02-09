@@ -11,9 +11,9 @@ export default async client => {
 	const reactionRoleConfig = JSON.parse(await readFile('./config/reactionRoleConfig.json'))
 	client.reactionRoleMap = new Map()
 
-	// Pour chaque channel
+	// Pour chaque salon
 	for (const { channelID, messageArray } of reactionRoleConfig) {
-		// Fetch du channel
+		// Fetch du salon
 		const channel = await client.channels.fetch(channelID)
 		// Pour chaque message/réactions
 		for (const { messageID, emojiRoleMap } of messageArray) {

@@ -10,7 +10,7 @@ export default async (guildMember, client) => {
 
 	modifyWrongUsernames(guildMember).catch(() => null)
 
-	// Acquisition du channel de logs
+	// Acquisition du salon de logs
 	const leaveJoinChannel = guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
 

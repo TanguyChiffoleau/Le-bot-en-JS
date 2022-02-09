@@ -1,27 +1,27 @@
 const handleLeave = (oldState, newState, client) => {
-	// S'il quitte un channel non personnalisé, on return
+	// S'il quitte un salon non personnalisé, on return
 	if (!client.voiceManager.has(oldState.channelId)) return
 
-	// S'il le channel qu'il a quitté est vide
+	// S'il le salon qu'il a quitté est vide
 	if (oldState.channel.members.size === 0) {
-		// Acquisition du channel nomic
+		// Acquisition du salon nomic
 		const noMicChannel = client.voiceManager.get(oldState.channelId)
 		// S'il existe
 		if (noMicChannel)
-			// On supprime le channel nomic
+			// On supprime le salon nomic
 			noMicChannel.delete()
 
-		// On supprime le channel de la map
+		// On supprime le salon de la map
 		client.voiceManager.delete(oldState.channelId)
 
-		// Suppression du channel vocal
-		// Catch si le channel est déjà supprimé
+		// Suppression du salon vocal
+		// Catch si le salon est déjà supprimé
 		return oldState.channel.delete().catch(() => null)
 	}
 
-	// S'il n'est pas vide et qu'il quitte un channel avec un no-mic
+	// S'il n'est pas vide et qu'il quitte un salon avec un no-mic
 	if (client.voiceManager.get(oldState.channelId))
-		// Suppression des permissions du membre pour le channel no-mic
+		// Suppression des permissions du membre pour le salon no-mic
 		return client.voiceManager
 			.get(oldState.channelId)
 			.permissionOverwrites.cache.get(newState.id)
@@ -29,7 +29,7 @@ const handleLeave = (oldState, newState, client) => {
 }
 
 const handleJoin = async (newState, client) => {
-	// S'il rejoint un channel qui doit créer un nouveau channel
+	// S'il rejoint un salon qui doit créer un nouveau salon
 	if (client.config.voiceManagerChannelsIDs.includes(newState.channelId)) {
 		const member = newState.member
 
@@ -39,7 +39,7 @@ const handleJoin = async (newState, client) => {
 			allow: ['VIEW_CHANNEL', 'CONNECT', 'MANAGE_CHANNELS', 'MOVE_MEMBERS'],
 		})
 
-		// Création du channel vocal
+		// Création du salon vocal
 		const createdChannel = await newState.guild.channels.create(
 			`Vocal de ${member.displayName}`,
 			{
@@ -49,21 +49,21 @@ const handleJoin = async (newState, client) => {
 			},
 		)
 
-		// Déplacement du membre dans son nouveau channel vocal
+		// Déplacement du membre dans son nouveau salon vocal
 		const moveAction = await member.voice.setChannel(createdChannel).catch(() => null)
 
-		// Si l'utilisateur ne peut pas être move dans le channel créé,
-		// on supprime le channel créé
+		// Si l'utilisateur ne peut pas être move dans le salon créé,
+		// on supprime le salon créé
 		if (!moveAction) return createdChannel.delete()
 
-		// Ajout de l'id du channel vocal perso dans la liste
+		// Ajout de l'id du salon vocal perso dans la liste
 		return client.voiceManager.set(createdChannel.id, null)
 	}
 
-	// S'il rejoint un channel perso qui a un no-mic
+	// S'il rejoint un salon perso qui a un no-mic
 	const noMicChannel = client.voiceManager.get(newState.channelId)
 	if (noMicChannel)
-		// On lui donne la permission de voir le channel
+		// On lui donne la permission de voir le salon
 		return noMicChannel.permissionOverwrites.edit(newState.id, {
 			CREATE_INSTANT_INVITE: false,
 			VIEW_CHANNEL: true,
@@ -73,12 +73,12 @@ const handleJoin = async (newState, client) => {
 }
 
 export default (oldState, newState, client) => {
-	// Pour uniquement garder les changements de channels et non d'état
+	// Pour uniquement garder les changements de salon et non d'état
 	if (oldState.channelId === newState.channelId) return
 
-	// Si l'utilisateur quitte un channel
+	// Si l'utilisateur quitte un salon
 	if (oldState.channel) handleLeave(oldState, newState, client)
 
-	// Si l'utilisateur rejoint un channel
+	// Si l'utilisateur rejoint un salon
 	if (newState.channel) handleJoin(newState, client)
 }

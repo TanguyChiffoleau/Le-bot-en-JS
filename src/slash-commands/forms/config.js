@@ -34,7 +34,7 @@ export default {
 			},
 			fields: [
 				{
-					name: 'Channel dans lequel renvoyer le formulaire complété',
+					name: 'Salon dans lequel renvoyer le formulaire complété',
 					value: interaction.guild.channels.cache
 						.get(client.config.configChannelID)
 						.toString(),

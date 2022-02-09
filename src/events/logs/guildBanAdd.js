@@ -4,7 +4,7 @@ import { Util } from 'discord.js'
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
 
-	// Acquisition du channel de logs
+	// Acquisition du salon de logs
 	const logsChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
 	if (!logsChannel) return
 

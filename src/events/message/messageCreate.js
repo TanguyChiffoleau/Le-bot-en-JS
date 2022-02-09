@@ -21,7 +21,7 @@ export default async (message, client) => {
 		// si le pseudo respecte bien les règles
 		modifyWrongUsernames(message.member).catch(() => null)
 
-		// Si c'est un channel autre que blabla
+		// Si c'est un salon autre que blabla
 		if (
 			message.channel.id !== client.config.blablaChannelID &&
 			message.member.roles.cache.has(client.config.joinRoleID)
@@ -31,7 +31,7 @@ export default async (message, client) => {
 			})
 	}
 
-	// Si c'est un channel no-text
+	// Si c'est un salon no-text
 	if (
 		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
 		message.author !== client.user &&
@@ -73,7 +73,7 @@ export default async (message, client) => {
 		const validMessages = (
 			await Promise.all(
 				// Filtre les liens mennant vers une autre guild
-				// ou sur un channel n'existant pas sur la guild
+				// ou sur un salon n'existant pas sur la guild
 				matches
 					.reduce((acc, match) => {
 						const [, guildId, channelId, messageId] = regex.exec(match)
@@ -131,7 +131,7 @@ export default async (message, client) => {
 						inline: true,
 					},
 					{
-						name: 'Channel',
+						name: 'Salon',
 						value: validMessage.channel.toString(),
 						inline: true,
 					},
