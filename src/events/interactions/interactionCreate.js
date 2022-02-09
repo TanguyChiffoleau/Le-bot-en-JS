@@ -11,7 +11,7 @@ export default (interaction, client) => {
 			!interaction.member.permissionsIn(interaction.channel).has(command.requirePermissions)
 		)
 			return interaction.reply({
-				content: "Tu n'as pas les permissions d'effectuer cette commande 😕",
+				content: "Tu n'as pas les permissions pour effectuer cette commande 😕",
 				ephemeral: true,
 			})
 
