@@ -19,9 +19,9 @@ const handleLeave = (oldState, newState, client) => {
 		return oldState.channel.delete().catch(() => null)
 	}
 
-	// S'il n'est pas vide et qu'il quitte un channel avec un no_mic
+	// S'il n'est pas vide et qu'il quitte un channel avec un no-mic
 	if (client.voiceManager.get(oldState.channelId))
-		// Suppression des permissions du membre pour le channel no_mic
+		// Suppression des permissions du membre pour le channel no-mic
 		return client.voiceManager
 			.get(oldState.channelId)
 			.permissionOverwrites.cache.get(newState.id)
@@ -60,7 +60,7 @@ const handleJoin = async (newState, client) => {
 		return client.voiceManager.set(createdChannel.id, null)
 	}
 
-	// S'il rejoint un channel perso qui a un no_mic
+	// S'il rejoint un channel perso qui a un no-mic
 	const noMicChannel = client.voiceManager.get(newState.channelId)
 	if (noMicChannel)
 		// On lui donne la permission de voir le channel
