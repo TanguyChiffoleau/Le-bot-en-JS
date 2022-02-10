@@ -28,6 +28,11 @@ export default {
 						.setMaxValue(99)
 						.setRequired(true),
 				),
+		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('clearlimit')
+				.setDescription('Supprime la limite de participants pour le salon vocal'),
 		),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
@@ -134,12 +139,19 @@ export default {
 					})
 
 				if (participants) {
-					await voiceChannel.edit({ userLimit: participants })
+					await voiceChannel.setUserLimit(participants)
 					return interaction.reply({
 						content: `Limite définie 👌\nNombre de personnes autorisées à rejoindre le salon vocal : ${participants}`,
 						ephemeral: true,
 					})
 				}
+				break
+			case 'clearlimit':
+				await voiceChannel.setUserLimit(0)
+				return interaction.reply({
+					content: `Limite supprimée 👌`,
+					ephemeral: true,
+				})
 		}
 	},
 }
