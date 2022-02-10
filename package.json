@@ -23,7 +23,7 @@
 	"homepage": "https://github.com/TanguyChiffoleau/Le-bot-en-JS#readme",
 	"dependencies": {
 		"@discordjs/builders": "^0.12.0",
-		"@discordjs/rest": "^0.2.0-canary.0",
+		"@discordjs/rest": "^0.3.0",
 		"bent": "^7.3.12",
 		"discord-api-types": "^0.26.1",
 		"discord.js": "^13.6.0",
