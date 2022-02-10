@@ -124,7 +124,7 @@ export default {
 					ephemeral: true,
 				})
 			case 'set':
-				const nombre = interaction.options.getInteger('participants')
+				const participants = interaction.options.getInteger('participants')
 
 				// Si l'utilisateur n'est pas dans un salon vocal
 				if (!voiceChannel)
@@ -133,10 +133,10 @@ export default {
 						ephemeral: true,
 					})
 
-				if (nombre) {
-					await voiceChannel.edit({ userLimit: nombre })
+				if (participants) {
+					await voiceChannel.edit({ userLimit: participants })
 					return interaction.reply({
-						content: `Limite définie 👌\nNombre de personnes autorisées à rejoindre le salon vocal : ${nombre}`,
+						content: `Limite définie 👌\nNombre de personnes autorisées à rejoindre le salon vocal : ${participants}`,
 						ephemeral: true,
 					})
 				}
