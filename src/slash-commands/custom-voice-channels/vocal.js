@@ -124,7 +124,7 @@ export default {
 					ephemeral: true,
 				})
 			case 'set':
-				const nombre = interaction.options.getInteger('nombre')
+				const nombre = interaction.options.getInteger('participants')
 
 				// Si l'utilisateur n'est pas dans un salon vocal
 				if (!voiceChannel)
