@@ -140,10 +140,15 @@ export default {
 
 				if (participants) {
 					await voiceChannel.setUserLimit(participants)
-					return interaction.reply({
-						content: `Limite définie 👌\nNombre de personnes autorisées à rejoindre le salon vocal : ${participants}`,
-						ephemeral: true,
-					})
+					return participants > 1
+						? interaction.reply({
+								content: `Limite définie 👌\n${participants} participants autorisés à rejoindre le salon vocal`,
+								ephemeral: true,
+						  })
+						: interaction.reply({
+								content: `Limite définie 👌\n${participants} participant autorisé à rejoindre le salon vocal`,
+								ephemeral: true,
+						  })
 				}
 				break
 			case 'clearlimit':
