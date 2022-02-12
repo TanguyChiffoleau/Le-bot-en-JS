@@ -5,7 +5,7 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName('nomic')
 		.setDescription(
-			'Crée un salon textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
+			'Crée un salon textuel nomic si tu es connecté dans un salon vocal personnalisé',
 		),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {

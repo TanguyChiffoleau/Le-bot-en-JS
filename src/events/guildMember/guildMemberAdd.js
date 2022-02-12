@@ -164,7 +164,7 @@ export default async (guildMember, client) => {
 			// Edit du message envoyé en DM
 			const editedDMMessageEmbed = new MessageEmbed(DMMessage.embeds[0])
 			editedDMMessageEmbed.title = 'Avertissement'
-			editedDMMessageEmbed.description = 'Vous avez reçu un avertissement !'
+			editedDMMessageEmbed.description = 'Tu as reçu un avertissement !'
 			editedDMMessageEmbed.fields[0].name = "Raison de l'avertissement"
 			await DMMessage.edit({
 				embeds: [editedDMMessageEmbed],
