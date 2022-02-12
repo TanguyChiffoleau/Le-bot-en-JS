@@ -56,7 +56,7 @@ export default {
 
 		switch (interaction.options.getSubcommand()) {
 			case 'nomic':
-				// Check si il y a déjà un salon no-mic
+				// Check s'il y a déjà un salon no-mic
 				const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 				if (existingNoMicChannel)
 					return interaction.reply({
@@ -64,7 +64,7 @@ export default {
 						ephemeral: true,
 					})
 
-				// Crée le salon no mic
+				// Crée le salon no-mic
 				const noMicChannel = await interaction.guild.channels.create(
 					`No-mic ${voiceChannel.name}`,
 					{
@@ -94,7 +94,7 @@ export default {
 
 				// Setup des permissions
 				await Promise.all([
-					// Setup les permissions (pas d'accès) pour le role everyone
+					// Setup les permissions (pas d'accès) pour le rôle everyone
 					noMicChannel.permissionOverwrites.set([
 						{
 							id: interaction.guild.id,
