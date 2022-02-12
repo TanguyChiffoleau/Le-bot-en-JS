@@ -1,3 +1,5 @@
+import { Permissions } from 'discord.js'
+
 const handleLeave = (oldState, newState, client) => {
 	// S'il quitte un salon non personnalisé, on return
 	if (!client.voiceManager.has(oldState.channelId)) return
@@ -22,10 +24,16 @@ const handleLeave = (oldState, newState, client) => {
 	// S'il n'est pas vide et qu'il quitte un salon avec un no-mic
 	if (client.voiceManager.get(oldState.channelId))
 		// Suppression des permissions du membre pour le salon no-mic
-		return client.voiceManager
-			.get(oldState.channelId)
-			.permissionOverwrites.cache.get(newState.id)
-			.delete()
+		return client.voiceManager.get(oldState.channelId).permissionOverwrites.set([
+			{
+				id: newState.id,
+				deny: [
+					Permissions.FLAGS.VIEW_CHANNEL,
+					Permissions.FLAGS.SEND_MESSAGES,
+					Permissions.FLAGS.READ_MESSAGE_HISTORY,
+				],
+			},
+		])
 }
 
 const handleJoin = async (newState, client) => {
@@ -33,19 +41,22 @@ const handleJoin = async (newState, client) => {
 	if (client.config.voiceManagerChannelsIDs.includes(newState.channelId)) {
 		const member = newState.member
 
-		const permissions = newState.channel.permissionOverwrites.cache.clone().set(member, {
-			id: member,
-			type: 'member',
-			allow: ['VIEW_CHANNEL', 'CONNECT', 'MOVE_MEMBERS'],
-		})
-
 		// Création du salon vocal
 		const createdChannel = await newState.guild.channels.create(
 			`Vocal de ${member.displayName}`,
 			{
 				type: 'GUILD_VOICE',
 				parent: newState.channel.parent,
-				permissionOverwrites: permissions,
+				permissionOverwrites: [
+					{
+						id: newState.id,
+						allow: [
+							Permissions.FLAGS.VIEW_CHANNEL,
+							Permissions.FLAGS.CONNECT,
+							Permissions.FLAGS.MOVE_MEMBERS,
+						],
+					},
+				],
 			},
 		)
 
@@ -64,12 +75,17 @@ const handleJoin = async (newState, client) => {
 	const noMicChannel = client.voiceManager.get(newState.channelId)
 	if (noMicChannel)
 		// On lui donne la permission de voir le salon
-		return noMicChannel.permissionOverwrites.edit(newState.id, {
-			CREATE_INSTANT_INVITE: false,
-			VIEW_CHANNEL: true,
-			SEND_MESSAGES: true,
-			READ_MESSAGE_HISTORY: true,
-		})
+		return noMicChannel.permissionOverwrites.set([
+			{
+				id: newState.id,
+				allow: [
+					Permissions.FLAGS.VIEW_CHANNEL,
+					Permissions.FLAGS.SEND_MESSAGES,
+					Permissions.FLAGS.READ_MESSAGE_HISTORY,
+				],
+				deny: [Permissions.FLAGS.CREATE_INSTANT_INVITE],
+			},
+		])
 }
 
 export default (oldState, newState, client) => {
