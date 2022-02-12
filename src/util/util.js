@@ -38,7 +38,7 @@ export const pluralizeWithoutQuantity = (word, quantity, isAlwaysPlural = false)
 }
 
 /**
- * Convertis la date sous un format DD/MM/YYYY HH:MM:SS
+ * Converti la date sous un format DD/MM/YYYY HH:MM:SS
  * @param {Date} date
  * @returns date sous un format DD/MM/YYYY HH:MM:SS
  * @example convertDate(new Date('15 Nov 2020 14:24:39')) => '15/11/2020 14:24:39'
@@ -54,7 +54,7 @@ export const convertDate = date =>
 	}).format(date)
 
 /**
- * Convertis la date sous un format Y années M mois D jours H heures M minutes
+ * Converti la date sous un format Y années M mois D jours H heures M minutes
  * @param {Date} date
  * @returns date sous un format Y années M mois D jours H heures M minutes ou "Il y a moins d'une minute"
  * @example diffDate(new Date('26 Oct 2015 12:24:29')) => '5 années 20 jours 2 heures 19 minutes'
@@ -80,7 +80,7 @@ export const diffDate = date => {
 }
 
 /**
- * Convertis un nombre de secondes au format H heures M minutes S secondes
+ * Converti un nombre de secondes au format H heures M minutes S secondes
  * @param {Number} secondsInput nombre de secondes à convertir
  * @returns nombre de secondes au format H heures M minutes S secondes
  * @example convertSecondsToString(8590) => '2 heures 23 minutes 10 secondes'
@@ -119,11 +119,11 @@ export const modifyWrongUsernames = guildMember => {
 	// Trigger si le premier caractère n'est pas "normal" ou s'il vaut "Change ton pseudo"
 	const triggerRegex = /^[^a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ].*/
 
-	// S'il s'est déjà fait changé son pseudo
+	// Si le pseudo a déjà été changé
 	if (guildMember.nickname === 'Change ton pseudo') {
-		// Si son pseudo d'utilisateur est correct, on supprime son pseudo
+		// Si son pseudo d'utilisateur est correct, on le supprime
 		if (!guildMember.user.username.match(triggerRegex)) return guildMember.setNickname(null)
-		// Sinon, il garde "Change ton pseudo" comme pseudo
+		// Sinon, il garde "Change ton pseudo"
 		return Promise.resolve()
 	}
 
@@ -166,7 +166,7 @@ export const getFileInfos = file => {
 }
 
 /**
- *
+ * Formate le pseudo et l'ID de l'utilisateur sous la forme "Pseudo (ID : 123456789123456789)"
  * @param {GuildMember} guildMember
  * @param {User} user
  * @returns le pseudo du guildMember ou le tag de l'user
@@ -195,7 +195,7 @@ export const closeGracefully = (signal, client) => {
 }
 
 /**
- * Convertis la date sous un format utilisé par Discord pour afficher une date
+ * Converti la date dans un format utilisé par Discord pour afficher une date
  * @param {Date} date
  */
 export const convertDateForDiscord = date => `<t:${Math.round(new Date(date) / 1000)}>`

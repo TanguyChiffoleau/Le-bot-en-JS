@@ -43,7 +43,7 @@ export default {
 
 				await interaction.channel.setRateLimitPerUser(delai)
 
-				// Si il n'y pas de temps du slowmode,
+				// S'iil n'y pas de temps du slowmode,
 				// le slowmode reste jusqu'au prochain clear
 				if (!duree)
 					return interaction.reply({
@@ -59,8 +59,9 @@ export default {
 					)}\nDurée : ${convertSecondsToString(duree)}`,
 				})
 
-				// on attend le montant défini
+				// On attend le montant défini
 				await wait(duree * 1000)
+
 				// Si le salon est encore en slowmode
 				if (interaction.channel.rateLimitPerUser > 0) {
 					// On le clear et on envoie un message de confirmation

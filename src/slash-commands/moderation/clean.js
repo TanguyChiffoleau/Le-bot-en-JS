@@ -72,7 +72,7 @@ export default {
 				ephemeral: true,
 			})
 
-		// Réponse pour l'utilisateur sauf si argument "silent" utilisé
+		// Réponse pour l'utilisateur
 		const nbDeletedMessages = deletedMessages.size
 		await interaction.reply({
 			content: `${nbDeletedMessages} ${pluralize('message', nbDeletedMessages)} ${pluralize(
@@ -84,7 +84,7 @@ export default {
 
 		// Partie logs
 		// Tri décroissant en fonction de l'heure à laquelle le message a été
-		// posté pour avoir une lecture du haut vers le bas comme sur discord
+		// posté pour avoir une lecture du haut vers le bas comme sur Discord
 		const text = deletedMessages
 			.sort((messageA, messageB) => messageA.createdTimestamp - messageB.createdTimestamp)
 			.reduce(
@@ -95,7 +95,7 @@ export default {
 				'',
 			)
 
-		// Envoie plusieurs embeds si les logs ne tient pas dans un seul embed
+		// Envoi plusieurs embeds si les logs ne tiennent pas dans un seul embed
 		if (text.length > 4096) {
 			// Séparation des messages pour 3 embeds :
 			// 1er : titre + 1ère partie des messages

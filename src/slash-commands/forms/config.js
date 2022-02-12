@@ -46,7 +46,7 @@ export default {
 			],
 		}
 
-		// Envoi du formulaire (en deux parties
+		// Envoi du formulaire (en deux parties)
 		try {
 			await member.send({ embeds: [embed] })
 			await member.send(config)
