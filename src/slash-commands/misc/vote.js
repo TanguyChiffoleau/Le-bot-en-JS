@@ -21,7 +21,7 @@ export default {
 				.addBooleanOption(option =>
 					option
 						.setName('thread')
-						.setDescription('Voulez-vous créer un thread associé ?')
+						.setDescription('Veux-tu créer un thread associé ?')
 						.setRequired(true),
 				),
 		)
