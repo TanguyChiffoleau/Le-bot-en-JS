@@ -2,6 +2,7 @@
 /* eslint-disable default-case */
 import { displayNameAndID } from '../../util/util.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { Permissions } from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -93,32 +94,38 @@ export default {
 
 				// Setup des permissions
 				await Promise.all([
+					// Setup les permissions (pas d'accès) pour le role everyone
+					noMicChannel.permissionOverwrites.set([
+						{
+							id: interaction.guild.id,
+							deny: [
+								Permissions.FLAGS.CREATE_INSTANT_INVITE,
+								Permissions.FLAGS.MANAGE_CHANNELS,
+								Permissions.FLAGS.MANAGE_ROLES,
+								Permissions.FLAGS.MANAGE_WEBHOOKS,
+								Permissions.FLAGS.VIEW_CHANNEL,
+								Permissions.FLAGS.SEND_MESSAGES,
+								Permissions.FLAGS.SEND_TTS_MESSAGES,
+								Permissions.FLAGS.MANAGE_MESSAGES,
+								Permissions.FLAGS.EMBED_LINKS,
+								Permissions.FLAGS.ATTACH_FILES,
+								Permissions.FLAGS.READ_MESSAGE_HISTORY,
+								Permissions.FLAGS.MENTION_EVERYONE,
+								Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+								Permissions.FLAGS.ADD_REACTIONS,
+							],
+						},
+					]),
+
 					// Accès au salon pour les membres présents
 					...voiceChannel.members.map(member =>
-						noMicChannel.permissionOverwrites.edit(member, {
-							CREATE_INSTANT_INVITE: false,
+						noMicChannel.permissionOverwrites.edit(member.id, {
 							VIEW_CHANNEL: true,
 							SEND_MESSAGES: true,
 							READ_MESSAGE_HISTORY: true,
+							CREATE_INSTANT_INVITE: false,
 						}),
 					),
-					// Setup les permissions (pas d'accès) pour le role everyone
-					noMicChannel.permissionOverwrites.edit(interaction.guild.id, {
-						CREATE_INSTANT_INVITE: false,
-						MANAGE_CHANNELS: false,
-						MANAGE_ROLES: false,
-						MANAGE_WEBHOOKS: false,
-						VIEW_CHANNEL: false,
-						SEND_MESSAGES: false,
-						SEND_TTS_MESSAGES: false,
-						MANAGE_MESSAGES: false,
-						EMBED_LINKS: false,
-						ATTACH_FILES: false,
-						READ_MESSAGE_HISTORY: false,
-						MENTION_EVERYONE: false,
-						USE_EXTERNAL_EMOJIS: false,
-						ADD_REACTIONS: false,
-					}),
 				])
 
 				// Ajout du salon dans la map
