@@ -10,7 +10,7 @@ export default async (guildMember, client) => {
 
 	modifyWrongUsernames(guildMember).catch(() => null)
 
-	// Acquisition du channel de logs
+	// Acquisition du salon de logs
 	const leaveJoinChannel = guild.channels.cache.get(client.config.leaveJoinChannelID)
 	if (!leaveJoinChannel) return
 
@@ -164,7 +164,7 @@ export default async (guildMember, client) => {
 			// Edit du message envoyé en DM
 			const editedDMMessageEmbed = new MessageEmbed(DMMessage.embeds[0])
 			editedDMMessageEmbed.title = 'Avertissement'
-			editedDMMessageEmbed.description = 'Vous avez reçu un avertissement !'
+			editedDMMessageEmbed.description = 'Tu as reçu un avertissement !'
 			editedDMMessageEmbed.fields[0].name = "Raison de l'avertissement"
 			await DMMessage.edit({
 				embeds: [editedDMMessageEmbed],
@@ -179,6 +179,6 @@ export default async (guildMember, client) => {
 	// Si au moins une erreur, throw
 	if (banAction instanceof Error || DMMessage instanceof Error)
 		throw new Error(
-			'Sending message and/or banning member failed. See precedents logs for more informations.',
+			"L'envoi d'un message et / ou le bannissement d'un membre a échoué. Voir les logs précédents pour plus d'informations.",
 		)
 }

@@ -17,7 +17,7 @@ export default async (message, client) => {
 	)
 		return
 
-	// Acquisition du channel pour les logs
+	// Acquisition du salon pour les logs
 	const logsChannel = message.guild.channels.cache.get(client.config.logsMessagesChannelID)
 	if (!logsChannel) return
 
@@ -46,7 +46,7 @@ export default async (message, client) => {
 				inline: true,
 			},
 			{
-				name: 'Channel',
+				name: 'Salon',
 				value: message.channel.toString(),
 				inline: true,
 			},
@@ -77,7 +77,7 @@ export default async (message, client) => {
 	} else {
 		logEmbed.color = '00FF00'
 		logEmbed.footer = {
-			text: `Message supprimé par l'auteur du message`,
+			text: "Message supprimé par l'auteur du message",
 		}
 	}
 

@@ -7,14 +7,14 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 export default {
 	data: new SlashCommandBuilder()
 		.setName('cooldown')
-		.setDescription('Gère le mode lent sur le channel')
+		.setDescription('Gère le mode lent sur le salon')
 		.addSubcommand(subcommand =>
-			subcommand.setName('clear').setDescription('Supprime le mode lent sur le channel'),
+			subcommand.setName('clear').setDescription('Supprime le mode lent sur le salon'),
 		)
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('set')
-				.setDescription('Défini le mode lent sur le channel')
+				.setDescription('Défini le mode lent sur le salon')
 				.addIntegerOption(option =>
 					option
 						.setName('délai')
@@ -34,10 +34,10 @@ export default {
 				const duree = interaction.options.getInteger('durée')
 
 				// On ajoute le cooldown
-				// Erreur si le channel est déjà en slowmode
+				// Erreur si le salon est déjà en slowmode
 				if (interaction.channel.rateLimitPerUser > 0)
 					return interaction.reply({
-						content: 'Ce channel est déjà en slowmode 😕',
+						content: 'Ce salon est déjà en slowmode 😕',
 						ephemeral: true,
 					})
 
@@ -61,7 +61,7 @@ export default {
 
 				// on attend le montant défini
 				await wait(duree * 1000)
-				// Si le channel est encore en slowmode
+				// Si le salon est encore en slowmode
 				if (interaction.channel.rateLimitPerUser > 0) {
 					// On le clear et on envoie un message de confirmation
 					await interaction.channel.setRateLimitPerUser(0)
@@ -82,7 +82,7 @@ export default {
 				}
 
 				return interaction.reply({
-					content: "Ce channel n'est pas en slowmode 😕",
+					content: "Ce salon n'est pas en slowmode 😕",
 					ephemeral: true,
 				})
 		}

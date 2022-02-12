@@ -122,7 +122,7 @@ export default async (messageReaction, user, client) => {
 						inline: true,
 					},
 					{
-						name: 'Channel',
+						name: 'Salon',
 						value: message.channel.toString(),
 						inline: true,
 					},

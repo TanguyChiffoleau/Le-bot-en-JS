@@ -45,7 +45,7 @@ export default () => {
 	}
 	// Map utilisé pour la commande "roles"
 	client.commandsCategories = new Map()
-	// Map utilisé pour la gestion des channels vocaux
+	// Map utilisé pour la gestion des salons vocaux
 	client.voiceManager = new Map()
 
 	return client

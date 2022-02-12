@@ -25,7 +25,7 @@ const isEmbedExceedingLimits = embeds =>
 export default {
 	data: new SlashCommandBuilder()
 		.setName('clean')
-		.setDescription('Supprime un nombre de messages donné dans le channel')
+		.setDescription('Supprime un nombre de messages donné dans le salon')
 		.addIntegerOption(option =>
 			option
 				.setName('nombre')
@@ -47,13 +47,13 @@ export default {
 				ephemeral: true,
 			})
 
-		// Acquisition du channel de logs
+		// Acquisition du salon de logs
 		const logsChannel = interaction.guild.channels.cache.get(
 			client.config.logsMessagesChannelID,
 		)
 		if (!logsChannel)
 			return interaction.reply({
-				content: "Il n'y a pas de channel pour log l'action 😕",
+				content: "Il n'y a pas de salon pour log l'action 😕",
 				ephemeral: true,
 			})
 
@@ -100,7 +100,7 @@ export default {
 			// Séparation des messages pour 3 embeds :
 			// 1er : titre + 1ère partie des messages
 			// 2nd : 2nd partie des messsages
-			// 3ème: 3ème partie des messages + fields exécuté par/le et channel
+			// 3ème: 3ème partie des messages + fields exécuté par / le et salon
 			const splitedDescriptions = Util.splitMessage(text, { maxLength: 4096 })
 			const firstDescription = splitedDescriptions.shift()
 			const lastDescription = splitedDescriptions.pop()
@@ -124,7 +124,7 @@ export default {
 					description: lastDescription,
 					fields: [
 						{
-							name: 'Channel',
+							name: 'Salon',
 							value: interaction.channel.toString(),
 							inline: true,
 						},
@@ -163,7 +163,7 @@ export default {
 					description: text,
 					fields: [
 						{
-							name: 'Channel',
+							name: 'Salon',
 							value: interaction.channel.toString(),
 							inline: true,
 						},

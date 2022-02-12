@@ -5,41 +5,41 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName('nomic')
 		.setDescription(
-			'Crée un channel textuel nomic si vous êtes connecté dans un salon vocal personnalisé',
+			'Crée un salon textuel nomic si tu es connecté dans un salon vocal personnalisé',
 		),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const voiceChannel = interaction.member.voice.channel
 
-		// Si l'utilisateur n'est pas dans un channel vocal
+		// Si l'utilisateur n'est pas dans un salon vocal
 		if (!voiceChannel)
 			return interaction.reply({
-				content: 'Tu dois être dans un channel vocal pour utiliser cette commande 😕',
+				content: 'Tu dois être dans un salon vocal pour utiliser cette commande 😕',
 				ephemeral: true,
 			})
 
-		// Si l'utilisateur n'est pas dans un channel vocal personnalisé
+		// Si l'utilisateur n'est pas dans un salon vocal personnalisé
 		if (!client.voiceManager.has(voiceChannel.id))
 			return interaction.reply({
 				content:
-					'Tu dois être dans un channel vocal personnalisé pour utiliser cette commande 😕',
+					'Tu dois être dans un salon vocal personnalisé pour utiliser cette commande 😕',
 				ephemeral: true,
 			})
 
-		// Check si il y a déjà un channel no-mic
+		// Check si il y a déjà un salon no-mic
 		const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 		if (existingNoMicChannel)
 			return interaction.reply({
-				content: `Il y a déjà un channel no-mic : ${existingNoMicChannel} 😕`,
+				content: `Il y a déjà un salon no-mic : ${existingNoMicChannel} 😕`,
 				ephemeral: true,
 			})
 
-		// Crée le channel no mic
+		// Crée le salon no mic
 		const noMicChannel = await interaction.guild.channels.create(
-			`no mic ${voiceChannel.name}`,
+			`No-mic ${voiceChannel.name}`,
 			{
 				type: 'text',
-				topic: `Channel temporaire créé pour ${displayNameAndID(
+				topic: `Salon temporaire créé pour ${displayNameAndID(
 					interaction.member,
 					interaction.user,
 				)}`,
@@ -64,7 +64,7 @@ export default {
 
 		// Setup des permissions
 		await Promise.all([
-			// Accès au channel pour les membres présents
+			// Accès au salon pour les membres présents
 			...voiceChannel.members.map(member =>
 				noMicChannel.permissionOverwrites.edit(member, {
 					CREATE_INSTANT_INVITE: false,
@@ -92,11 +92,11 @@ export default {
 			}),
 		])
 
-		// Ajout du channel dans la map
+		// Ajout du salon dans la map
 		client.voiceManager.set(voiceChannel.id, noMicChannel)
 
 		return interaction.reply({
-			content: `Ton channel a bien été créé : ${noMicChannel} 👌`,
+			content: `Ton salon a bien été créé : ${noMicChannel} 👌`,
 			ephemeral: true,
 		})
 	},
