@@ -112,6 +112,7 @@ export default {
 								Permissions.FLAGS.READ_MESSAGE_HISTORY,
 								Permissions.FLAGS.MENTION_EVERYONE,
 								Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+								Permissions.FLAGS.USE_EXTERNAL_STICKERS,
 								Permissions.FLAGS.ADD_REACTIONS,
 							],
 						},
