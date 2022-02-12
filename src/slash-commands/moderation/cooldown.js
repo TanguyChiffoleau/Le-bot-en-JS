@@ -43,7 +43,7 @@ export default {
 
 				await interaction.channel.setRateLimitPerUser(delai)
 
-				// S'iil n'y pas de temps du slowmode,
+				// S'il n'y pas de temps du slowmode,
 				// le slowmode reste jusqu'au prochain clear
 				if (!duree)
 					return interaction.reply({
