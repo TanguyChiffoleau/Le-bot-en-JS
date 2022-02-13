@@ -2,7 +2,7 @@
 /* eslint-disable default-case */
 import { displayNameAndID } from '../../util/util.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { Permissions } from 'discord.js'
+import { Permissions, Constants } from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -68,7 +68,7 @@ export default {
 				const noMicChannel = await interaction.guild.channels.create(
 					`No-mic ${voiceChannel.name}`,
 					{
-						type: 'GUILD_TEXT',
+						type: Constants.ChannelTypes.GUILD_TEXT,
 						topic: `Salon temporaire créé pour ${displayNameAndID(
 							interaction.member,
 							interaction.user,
@@ -130,10 +130,12 @@ export default {
 				// Ajout du salon dans la map
 				client.voiceManager.set(voiceChannel.id, noMicChannel)
 
-				return interaction.reply({
-					content: `Ton salon a bien été créé : ${noMicChannel} 👌`,
-					ephemeral: true,
-				})
+				return interaction
+					.reply({
+						content: `Ton salon a bien été créé : ${noMicChannel} 👌`,
+						ephemeral: true,
+					})
+					.catch(() => null)
 
 			case 'set':
 				const nbUser = interaction.options.getInteger('participants')
