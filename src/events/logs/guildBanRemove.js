@@ -1,3 +1,4 @@
+import { GuildAuditLogs } from 'discord.js'
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
 
 export default async (ban, client) => {
@@ -10,7 +11,7 @@ export default async (ban, client) => {
 	// Fetch de l'event d'unban
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
-			type: 'MEMBER_BAN_REMOVE',
+			type: GuildAuditLogs.Actions.MEMBER_BAN_REMOVE,
 			limit: 1,
 		})
 	).entries.first()
