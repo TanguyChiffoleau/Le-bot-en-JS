@@ -1,4 +1,5 @@
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
+import { Constants } from 'discord.js'
 
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
@@ -10,42 +11,42 @@ export default async (ban, client) => {
 	// Fetch du membre banni
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
-			type: 'MEMBER_BAN_REMOVE',
+			type: Constants.Events.GUILD_BAN_REMOVE,
 			limit: 1,
 		})
 	).entries.first()
 	if (!fetchedLog) return
 
+	const { executor, target } = fetchedLog
+
 	// Création de l'embed
 	const logEmbed = {
 		color: '57C92A',
 		author: {
-			name: `${ban.user.username} (ID ${ban.user.id})`,
-			icon_url: ban.user.displayAvatarURL({ dynamic: true }),
+			name: `${target.username} (ID ${target.id})`,
+			icon_url: target.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
 			{
 				name: 'Mention',
-				value: ban.user.toString(),
+				value: target.toString(),
 				inline: true,
 			},
 			{
 				name: 'Date de création du compte',
-				value: convertDateForDiscord(ban.user.createdAt),
+				value: convertDateForDiscord(target.createdAt),
 				inline: true,
 			},
 			{
 				name: 'Âge du compte',
-				value: diffDate(ban.user.createdAt),
+				value: diffDate(target.createdAt),
 				inline: true,
 			},
 		],
 		timestamp: new Date(),
 	}
 
-	const { executor, target } = fetchedLog
-
-	// Détermination du modérateur ayant effectué le débannissement
+	// Détermination du modérateur ayant effectué le bannissement
 	if (target.id === ban.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),

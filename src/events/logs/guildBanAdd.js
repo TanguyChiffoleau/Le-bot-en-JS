@@ -1,5 +1,5 @@
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
-import { Util } from 'discord.js'
+import { Util, Constants } from 'discord.js'
 
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
@@ -11,46 +11,43 @@ export default async (ban, client) => {
 	// Fetch du membre banni
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
-			type: 'MEMBER_BAN_ADD',
+			type: Constants.Events.GUILD_BAN_ADD,
 			limit: 1,
 		})
 	).entries.first()
 	if (!fetchedLog) return
 
-	// Fetch du ban
-	const bannedUser = await ban.fetch()
+	const { executor, target, reason } = fetchedLog
 
 	// Création de l'embed
 	const logEmbed = {
 		color: 'C9572A',
 		author: {
-			name: `${bannedUser.user.username} (ID ${bannedUser.user.id})`,
-			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true }),
+			name: `${target.username} (ID ${target.id})`,
+			icon_url: target.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
 			{
 				name: 'Mention',
-				value: bannedUser.user.toString(),
+				value: target.toString(),
 				inline: true,
 			},
 			{
 				name: 'Date de création du compte',
-				value: convertDateForDiscord(bannedUser.user.createdAt),
+				value: convertDateForDiscord(target.createdAt),
 				inline: true,
 			},
 			{
 				name: 'Âge du compte',
-				value: diffDate(bannedUser.user.createdAt),
+				value: diffDate(target.createdAt),
 				inline: true,
 			},
 		],
 		timestamp: new Date(),
 	}
 
-	const { executor, target } = fetchedLog
-
 	// Détermination du modérateur ayant effectué le bannissement
-	if (target.id === bannedUser.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
+	if (target.id === ban.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
 			text: `Membre banni par ${executor.tag}`,
@@ -61,8 +58,8 @@ export default async (ban, client) => {
 		}
 
 	// Raison du bannissement
-	if (bannedUser.reason) {
-		const escapedcontent = Util.escapeCodeBlock(bannedUser.reason)
+	if (reason) {
+		const escapedcontent = Util.escapeCodeBlock(reason)
 		logEmbed.description = `\`\`\`\n${escapedcontent}\`\`\``
 	}
 
