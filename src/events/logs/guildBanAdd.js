@@ -17,37 +17,40 @@ export default async (ban, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
-	const { executor, target, reason } = fetchedLog
+	// Fetch du ban
+	const bannedUser = await ban.fetch()
 
 	// Création de l'embed
 	const logEmbed = {
 		color: 'C9572A',
 		author: {
-			name: `${target.username} (ID ${target.id})`,
-			icon_url: target.displayAvatarURL({ dynamic: true }),
+			name: `${bannedUser.user.username} (ID ${bannedUser.user.id})`,
+			icon_url: bannedUser.user.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
 			{
 				name: 'Mention',
-				value: target.toString(),
+				value: bannedUser.user.toString(),
 				inline: true,
 			},
 			{
 				name: 'Date de création du compte',
-				value: convertDateForDiscord(target.createdAt),
+				value: convertDateForDiscord(bannedUser.user.createdAt),
 				inline: true,
 			},
 			{
 				name: 'Âge du compte',
-				value: diffDate(target.createdAt),
+				value: diffDate(bannedUser.user.createdAt),
 				inline: true,
 			},
 		],
 		timestamp: new Date(),
 	}
 
+	const { executor, target } = fetchedLog
+
 	// Détermination du modérateur ayant effectué le bannissement
-	if (target.id === ban.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
+	if (target.id === bannedUser.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
 			text: `Membre banni par ${executor.tag}`,
@@ -58,8 +61,8 @@ export default async (ban, client) => {
 		}
 
 	// Raison du bannissement
-	if (reason) {
-		const escapedcontent = Util.escapeCodeBlock(reason)
+	if (bannedUser.reason) {
+		const escapedcontent = Util.escapeCodeBlock(bannedUser.reason)
 		logEmbed.description = `\`\`\`\n${escapedcontent}\`\`\``
 	}
 

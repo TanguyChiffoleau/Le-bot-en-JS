@@ -1,5 +1,5 @@
-import { GuildAuditLogs } from 'discord.js'
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
+import { GuildAuditLogs } from 'discord.js'
 
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
@@ -17,34 +17,34 @@ export default async (ban, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
-	const { executor, target } = fetchedLog
-
 	// Création de l'embed
 	const logEmbed = {
 		color: '57C92A',
 		author: {
-			name: `${target.username} (ID ${target.id})`,
-			icon_url: target.displayAvatarURL({ dynamic: true }),
+			name: `${ban.user.username} (ID ${ban.user.id})`,
+			icon_url: ban.user.displayAvatarURL({ dynamic: true }),
 		},
 		fields: [
 			{
 				name: 'Mention',
-				value: target.toString(),
+				value: ban.user.toString(),
 				inline: true,
 			},
 			{
 				name: 'Date de création du compte',
-				value: convertDateForDiscord(target.createdAt),
+				value: convertDateForDiscord(ban.user.createdAt),
 				inline: true,
 			},
 			{
 				name: 'Âge du compte',
-				value: diffDate(target.createdAt),
+				value: diffDate(ban.user.createdAt),
 				inline: true,
 			},
 		],
 		timestamp: new Date(),
 	}
+
+	const { executor, target } = fetchedLog
 
 	// Détermination du modérateur ayant effectué le débannissement
 	if (target.id === ban.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
