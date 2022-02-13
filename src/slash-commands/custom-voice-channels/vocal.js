@@ -138,13 +138,6 @@ export default {
 			case 'set':
 				const participants = interaction.options.getInteger('participants')
 
-				// Si l'utilisateur n'est pas dans un salon vocal
-				if (!voiceChannel)
-					return interaction.reply({
-						content: 'Tu dois être dans un salon vocal pour utiliser cette commande 😕',
-						ephemeral: true,
-					})
-
 				if (participants) {
 					await voiceChannel.setUserLimit(participants)
 					return participants > 1
