@@ -17,7 +17,7 @@
 
 ## À propos
 
-Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et spécialement pour le serveur discord **Entraide Informatique - Capet & CTRL-F**.
+Le-bot-en-JS est un bot Discord open-source codé en JS conçu principalement et spécialement pour le serveur Discord **Entraide Informatique - Capet & CTRL-F**.
 
 [![Discord entraide](https://img.shields.io/discord/475253577288253440?color=%237289DA&logo=discord&logoColor=white)](https://www.discord.gg/informatique)
 
@@ -33,7 +33,7 @@ Une fois votre application et bot créés, vous devez récupérer le token du bo
 
 ### Invitation du bot
 
-Pour inviter le bot sur un serveur, il faut créer un lien d'invitation. Il est nécessaire d'avoir l'ID du client. Voici le lien type utilisé pour ce bot : `https://discord.com/oauth2/authorize?client_id=INSERT_CLIENT_ID_HERE&scope=bot&permissions=419540176`.
+Pour inviter le bot sur un serveur, il faut créer un lien d'invitation. Il est nécessaire d'avoir l'ID du client. Voici le lien type utilisé pour ce bot : `https://discord.com/oauth2/authorize?client_id=INSERT_CLIENT_ID_HERE&scope=bot%20applications.commands&permissions=419540176`.
 
 > Remplacez `INSERT_CLIENT_ID_HERE` par l'ID de votre application.
 
