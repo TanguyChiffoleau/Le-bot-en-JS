@@ -134,6 +134,7 @@ export default {
 					content: `Ton salon a bien été créé : ${noMicChannel} 👌`,
 					ephemeral: true,
 				})
+
 			case 'set':
 				const participants = interaction.options.getInteger('participants')
 
@@ -157,6 +158,7 @@ export default {
 						  })
 				}
 				break
+
 			case 'clearlimit':
 				await voiceChannel.setUserLimit(0)
 				return interaction.reply({
