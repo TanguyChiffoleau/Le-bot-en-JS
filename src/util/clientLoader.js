@@ -43,7 +43,7 @@ export default () => {
 		// les log lors de l'event "messageDelete"
 		deleteMessagesID: new Set(),
 	}
-	// Map utilisé pour la commande "roles"
+	// Map utilisé pour la commande "rôles"
 	client.commandsCategories = new Map()
 	// Map utilisé pour la gestion des salons vocaux
 	client.voiceManager = new Map()

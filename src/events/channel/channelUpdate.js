@@ -12,10 +12,10 @@ export default (oldChannel, newChannel, client) => {
 
 	const { id: voiceChannelID, name: voiceChannelName } = newChannel
 
-	// Acquisition du salon no mic, et return s'il n'y en a pas
+	// Acquisition du salon no-mic, et return s'il n'y en a pas
 	const noMicChannel = client.voiceManager.get(voiceChannelID)
 	if (!noMicChannel) return
 
-	// Rename du salon avec no mic + le nouveau nom du vocal
+	// Rename du salon avec no-mic + le nouveau nom du vocal
 	return noMicChannel.edit({ name: `No-mic ${voiceChannelName}` })
 }

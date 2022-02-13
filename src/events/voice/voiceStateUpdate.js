@@ -4,11 +4,11 @@ const handleLeave = (oldState, newState, client) => {
 
 	// S'il le salon qu'il a quitté est vide
 	if (oldState.channel.members.size === 0) {
-		// Acquisition du salon nomic
+		// Acquisition du salon no-mic
 		const noMicChannel = client.voiceManager.get(oldState.channelId)
 		// S'il existe
 		if (noMicChannel)
-			// On supprime le salon nomic
+			// On supprime le salon no-mic
 			noMicChannel.delete()
 
 		// On supprime le salon de la map
