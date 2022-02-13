@@ -8,7 +8,7 @@ export default async (ban, client) => {
 	const logsChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
 	if (!logsChannel) return
 
-	// Fetch du membre banni
+	// Fetch de l'event de ban
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
 			type: Constants.Events.GUILD_BAN_ADD,

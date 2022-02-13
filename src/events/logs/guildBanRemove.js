@@ -8,7 +8,7 @@ export default async (ban, client) => {
 	const logsChannel = ban.guild.channels.cache.get(client.config.logsBansChannelID)
 	if (!logsChannel) return
 
-	// Fetch du membre banni
+	// Fetch de l'event d'unban
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
 			type: Constants.Events.GUILD_BAN_REMOVE,
@@ -46,7 +46,7 @@ export default async (ban, client) => {
 		timestamp: new Date(),
 	}
 
-	// Détermination du modérateur ayant effectué le bannissement
+	// Détermination du modérateur ayant effectué le débannissement
 	if (target.id === ban.user.id && fetchedLog.createdTimestamp > Date.now() - 5000)
 		logEmbed.footer = {
 			icon_url: executor.displayAvatarURL({ dynamic: true }),
