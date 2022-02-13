@@ -1,4 +1,4 @@
-import { Permissions } from 'discord.js'
+import { Permissions, Constants } from 'discord.js'
 
 const handleLeave = (oldState, newState, client) => {
 	// S'il quitte un salon non personnalisé, on return
@@ -45,7 +45,7 @@ const handleJoin = async (newState, client) => {
 		const createdChannel = await newState.guild.channels.create(
 			`Vocal de ${member.displayName}`,
 			{
-				type: 'GUILD_VOICE',
+				type: Constants.ChannelTypes.GUILD_VOICE,
 				parent: newState.channel.parent,
 				permissionOverwrites: [
 					{
