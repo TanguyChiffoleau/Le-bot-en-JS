@@ -84,10 +84,8 @@ export default {
 					noMicChannel.permissionOverwrites.cache
 						.filter(
 							permissionOverwrites =>
-								!(
-									permissionOverwrites.allow.has('MANAGE_MESSAGES') ||
-									permissionOverwrites.deny.has('SEND_MESSAGES')
-								),
+								!permissionOverwrites.allow.has('MANAGE_MESSAGES') ||
+								!permissionOverwrites.deny.has('SEND_MESSAGES'),
 						)
 						.map(permission => permission.delete()),
 				)
