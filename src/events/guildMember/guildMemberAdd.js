@@ -70,7 +70,7 @@ export default async (guildMember, client) => {
 	// Création du collecteur de réactions de ban
 	const banReactions = await sentMessage.awaitReactions({
 		filter: banReactionFilter,
-		// Une seule réaction/émoji/user
+		// Une seule réaction / émoji / user
 		max: 1,
 		maxEmojis: 1,
 		maxUsers: 1,
@@ -99,7 +99,7 @@ export default async (guildMember, client) => {
 	// Création du collecteur de réactions de confirmation
 	const confirmationReactions = await sentMessage.awaitReactions({
 		filter: confirmReactionFilter,
-		// Une seule réaction/émoji/user
+		// Une seule réaction / émoji / user
 		max: 1,
 		maxEmojis: 1,
 		maxUsers: 1,
@@ -114,7 +114,7 @@ export default async (guildMember, client) => {
 	// Si pas de réaction de confirmation return
 	if (!confirmationReactions) return
 
-	// Définition de la variable "reason" suivant la réaction cliquée
+	// Définition de la variable "reason" en fonction de la réaction cliquée
 	const reason = emotesConfig.get(banReactionEmoji.name) || emotesConfig.get(banReactionEmoji.id)
 
 	// Lecture du message de ban

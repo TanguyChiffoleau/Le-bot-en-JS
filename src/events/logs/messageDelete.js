@@ -87,7 +87,7 @@ export default async (message, client) => {
 		logEmbed.description = `\`\`\`\n${escapedcontent}\`\`\``
 	}
 
-	// Partie attachements (fichiers, images...)
+	// Partie attachments (fichiers, images, etc.)
 	const attachments = message.attachments
 	if (attachments.size <= 0) return logsChannel.send({ embeds: [logEmbed] })
 
@@ -97,9 +97,9 @@ export default async (message, client) => {
 	)
 
 	// Partie image
-	// Étant donné que les données sont supprimées de discord
+	// Étant donné que les données sont supprimées de Discord
 	// avant de recevoir l'event, il est possible de récupérer
-	// les images via les proxy car elles resent disponibles quelques
+	// les images via les proxy car elles restent disponibles quelques
 	// temps après la suppression du message
 	if (imageAttachments.size === 1) {
 		const image = imageAttachments.first()
@@ -129,7 +129,7 @@ export default async (message, client) => {
 	)
 
 	// Partie fichiers
-	// Étant donné que les données sont supprimées de discord
+	// Étant donné que les données sont supprimées de Discord
 	// avant de recevoir l'event, il est impossible de récupérer
 	// les données pour pouvoir les logs
 	// TODO : trouver une solution

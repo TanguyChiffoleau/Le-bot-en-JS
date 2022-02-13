@@ -50,7 +50,7 @@ export default {
 		switch (interaction.options.getSubcommand()) {
 			// Nouveau vote
 			case 'create':
-				// Envoie du message de vote
+				// Envoi du message de vote
 				const sentMessage = await interaction.reply({
 					embeds: [
 						{

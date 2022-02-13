@@ -16,7 +16,7 @@ export default async (messageReaction, user, client) => {
 	)
 		return
 
-	// Partie système de réaction/role
+	// Partie système de réactions / rôles
 	if (client.reactionRoleMap.has(message.id)) {
 		const emojiRoleMap = client.reactionRoleMap.get(message.id)
 		const resolvedEmoji = emoji.id || emoji.name
@@ -45,7 +45,7 @@ export default async (messageReaction, user, client) => {
 		case '🚨': {
 			if (message.author.bot || !message.guild) return
 
-			// On ne peut pas report un message posté pour soit-même
+			// On ne peut pas report un message posté pour soi-même
 			if (message.author === user) return messageReaction.users.remove(user)
 
 			const reportChannel = message.guild.channels.cache.get(client.config.reportChannelID)
@@ -108,7 +108,7 @@ export default async (messageReaction, user, client) => {
 				return logReport.edit({ embeds: [editLogReport] })
 			}
 
-			// Si il n'a pas de report déjà posté
+			// S'il n'y a pas de report déjà posté
 			const sendLogReport = {
 				author: {
 					name: 'Nouveau signalement',
@@ -211,7 +211,7 @@ export default async (messageReaction, user, client) => {
 					break
 			}
 
-			// Envoie de l'embed
+			// Envoi de l'embed
 			return reportChannel.send({ embeds: [sendLogReport] })
 		}
 

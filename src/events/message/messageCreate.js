@@ -18,7 +18,7 @@ export default async (message, client) => {
 
 	// Si le message vient d'une guild, on vérifie
 	if (message.member) {
-		// si le pseudo respecte bien les règles
+		// Si le pseudo respecte bien les règles
 		modifyWrongUsernames(message.member).catch(() => null)
 
 		// Si c'est un salon autre que blabla
@@ -52,7 +52,7 @@ export default async (message, client) => {
 		])
 	}
 
-	// Répondre émote si @bot
+	// Répondre émoji si @bot
 	if (message.mentions.users.has(client.user.id)) {
 		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
 		if (pingEmoji) message.react(pingEmoji)
@@ -60,7 +60,7 @@ export default async (message, client) => {
 
 	// Partie citation
 	if (message.guild) {
-		// Regex pour match les liens discord
+		// Regex pour match les liens Discord
 		const regexGlobal =
 			/https:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/channels\/(\d{17,19})\/(\d{17,19})\/(\d{17,19})/g
 		const regex =
@@ -92,7 +92,7 @@ export default async (message, client) => {
 							.fetch(messageId)
 							.catch(() => null)
 						// On ne fait pas la citation si le
-						// message n'a ni contenu écrit ni attachements
+						// message n'a ni contenu écrit ni attachments
 						if (
 							!foundMessage ||
 							(!foundMessage.content && !foundMessage.attachments.size)
@@ -151,7 +151,7 @@ export default async (message, client) => {
 				)} le ${convertDate(message.createdAt)}`
 			}
 
-			// Partie pour gérer les attachements
+			// Partie pour gérer les attachments
 			const attachments = validMessage.attachments
 			if (attachments.size === 1 && isImage(attachments.first().name))
 				embed.image = { url: attachments.first().url }
@@ -168,7 +168,7 @@ export default async (message, client) => {
 			return message.channel.send({ embeds: [embed] })
 		})
 
-		// Si le message ne contenais que un(des) lien(s),
+		// Si le message ne contient que un(des) lien(s),
 		// on supprime le message, ne laissant que les embeds
 		if (
 			!message.content.replace(regexGlobal, '').trim() &&
