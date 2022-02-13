@@ -1,5 +1,5 @@
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
-import { Util, Constants } from 'discord.js'
+import { Util } from 'discord.js'
 
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
@@ -11,7 +11,7 @@ export default async (ban, client) => {
 	// Fetch de l'event de ban
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
-			type: Constants.Events.GUILD_BAN_ADD,
+			type: 'MEMBER_BAN_ADD',
 			limit: 1,
 		})
 	).entries.first()

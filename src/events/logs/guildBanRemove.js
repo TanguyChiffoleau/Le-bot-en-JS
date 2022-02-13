@@ -1,5 +1,4 @@
 import { convertDateForDiscord, diffDate } from '../../util/util.js'
-import { Constants } from 'discord.js'
 
 export default async (ban, client) => {
 	if (ban.user.bot || ban.guild.id !== client.config.guildID || !ban.guild.available) return
@@ -11,7 +10,7 @@ export default async (ban, client) => {
 	// Fetch de l'event d'unban
 	const fetchedLog = (
 		await ban.guild.fetchAuditLogs({
-			type: Constants.Events.GUILD_BAN_REMOVE,
+			type: 'MEMBER_BAN_REMOVE',
 			limit: 1,
 		})
 	).entries.first()
