@@ -136,16 +136,16 @@ export default {
 				})
 
 			case 'set':
-				const participants = interaction.options.getInteger('participants')
+				const nbUser = interaction.options.getInteger('participants')
 
-				await voiceChannel.setUserLimit(participants)
-				return participants > 1
+				const { userLimit: returnedNbUser } = await voiceChannel.setUserLimit(nbUser)
+				return returnedNbUser > 1
 					? interaction.reply({
-							content: `Limite définie 👌\n${participants} participants autorisés à rejoindre le salon vocal`,
+							content: `Limite définie 👌\n${nbUser} participants autorisés à rejoindre le salon vocal`,
 							ephemeral: true,
 					  })
 					: interaction.reply({
-							content: `Limite définie 👌\n${participants} participant autorisé à rejoindre le salon vocal`,
+							content: `Limite définie 👌\n1 participant autorisé à rejoindre le salon vocal`,
 							ephemeral: true,
 					  })
 
