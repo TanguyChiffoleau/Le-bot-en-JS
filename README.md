@@ -17,7 +17,7 @@
 
 ## À propos
 
-Le-bot-en-JS est un bot discord open-source codé en JS conçu principalement et spécialement pour le serveur discord **Entraide Informatique - Capet & CTRL-F**.
+Le-bot-en-JS est un bot Discord open-source codé en JS conçu principalement et spécialement pour le serveur Discord **Entraide Informatique - Capet & CTRL-F**.
 
 [![Discord entraide](https://img.shields.io/discord/475253577288253440?color=%237289DA&logo=discord&logoColor=white)](https://www.discord.gg/informatique)
 
@@ -33,7 +33,7 @@ Une fois votre application et bot créés, vous devez récupérer le token du bo
 
 ### Invitation du bot
 
-Pour inviter le bot sur un serveur, il faut créer un lien d'invitation. Il est nécessaire d'avoir l'ID du client. Voici le lien type utilisé pour ce bot : `https://discord.com/oauth2/authorize?client_id=INSERT_CLIENT_ID_HERE&scope=bot&permissions=419540176`.
+Pour inviter le bot sur un serveur, il faut créer un lien d'invitation. Il est nécessaire d'avoir l'ID du client. Voici le lien type utilisé pour ce bot : `https://discord.com/oauth2/authorize?client_id=INSERT_CLIENT_ID_HERE&scope=bot%20applications.commands&permissions=419540176`.
 
 > Remplacez `INSERT_CLIENT_ID_HERE` par l'ID de votre application.
 
@@ -213,7 +213,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 
 | Variable                    | Description                                                                                                                                                                                                |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DISCORD_TOKEN               | [Token secret du bot discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)                                                                                           |
+| DISCORD_TOKEN               | [Token secret du bot Discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#your-token)                                                                                           |
 | COMMANDS_PREFIX             | Préfixe utilisé pour intéragir avec le bot                                                                                                                                                                 |
 | TIMEZONE                    | Fuseau horaire utilisé pour le formatage des dates. Variable optionnelle, prenda par défaut le fuseau horaire du système. Format UTC ou [format IANA de fuseaux horaires](https://www.iana.org/time-zones) |
 | GUILD_ID                    | ID du serveur (= guild) sur lequel le bot est utilisé                                                                                                                                                      |
@@ -231,7 +231,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | NOTEXT_MANAGER_CHANNELS_IDS | ID des salons dont les messages doivent comporter au moins un attachement (vidéo, photo...) pour ne pas êtres supprimés. Les ID doivent être séparés par une virgule                                       |
 
 
-> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+> Pour pouvoir récupérer les identifiants (ID) sur Discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
 </details>
 
@@ -293,7 +293,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > ]
 > ```
 
-> Pour pouvoir récupérer les identifiants (ID) sur discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
+> Pour pouvoir récupérer les identifiants (ID) sur Discord, il faut [activer le mode développeur](https://support.discord.com/hc/fr/articles/206346498-O%C3%B9-trouver-l-ID-de-mon-compte-utilisateur-serveur-message-).
 
 > Pour désactiver le système, le fichier doit être composé d'un tableau (array) **vide** :
 > ```js
