@@ -30,6 +30,8 @@ export default {
 			option
 				.setName('nombre')
 				.setDescription('Nombre de message à supprimer (1 à 99)')
+				.setMinValue(1)
+				.setMaxValue(99)
 				.setRequired(true),
 		)
 		.addBooleanOption(option =>
@@ -40,12 +42,6 @@ export default {
 		// Acquisition du nombre de messages à supprimer et du silent
 		const chosenNumber = interaction.options.getInteger('nombre')
 		const ephemeral = interaction.options.getBoolean('silent')
-
-		if (chosenNumber < 1 || chosenNumber > 99)
-			return interaction.reply({
-				content: "Tu n'as pas donné un nombre compris entre 1 et 99 inclus 😕",
-				ephemeral: true,
-			})
 
 		// Acquisition du salon de logs
 		const logsChannel = interaction.guild.channels.cache.get(
