@@ -2,6 +2,7 @@
 /* eslint-disable default-case */
 import { convertSecondsToString } from '../../util/util.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { Permissions } from 'discord.js'
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export default {
@@ -25,7 +26,7 @@ export default {
 					option.setName('durée').setDescription('Durée du slowmode (en secondes)'),
 				),
 		),
-	requirePermissions: ['MANAGE_MESSAGES'],
+	requirePermissions: [Permissions.FLAGS.MANAGE_MESSAGES],
 	interaction: async interaction => {
 		switch (interaction.options.getSubcommand()) {
 			// Ajout d'un cooldown

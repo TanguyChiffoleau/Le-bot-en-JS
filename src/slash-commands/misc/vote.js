@@ -71,7 +71,7 @@ export default {
 
 				// Création automatique du thread associé
 				if (thread)
-					await interaction.channel.threads.create({
+					await sentMessage.startThread({
 						name: `Vote de ${interaction.member.displayName}`,
 						// Archivage après 24H
 						autoArchiveDuration: 24 * 60,

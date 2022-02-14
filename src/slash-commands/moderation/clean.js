@@ -3,7 +3,7 @@ import {
 	displayNameAndID,
 	convertDateForDiscord,
 } from '../../util/util.js'
-import { Util } from 'discord.js'
+import { Util, Permissions } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
 const isEmbedExceedingLimits = embeds =>
@@ -35,7 +35,7 @@ export default {
 		.addBooleanOption(option =>
 			option.setName('silent').setDescription('Exécuter la commande silencieusement'),
 		),
-	requirePermissions: ['MANAGE_MESSAGES'],
+	requirePermissions: [Permissions.FLAGS.MANAGE_MESSAGES],
 	interaction: async (interaction, client) => {
 		// Acquisition du nombre de messages à supprimer et du silent
 		const chosenNumber = interaction.options.getInteger('nombre')

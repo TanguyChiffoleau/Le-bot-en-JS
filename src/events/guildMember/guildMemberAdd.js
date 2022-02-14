@@ -1,6 +1,6 @@
 import { convertDateForDiscord, diffDate, modifyWrongUsernames } from '../../util/util.js'
 import { readFile } from 'fs/promises'
-import { Constants, Message, GuildMember, MessageEmbed } from 'discord.js'
+import { Constants, Permissions, Message, GuildMember, MessageEmbed } from 'discord.js'
 
 const removeAddedReactions = reactions => Promise.all(reactions.map(reaction => reaction.remove()))
 
@@ -64,7 +64,10 @@ export default async (guildMember, client) => {
 	// Filtre pour la réaction de ban
 	const banReactionFilter = ({ _emoji: emoji }, user) =>
 		(emotesConfig.has(emoji.name) || emotesConfig.has(emoji.id)) &&
-		guild.members.cache.get(user.id).permissionsIn(leaveJoinChannel).has('BAN_MEMBERS') &&
+		guild.members.cache
+			.get(user.id)
+			.permissionsIn(leaveJoinChannel)
+			.has(Permissions.FLAGS.BAN_MEMBERS) &&
 		!user.bot
 
 	// Création du collecteur de réactions de ban

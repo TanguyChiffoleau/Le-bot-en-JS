@@ -1,5 +1,5 @@
 import { isImage, getFileInfos, displayNameAndID, convertDateForDiscord } from '../../util/util.js'
-import { MessageAttachment, Util } from 'discord.js'
+import { MessageAttachment, Util, GuildAuditLogs } from 'discord.js'
 import bent from 'bent'
 
 const getLinkBuffer = url => {
@@ -28,7 +28,7 @@ export default async (message, client) => {
 	// Fetch du message supprimé
 	const fetchedLog = (
 		await message.guild.fetchAuditLogs({
-			type: 'MESSAGE_DELETE',
+			type: GuildAuditLogs.Actions.MESSAGE_DELETE,
 			limit: 1,
 		})
 	).entries.first()
