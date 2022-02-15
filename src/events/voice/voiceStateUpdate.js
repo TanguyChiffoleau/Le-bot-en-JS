@@ -69,7 +69,6 @@ const handleJoin = async (newState, client) => {
 	if (noMicChannel)
 		// On lui donne la permission de voir le salon
 		return noMicChannel.permissionOverwrites.edit(newState.id, {
-			CREATE_INSTANT_INVITE: false,
 			VIEW_CHANNEL: true,
 			SEND_MESSAGES: true,
 			READ_MESSAGE_HISTORY: true,
