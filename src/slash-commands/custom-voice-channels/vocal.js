@@ -10,7 +10,7 @@ export default {
 		.setDescription('Gère les salons vocaux')
 		.addSubcommand(subcommand =>
 			subcommand
-				.setName('nomic')
+				.setName('no-mic')
 				.setDescription(
 					'Crée un salon textuel no-mic si tu es connecté dans un salon vocal personnalisé',
 				),
@@ -32,7 +32,7 @@ export default {
 		)
 		.addSubcommand(subcommand =>
 			subcommand
-				.setName('clearlimit')
+				.setName('clear-limit')
 				.setDescription('Supprime la limite de participants pour le salon vocal'),
 		),
 	requirePermissions: [],
@@ -55,7 +55,7 @@ export default {
 			})
 
 		switch (interaction.options.getSubcommand()) {
-			case 'nomic':
+			case 'no-mic':
 				// Check s'il y a déjà un salon no-mic
 				const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 				if (existingNoMicChannel)
@@ -74,58 +74,52 @@ export default {
 							interaction.user,
 						)}`,
 						parent: voiceChannel.parent,
+						// Setup les permissions (pas d'accès)
+						// pour le rôle everyone
+						permissionOverwrites: [
+							{
+								id: interaction.guild.id,
+								deny: [
+									Permissions.FLAGS.CREATE_INSTANT_INVITE,
+									Permissions.FLAGS.MANAGE_CHANNELS,
+									Permissions.FLAGS.MANAGE_ROLES,
+									Permissions.FLAGS.MANAGE_WEBHOOKS,
+									Permissions.FLAGS.VIEW_CHANNEL,
+									Permissions.FLAGS.SEND_MESSAGES,
+									Permissions.FLAGS.SEND_TTS_MESSAGES,
+									Permissions.FLAGS.MANAGE_MESSAGES,
+									Permissions.FLAGS.EMBED_LINKS,
+									Permissions.FLAGS.ATTACH_FILES,
+									Permissions.FLAGS.READ_MESSAGE_HISTORY,
+									Permissions.FLAGS.MENTION_EVERYONE,
+									Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
+									Permissions.FLAGS.USE_EXTERNAL_STICKERS,
+									Permissions.FLAGS.ADD_REACTIONS,
+								],
+							},
+						],
 					},
 				)
 
-				// Suppression des permissions existantes sauf
-				// pour les rôles qui peuvent supprimer les messages (modos)
-				// ou qui ne peuvent pas envoyer de messages (muted)
-				await Promise.all(
-					noMicChannel.permissionOverwrites.cache
-						.filter(
-							permissionOverwrites =>
-								!permissionOverwrites.allow.has('MANAGE_MESSAGES') ||
-								!permissionOverwrites.deny.has('SEND_MESSAGES'),
-						)
-						.map(permission => permission.delete()),
-				)
-
 				// Setup des permissions
-				await Promise.all([
-					// Setup les permissions (pas d'accès) pour le rôle everyone
-					noMicChannel.permissionOverwrites.set([
-						{
-							id: interaction.guild.id,
-							deny: [
-								Permissions.FLAGS.CREATE_INSTANT_INVITE,
-								Permissions.FLAGS.MANAGE_CHANNELS,
-								Permissions.FLAGS.MANAGE_ROLES,
-								Permissions.FLAGS.MANAGE_WEBHOOKS,
-								Permissions.FLAGS.VIEW_CHANNEL,
-								Permissions.FLAGS.SEND_MESSAGES,
-								Permissions.FLAGS.SEND_TTS_MESSAGES,
-								Permissions.FLAGS.MANAGE_MESSAGES,
-								Permissions.FLAGS.EMBED_LINKS,
-								Permissions.FLAGS.ATTACH_FILES,
-								Permissions.FLAGS.READ_MESSAGE_HISTORY,
-								Permissions.FLAGS.MENTION_EVERYONE,
-								Permissions.FLAGS.USE_EXTERNAL_EMOJIS,
-								Permissions.FLAGS.USE_EXTERNAL_STICKERS,
-								Permissions.FLAGS.ADD_REACTIONS,
-							],
-						},
-					]),
-
+				await Promise.all(
 					// Accès au salon pour les membres présents
-					...voiceChannel.members.map(member =>
-						noMicChannel.permissionOverwrites.edit(member.id, {
-							VIEW_CHANNEL: true,
-							SEND_MESSAGES: true,
-							READ_MESSAGE_HISTORY: true,
-							CREATE_INSTANT_INVITE: false,
-						}),
-					),
-				])
+					voiceChannel.members.map(member => {
+						// eslint-disable-next-line no-unused-expressions
+						member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)
+							? noMicChannel.permissionOverwrites.edit(member.id, {
+									VIEW_CHANNEL: true,
+									SEND_MESSAGES: true,
+									READ_MESSAGE_HISTORY: true,
+									MANAGE_MESSAGES: true,
+							  })
+							: noMicChannel.permissionOverwrites.edit(member.id, {
+									VIEW_CHANNEL: true,
+									SEND_MESSAGES: true,
+									READ_MESSAGE_HISTORY: true,
+							  })
+					}),
+				)
 
 				// Ajout du salon dans la map
 				client.voiceManager.set(voiceChannel.id, noMicChannel)
@@ -151,7 +145,7 @@ export default {
 							ephemeral: true,
 					  })
 
-			case 'clearlimit':
+			case 'clear-limit':
 				await voiceChannel.setUserLimit(0)
 				return interaction.reply({
 					content: `Limite supprimée 👌`,
