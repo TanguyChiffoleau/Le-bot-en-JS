@@ -33,6 +33,7 @@ export default () => {
 		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
 		blablaChannelID: process.env.BLABLA_CHANNEL_ID,
 		timeoutJoin: process.env.TIMEOUT_JOIN,
+		richPresenceText: process.env.RICH_PRESENCE_TEXT,
 		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],

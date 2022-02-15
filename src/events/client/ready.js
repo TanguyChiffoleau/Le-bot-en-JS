@@ -31,7 +31,7 @@ export default async client => {
 	await client.user.setPresence({
 		activities: [
 			{
-				name: "Optimiser l'effet placebo",
+				name: client.config.richPresenceText,
 				type: 'PLAYING',
 			},
 		],
