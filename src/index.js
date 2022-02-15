@@ -4,7 +4,7 @@ import eventsLoader from './events/loader.js'
 import { closeGracefully } from './util/util.js'
 
 const run = async () => {
-	console.log('Starting the app...')
+	console.log('Starting the app ...')
 
 	// Chargement des variables d'environnement si l'environnement
 	// n'est pas "production"
@@ -15,9 +15,19 @@ const run = async () => {
 
 	const client = prepareClient()
 
-	await eventsLoader(client)
-
 	await client.login(process.env.DISCORD_TOKEN)
+
+	await client.user.setPresence({
+		activities: [
+			{
+				name: 'Starting ...',
+				type: 'PLAYING',
+			},
+		],
+		status: 'dnd',
+	})
+
+	await eventsLoader(client)
 
 	await slashCommandsLoader(client)
 

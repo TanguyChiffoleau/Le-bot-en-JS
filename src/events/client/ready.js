@@ -27,4 +27,14 @@ export default async client => {
 	}
 
 	console.log('Startup finished !')
+
+	await client.user.setPresence({
+		activities: [
+			{
+				name: "Optimiser l'effet placebo",
+				type: 'PLAYING',
+			},
+		],
+		status: 'online',
+	})
 }
