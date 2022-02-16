@@ -11,6 +11,7 @@ export default () => {
 		],
 		intents: [
 			Intents.FLAGS.GUILDS,
+			Intents.FLAGS.GUILD_PRESENCES,
 			Intents.FLAGS.GUILD_MEMBERS,
 			Intents.FLAGS.GUILD_BANS,
 			Intents.FLAGS.GUILD_MESSAGES,
