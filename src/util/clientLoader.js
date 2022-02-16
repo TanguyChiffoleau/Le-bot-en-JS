@@ -18,6 +18,15 @@ export default () => {
 			Intents.FLAGS.GUILD_VOICE_STATES,
 			Intents.FLAGS.DIRECT_MESSAGES,
 		],
+		presence: {
+			activities: [
+				{
+					name: 'Starting ...',
+					type: 'PLAYING',
+				},
+			],
+			status: 'dnd',
+		},
 	})
 	client.commands = new Collection()
 	client.cooldowns = new Collection()
