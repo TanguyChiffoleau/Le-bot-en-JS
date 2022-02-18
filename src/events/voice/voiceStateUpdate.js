@@ -35,7 +35,7 @@ const handleJoin = async (newState, client) => {
 		// Setup des permissions
 		const permissions = newState.channel.permissionOverwrites.cache.clone().set(member, {
 			id: member,
-			type: 'member',
+			type: Constants.OverwriteTypes.member,
 			allow: [
 				Permissions.FLAGS.VIEW_CHANNEL,
 				Permissions.FLAGS.CONNECT,
