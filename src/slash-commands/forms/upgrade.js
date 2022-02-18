@@ -5,7 +5,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 export default {
 	data: new SlashCommandBuilder()
 		.setName('upgrade')
-		.setDescription('Donne le formulaire des upgrades')
+		.setDescription("Donne le formulaire d'upgrade")
 		.addUserOption(option => option.setName('membre').setDescription('Membre')),
 	requirePermissions: [],
 	interaction: async (interaction, client) => {

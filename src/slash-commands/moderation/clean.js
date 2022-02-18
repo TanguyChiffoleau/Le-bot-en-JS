@@ -25,11 +25,11 @@ const isEmbedExceedingLimits = embeds =>
 export default {
 	data: new SlashCommandBuilder()
 		.setName('clean')
-		.setDescription('Supprime un nombre de messages donné dans le salon')
+		.setDescription('Supprime un nombre de messages donnés dans le salon')
 		.addIntegerOption(option =>
 			option
 				.setName('nombre')
-				.setDescription('Nombre de message à supprimer (1 à 99)')
+				.setDescription('Nombre de messages à supprimer (1 à 99)')
 				.setMinValue(1)
 				.setMaxValue(99)
 				.setRequired(true),
