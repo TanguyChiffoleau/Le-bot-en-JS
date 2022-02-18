@@ -1,5 +1,3 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable default-case */
 import { displayNameAndID } from '../../util/util.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { Permissions, Constants } from 'discord.js'
@@ -55,7 +53,7 @@ export default {
 			})
 
 		switch (interaction.options.getSubcommand()) {
-			case 'no-mic':
+			case 'no-mic': {
 				// Check s'il y a déjà un salon no-mic
 				const existingNoMicChannel = client.voiceManager.get(voiceChannel.id)
 				if (existingNoMicChannel)
@@ -130,8 +128,9 @@ export default {
 						ephemeral: true,
 					})
 					.catch(() => null)
+			}
 
-			case 'set':
+			case 'set': {
 				const nbUser = interaction.options.getInteger('participants')
 
 				const { userLimit: returnedNbUser } = await voiceChannel.setUserLimit(nbUser)
@@ -144,11 +143,18 @@ export default {
 							content: `Limite définie 👌\n1 participant autorisé à rejoindre le salon vocal`,
 							ephemeral: true,
 					  })
+			}
 
 			case 'clear-limit':
 				await voiceChannel.setUserLimit(0)
 				return interaction.reply({
 					content: `Limite supprimée 👌`,
+					ephemeral: true,
+				})
+
+			default:
+				return interaction.reply({
+					content: `Je ne connais pas cette sous-commande 😕`,
 					ephemeral: true,
 				})
 		}
