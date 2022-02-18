@@ -102,8 +102,8 @@ export default {
 				// Setup des permissions
 				await Promise.all(
 					// Accès au salon pour les membres présents
-					voiceChannel.members.map(member => {
-						// eslint-disable-next-line no-unused-expressions
+					// eslint-disable-next-line no-confusing-arrow
+					voiceChannel.members.map(member =>
 						member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)
 							? noMicChannel.permissionOverwrites.edit(member.id, {
 									VIEW_CHANNEL: true,
@@ -115,8 +115,8 @@ export default {
 									VIEW_CHANNEL: true,
 									SEND_MESSAGES: true,
 									READ_MESSAGE_HISTORY: true,
-							  })
-					}),
+							  }),
+					),
 				)
 
 				// Ajout du salon dans la map
