@@ -4,7 +4,7 @@ import eventsLoader from './events/loader.js'
 import { closeGracefully } from './util/util.js'
 
 const run = async () => {
-	console.log('Starting the app ...')
+	console.log('Starting the app...')
 
 	// Chargement des variables d'environnement si l'environnement
 	// n'est pas "production"

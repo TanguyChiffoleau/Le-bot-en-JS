@@ -22,7 +22,7 @@ export default () => {
 		presence: {
 			activities: [
 				{
-					name: 'Starting ...',
+					name: 'Starting...',
 					type: 'PLAYING',
 				},
 			],
