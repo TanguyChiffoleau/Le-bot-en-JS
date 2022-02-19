@@ -62,6 +62,8 @@ export default {
 						ephemeral: true,
 					})
 
+				await interaction.deferReply({ ephemeral: true })
+
 				// Crée le salon no-mic
 				const noMicChannel = await interaction.guild.channels.create(
 					`No-mic ${voiceChannel.name}`,
@@ -122,12 +124,10 @@ export default {
 				// Ajout du salon dans la map
 				client.voiceManager.set(voiceChannel.id, noMicChannel)
 
-				return interaction
-					.reply({
-						content: `Ton salon a bien été créé : ${noMicChannel} 👌`,
-						ephemeral: true,
-					})
-					.catch(() => null)
+				return interaction.editReply({
+					content: `Ton salon a bien été créé : ${noMicChannel} 👌`,
+					ephemeral: true,
+				})
 			}
 
 			case 'set': {
