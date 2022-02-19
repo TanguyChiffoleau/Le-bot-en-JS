@@ -52,6 +52,18 @@ export default async (message, client) => {
 		])
 	}
 
+	// Si c'est un salon où un thread doit être créé
+	if (
+		client.config.threadsManagerChannelIDs.includes(message.channel.id) &&
+		message.author !== client.user
+	)
+		// Création automatique du thread associé
+		await message.startThread({
+			name: `Thread de ${message.member.displayName}`,
+			// Archivage après 24H
+			autoArchiveDuration: 24 * 60,
+		})
+
 	// Répondre émoji si @bot
 	if (message.mentions.users.has(client.user.id)) {
 		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
