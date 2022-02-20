@@ -74,7 +74,7 @@ export default {
 			})
 
 		return interaction.reply({
-			content: `Formulaire envoyé en message privé à ${member} 👌`,
+			content: `${member}, remplis le formulaire reçu en message privé puis poste le ici 👌`,
 		})
 	},
 }
