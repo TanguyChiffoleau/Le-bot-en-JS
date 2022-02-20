@@ -11,6 +11,7 @@ export default () => {
 		],
 		intents: [
 			Intents.FLAGS.GUILDS,
+			Intents.FLAGS.GUILD_PRESENCES,
 			Intents.FLAGS.GUILD_MEMBERS,
 			Intents.FLAGS.GUILD_BANS,
 			Intents.FLAGS.GUILD_MESSAGES,
@@ -18,6 +19,15 @@ export default () => {
 			Intents.FLAGS.GUILD_VOICE_STATES,
 			Intents.FLAGS.DIRECT_MESSAGES,
 		],
+		presence: {
+			activities: [
+				{
+					name: 'Starting...',
+					type: 'PLAYING',
+				},
+			],
+			status: 'dnd',
+		},
 	})
 	client.commands = new Collection()
 	client.cooldowns = new Collection()
@@ -33,6 +43,7 @@ export default () => {
 		upgradeChannelID: process.env.UPGRADE_CHANNEL_ID,
 		blablaChannelID: process.env.BLABLA_CHANNEL_ID,
 		timeoutJoin: process.env.TIMEOUT_JOIN,
+		richPresenceText: process.env.RICH_PRESENCE_TEXT,
 		voiceManagerChannelsIDs: process.env.VOICE_MANAGER_CHANNELS_IDS
 			? process.env.VOICE_MANAGER_CHANNELS_IDS.split(/, */)
 			: [],
