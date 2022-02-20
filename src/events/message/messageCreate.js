@@ -34,32 +34,33 @@ export default async (message, client) => {
 	// Si c'est un salon no-text
 	if (
 		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
-		message.author !== client.user &&
-		message.attachments.size < 1
+		message.author !== client.user
 	) {
-		const sentMessage = await message.channel.send(
-			`<@${message.author.id}>, tu dois mettre une image / vidéo 😕`,
-		)
-		return Promise.all([
-			message.delete(),
-			setTimeout(
-				() =>
-					sentMessage.delete().catch(error => {
-						if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE) console.error(error)
-					}),
-				7000,
-			),
-		])
-	}
+		if (message.attachments.size < 1) {
+			const sentMessage = await message.channel.send(
+				`<@${message.author.id}>, tu dois mettre une image / vidéo 😕`,
+			)
+			return Promise.all([
+				message.delete(),
+				setTimeout(
+					() =>
+						sentMessage.delete().catch(error => {
+							if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE)
+								console.error(error)
+						}),
+					// Suppression après 7 secondes
+					7 * 1000,
+				),
+			])
+		}
 
-	// Si c'est un salon où un thread doit être créé
-	if (client.config.noTextManagerChannelIDs.includes(message.channel.id))
 		// Création automatique du thread associé
-		await message.startThread({
+		return message.startThread({
 			name: `Thread de ${message.member.displayName}`,
 			// Archivage après 24H
 			autoArchiveDuration: 24 * 60,
 		})
+	}
 
 	// Répondre émoji si @bot
 	if (message.mentions.users.has(client.user.id)) {
