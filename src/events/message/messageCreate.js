@@ -32,10 +32,7 @@ export default async (message, client) => {
 	}
 
 	// Si c'est un salon no-text
-	if (
-		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
-		message.author !== client.user
-	) {
+	if (client.config.noTextManagerChannelIDs.includes(message.channel.id))
 		if (message.attachments.size < 1) {
 			const sentMessage = await message.channel.send(
 				`<@${message.author.id}>, tu dois mettre une image / vidéo 😕`,
@@ -54,13 +51,14 @@ export default async (message, client) => {
 			])
 		}
 
+	// Si c'est un salon auto-thread
+	if (client.config.threadsManagerChannelIDs.includes(message.channel.id))
 		// Création automatique du thread associé
 		return message.startThread({
 			name: `Thread de ${message.member.displayName}`,
 			// Archivage après 24H
 			autoArchiveDuration: 24 * 60,
 		})
-	}
 
 	// Répondre émoji si @bot
 	if (message.mentions.users.has(client.user.id)) {
