@@ -34,17 +34,20 @@ export default {
 			},
 			fields: [
 				{
-					name: 'Salon dans lequel renvoyer le formulaire complété',
-					value: interaction.guild.channels.cache
-						.get(client.config.configChannelID)
-						.toString(),
-				},
-				{
 					name: 'Précisions',
 					value: configDescription,
 				},
 			],
 		}
+
+		// Acquisition du salon
+		const configChannel = interaction.guild.channels.cache.get(client.config.configChannelID)
+		// Ajout salon du formulaire si le salon a été trouvé
+		if (configChannel)
+			embed.fields.unshift({
+				name: 'Salon dans lequel renvoyer le formulaire complété',
+				value: configChannel.toString(),
+			})
 
 		// Envoi du formulaire (en deux parties)
 		try {
@@ -73,8 +76,12 @@ export default {
 				ephemeral: true,
 			})
 
-		return interaction.reply({
-			content: `Formulaire envoyé en message privé à ${member} 👌`,
-		})
+		return configChannel
+			? interaction.reply({
+					content: `${member}, remplis le formulaire reçu en message privé puis poste le dans ${configChannel} 👌`,
+			  })
+			: interaction.reply({
+					content: `${member}, remplis le formulaire reçu en message privé 👌`,
+			  })
 	},
 }
