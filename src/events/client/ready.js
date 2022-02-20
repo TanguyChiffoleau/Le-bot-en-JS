@@ -27,4 +27,16 @@ export default async client => {
 	}
 
 	console.log('Startup finished !')
+
+	if (client.config.richPresenceText && client.config.richPresenceText !== '')
+		await client.user.setPresence({
+			activities: [
+				{
+					name: client.config.richPresenceText,
+					type: 'PLAYING',
+				},
+			],
+			status: 'online',
+		})
+	else await client.user.setPresence({ activities: [], status: 'online' })
 }
