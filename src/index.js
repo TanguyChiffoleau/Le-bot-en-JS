@@ -15,9 +15,9 @@ const run = async () => {
 
 	const client = prepareClient()
 
-	await client.login(process.env.DISCORD_TOKEN)
-
 	await eventsLoader(client)
+
+	await client.login(process.env.DISCORD_TOKEN)
 
 	await slashCommandsLoader(client)
 
