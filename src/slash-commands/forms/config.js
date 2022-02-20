@@ -23,9 +23,6 @@ export default {
 				ephemeral: true,
 			})
 
-		// Acquisition du salon
-		const configChannel = interaction.guild.channels.cache.get(client.config.configChannelID)
-
 		// Création de l'embed
 		const embed = {
 			color: '#C27C0E',
@@ -37,15 +34,20 @@ export default {
 			},
 			fields: [
 				{
-					name: 'Salon dans lequel renvoyer le formulaire complété',
-					value: configChannel.toString(),
-				},
-				{
 					name: 'Précisions',
 					value: configDescription,
 				},
 			],
 		}
+
+		// Acquisition du salon
+		const configChannel = interaction.guild.channels.cache.get(client.config.configChannelID)
+		// Ajout salon du formulaire si le salon a été trouvé
+		if (configChannel)
+			embed.fields.unshift({
+				name: 'Salon dans lequel renvoyer le formulaire complété',
+				value: configChannel.toString(),
+			})
 
 		// Envoi du formulaire (en deux parties)
 		try {
