@@ -53,10 +53,7 @@ export default async (message, client) => {
 	}
 
 	// Si c'est un salon où un thread doit être créé
-	if (
-		client.config.threadsManagerChannelIDs.includes(message.channel.id) &&
-		message.author !== client.user
-	)
+	if (client.config.noTextManagerChannelIDs.includes(message.channel.id))
 		// Création automatique du thread associé
 		await message.startThread({
 			name: `Thread de ${message.member.displayName}`,
