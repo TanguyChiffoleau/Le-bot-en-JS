@@ -205,6 +205,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 > CONFIG_CHANNEL_ID="123456789012345678"
 > UPGRADE_CHANNEL_ID="123456789012345678"
 > BLABLA_CHANNEL_ID="123456789012345678"
+> RICH_PRESENCE_TEXT="Texte de présence"
 > VOICE_MANAGER_CHANNELS_IDS=123456789012345678, 123456789012345678, 123456789012345678
 > NOLOGS_MANAGER_CHANNELS_IDS=123456789012345678, 123456789012345678, 123456789012345678
 > NOTEXT_MANAGER_CHANNELS_IDS=123456789012345678, 123456789012345678, 123456789012345678
@@ -226,6 +227,7 @@ Le bot repose sur les variables d'environnement pour pouvoir fonctionner.
 | CONFIG_CHANNEL_ID           | ID du salon utilisé pour diriger les formulaires de config en DM vers le bon channel                                                                                                                       |
 | UPGRADE_CHANNEL_ID          | ID du salon utilisé pour diriger les formulaires d'upgrade en DM vers le bon channel                                                                                                                       |
 | BLABLA_CHANNEL_ID           | ID du salon de chat général                                                                                                                                                                                |
+| RICH_PRESENCE_TEXT          | Texte de présence du bot                                                                                                                                                                                   |
 | VOICE_MANAGER_CHANNELS_IDS  | ID des salons vocaux utilisés pour le système de vocaux personnalisés. Les ID doivent être séparés par une virgule                                                                                         |
 | NOLOGS_MANAGER_CHANNELS_IDS | ID des salons dont les messages ne doivent pas être loggés. Les ID doivent être séparés par une virgule                                                                                                    |
 | NOTEXT_MANAGER_CHANNELS_IDS | ID des salons dont les messages doivent comporter au moins un attachement (vidéo, photo...) pour ne pas êtres supprimés. Les ID doivent être séparés par une virgule                                       |
