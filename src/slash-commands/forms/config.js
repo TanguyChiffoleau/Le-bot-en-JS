@@ -25,6 +25,11 @@ export default {
 
 		// Acquisition du salon
 		const configChannel = interaction.guild.channels.cache.get(client.config.configChannelID)
+		if (!configChannel)
+			return interaction.reply({
+				content: "Il n'y a pas de salon pour envoyer le formulaire complété 😕",
+				ephemeral: true,
+			})
 
 		// Création de l'embed
 		const embed = {
