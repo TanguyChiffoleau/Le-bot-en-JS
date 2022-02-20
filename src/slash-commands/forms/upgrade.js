@@ -74,7 +74,9 @@ export default {
 			})
 
 		return interaction.reply({
-			content: `${member}, remplis le formulaire reçu en message privé puis poste le ici 👌`,
+			content: `${member}, remplis le formulaire reçu en message privé puis poste le dans ${interaction.guild.channels.cache
+				.get(client.config.upgradeChannelID)
+				.toString()} 👌`,
 		})
 	},
 }
