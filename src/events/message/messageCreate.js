@@ -32,24 +32,25 @@ export default async (message, client) => {
 	}
 
 	// Si c'est un salon no-text
-	if (client.config.noTextManagerChannelIDs.includes(message.channel.id))
-		if (message.attachments.size < 1) {
-			const sentMessage = await message.channel.send(
-				`<@${message.author.id}>, tu dois mettre une image / vidéo 😕`,
-			)
-			return Promise.all([
-				message.delete(),
-				setTimeout(
-					() =>
-						sentMessage.delete().catch(error => {
-							if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE)
-								console.error(error)
-						}),
-					// Suppression après 7 secondes
-					7 * 1000,
-				),
-			])
-		}
+	if (
+		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
+		message.attachments.size < 1
+	) {
+		const sentMessage = await message.channel.send(
+			`<@${message.author.id}>, tu dois mettre une image / vidéo 😕`,
+		)
+		return Promise.all([
+			message.delete(),
+			setTimeout(
+				() =>
+					sentMessage.delete().catch(error => {
+						if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE) console.error(error)
+					}),
+				// Suppression après 7 secondes
+				7 * 1000,
+			),
+		])
+	}
 
 	// Si c'est un salon auto-thread
 	if (client.config.threadsManagerChannelIDs.includes(message.channel.id))
