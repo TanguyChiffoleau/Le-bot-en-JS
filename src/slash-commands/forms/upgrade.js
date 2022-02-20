@@ -23,6 +23,9 @@ export default {
 				ephemeral: true,
 			})
 
+		// Acquisition du salon
+		const upgradeChannel = interaction.guild.channels.cache.get(client.config.upgradeChannelID)
+
 		// Création de l'embed
 		const embed = {
 			color: '#C27C0E',
@@ -35,9 +38,7 @@ export default {
 			fields: [
 				{
 					name: 'Salon dans lequel renvoyer le formulaire complété',
-					value: interaction.guild.channels.cache
-						.get(client.config.upgradeChannelID)
-						.toString(),
+					value: upgradeChannel.toString(),
 				},
 				{
 					name: 'Précisions',
@@ -74,9 +75,7 @@ export default {
 			})
 
 		return interaction.reply({
-			content: `${member}, remplis le formulaire reçu en message privé puis poste le dans ${interaction.guild.channels.cache
-				.get(client.config.upgradeChannelID)
-				.toString()} 👌`,
+			content: `${member}, remplis le formulaire reçu en message privé puis poste le dans ${upgradeChannel} 👌`,
 		})
 	},
 }
