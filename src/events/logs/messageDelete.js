@@ -34,6 +34,8 @@ export default async (message, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
+	if (message.hasThread) await message.thread.delete()
+
 	const logEmbed = {
 		author: {
 			name: `${displayNameAndID(message.member, message.author)}`,
