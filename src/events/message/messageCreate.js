@@ -34,7 +34,6 @@ export default async (message, client) => {
 	// Si c'est un salon no-text
 	if (
 		client.config.noTextManagerChannelIDs.includes(message.channel.id) &&
-		message.author !== client.user &&
 		message.attachments.size < 1
 	) {
 		const sentMessage = await message.channel.send(
@@ -47,10 +46,20 @@ export default async (message, client) => {
 					sentMessage.delete().catch(error => {
 						if (error.code !== Constants.APIErrors.UNKNOWN_MESSAGE) console.error(error)
 					}),
-				7000,
+				// Suppression après 7 secondes
+				7 * 1000,
 			),
 		])
 	}
+
+	// Si c'est un salon auto-thread
+	if (client.config.threadsManagerChannelIDs.includes(message.channel.id) && !message.hasThread)
+		// Création automatique du thread associé
+		return message.startThread({
+			name: `Thread de ${message.member.displayName}`,
+			// Archivage après 24H
+			autoArchiveDuration: 24 * 60,
+		})
 
 	// Répondre émoji si @bot
 	if (message.mentions.users.has(client.user.id)) {
