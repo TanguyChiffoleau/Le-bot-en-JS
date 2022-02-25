@@ -7,7 +7,7 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName('cooldown')
+		.setName('slowmode')
 		.setDescription('Gère le mode lent sur le salon')
 		.addSubcommand(subcommand =>
 			subcommand.setName('clear').setDescription('Supprime le mode lent sur le salon'),
@@ -23,7 +23,7 @@ export default {
 						.setRequired(true),
 				)
 				.addIntegerOption(option =>
-					option.setName('durée').setDescription('Durée du slowmode (en secondes)'),
+					option.setName('durée').setDescription('Durée du mode lent (en secondes)'),
 				),
 		),
 	requirePermissions: [Permissions.FLAGS.MANAGE_MESSAGES],
@@ -35,27 +35,27 @@ export default {
 				const duree = interaction.options.getInteger('durée')
 
 				// On ajoute le cooldown
-				// Erreur si le salon est déjà en slowmode
+				// Erreur si le salon est déjà en mode lent
 				if (interaction.channel.rateLimitPerUser > 0)
 					return interaction.reply({
-						content: 'Ce salon est déjà en slowmode 😕',
+						content: 'Ce salon est déjà en mode lent 😕',
 						ephemeral: true,
 					})
 
 				await interaction.channel.setRateLimitPerUser(delai)
 
-				// S'il n'y pas de temps du slowmode,
-				// le slowmode reste jusqu'au prochain clear
+				// S'il n'y pas de temps du mode lent,
+				// le mode lent reste jusqu'au prochain clear
 				if (!duree)
 					return interaction.reply({
-						content: `Slowmode activé 👌\nDélai entre chaque message : ${convertSecondsToString(
+						content: `Mode lent activé 👌\nDélai entre chaque message : ${convertSecondsToString(
 							delai,
 						)}\nDurée : indéfinie`,
 					})
 
-				// Sinon on donne le temps du slowmode
+				// Sinon on donne le temps du mode lent
 				await interaction.reply({
-					content: `Slowmode activé 👌\nDélai entre chaque message : ${convertSecondsToString(
+					content: `Mode lent activé 👌\nDélai entre chaque message : ${convertSecondsToString(
 						delai,
 					)}\nDurée : ${convertSecondsToString(duree)}`,
 				})
@@ -63,12 +63,12 @@ export default {
 				// On attend le montant défini
 				await wait(duree * 1000)
 
-				// Si le salon est encore en slowmode
+				// Si le salon est encore en mode lent
 				if (interaction.channel.rateLimitPerUser > 0) {
 					// On le clear et on envoie un message de confirmation
 					await interaction.channel.setRateLimitPerUser(0)
 					return interaction.channel.send({
-						content: 'Slowmode désactivé 👌',
+						content: 'Mode lent désactivé 👌',
 					})
 				}
 
@@ -79,12 +79,12 @@ export default {
 				if (interaction.channel.rateLimitPerUser > 0) {
 					await interaction.channel.setRateLimitPerUser(0)
 					return interaction.reply({
-						content: 'Slowmode désactivé 👌',
+						content: 'Mode lent désactivé 👌',
 					})
 				}
 
 				return interaction.reply({
-					content: "Ce salon n'est pas en slowmode 😕",
+					content: "Ce salon n'est pas en mode lent 😕",
 					ephemeral: true,
 				})
 		}
