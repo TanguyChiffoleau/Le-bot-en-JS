@@ -37,9 +37,11 @@ export default async (message, client) => {
 	// On vérifie si le thread contient plus qu'un message
 	// car il y a le message d'origine à sa création
 	// Si oui alors on archive, sinon on supprime
-	if (message.hasThread && message.thread.messages.cache.size > 1 && !message.thread.archived)
-		message.thread.setArchived(true)
-	else message.thread.delete()
+	if (message.hasThread) {
+		const thread = await message.thread.fetch()
+		if (thread.messageCount > 1 && !thread.archived) thread.setArchived(true)
+		else thread.delete()
+	}
 
 	const logEmbed = {
 		author: {
