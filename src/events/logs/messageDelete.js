@@ -37,7 +37,7 @@ export default async (message, client) => {
 	// On vérifie si le thread contient plus qu'un message
 	// car il y a le message d'origine à sa création
 	// Si oui alors on archive, sinon on supprime
-	if (message.hasThread && message.thread.messageCount > 1 && !message.thread.archived)
+	if (message.hasThread && message.thread.messages.cache.size > 1 && !message.thread.archived)
 		message.thread.setArchived(true)
 	else message.thread.delete()
 
