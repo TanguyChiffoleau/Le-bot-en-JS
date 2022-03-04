@@ -39,8 +39,10 @@ export default async (message, client) => {
 	// Si oui alors on archive, sinon on supprime
 	if (message.hasThread) {
 		const thread = await message.thread.fetch()
-		if (thread.messageCount > 1 && !thread.archived) thread.setArchived(true)
-		else thread.delete()
+		if (!thread.archived) {
+				if (thread.messageCount > 1) thread.setArchived(true)
+				else thread.delete()
+		}
 	}
 
 	const logEmbed = {
