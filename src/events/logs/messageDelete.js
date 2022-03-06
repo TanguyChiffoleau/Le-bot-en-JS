@@ -39,8 +39,9 @@ export default async (message, client) => {
 		const thread = await message.thread.fetch()
 		// S'il est n'est pas archivé
 		if (!thread.archived)
-			// On archive s'il y contient des messages
-			if (thread.messageCount > 1) thread.setArchived(true)
+			if (thread.messageCount > 1)
+				// On archive s'il y contient des messages
+				thread.setArchived(true)
 			// Sinon on supprime
 			else thread.delete()
 	}
