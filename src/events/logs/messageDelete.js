@@ -34,13 +34,14 @@ export default async (message, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
-	// On vérifie si le thread contient plus qu'un message
-	// car il y a le message d'origine à sa création
-	// Si oui alors on archive, sinon on supprime
+	// On vérifie si le message contient un thread
 	if (message.hasThread) {
 		const thread = await message.thread.fetch()
+		// S'il est n'est pas archivé
 		if (!thread.archived)
+			// On archive s'il y contient des messages
 			if (thread.messageCount > 1) thread.setArchived(true)
+			// Sinon on supprime
 			else thread.delete()
 	}
 
