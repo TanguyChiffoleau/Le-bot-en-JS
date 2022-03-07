@@ -34,6 +34,18 @@ export default async (message, client) => {
 	).entries.first()
 	if (!fetchedLog) return
 
+	// On vérifie si le message contient un thread
+	if (message.hasThread) {
+		const thread = await message.thread.fetch()
+		// S'il n'est pas archivé
+		if (!thread.archived)
+			if (thread.messageCount > 1)
+				// On archive s'il contient des messages
+				thread.setArchived(true)
+			// Sinon on supprime
+			else thread.delete()
+	}
+
 	const logEmbed = {
 		author: {
 			name: `${displayNameAndID(message.member, message.author)}`,
