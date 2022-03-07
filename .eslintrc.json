@@ -84,7 +84,7 @@
 		"func-name-matching": "error",
 		"func-names": "error",
 		"func-style": ["error", "declaration", { "allowArrowFunctions": true }],
-		"id-length": ["error", { "exceptions": ["_", "a", "b", "i", "$"] }],
+		"id-length": ["error", { "exceptions": ["_", "a", "b", "i", "j", "$"] }],
 		"key-spacing": "error",
 		"keyword-spacing": "error",
 		"line-comment-position": "error",

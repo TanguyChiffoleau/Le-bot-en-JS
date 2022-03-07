@@ -64,9 +64,14 @@ export default {
 
 				await interaction.deferReply({ ephemeral: true })
 
+				const channelName =
+					voiceChannel.name.charAt(1) === ' '
+						? voiceChannel.name.slice(0, 2)
+						: voiceChannel.name.slice(0, 3)
+
 				// Crée le salon no-mic
 				const noMicChannel = await interaction.guild.channels.create(
-					`No-mic ${voiceChannel.name}`,
+					`${channelName}-no-mic`,
 					{
 						type: Constants.ChannelTypes.GUILD_TEXT,
 						topic: `Salon temporaire créé pour ${displayNameAndID(
