@@ -34,6 +34,10 @@ export default () => {
 	client.config = {
 		prefix: process.env.COMMANDS_PREFIX,
 		guildID: process.env.GUILD_ID,
+		dbHost: process.env.DB_HOST,
+		dbUser: process.env.DB_USER,
+		dbPass: process.env.DB_PASS,
+		dbName: process.env.DB_NAME,
 		reportChannelID: process.env.REPORT_CHANNEL,
 		leaveJoinChannelID: process.env.LEAVE_JOIN_CHANNEL_ID,
 		logsMessagesChannelID: process.env.LOGS_MESSAGES_CHANNEL,
