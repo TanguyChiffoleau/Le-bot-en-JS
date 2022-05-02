@@ -1,10 +1,11 @@
-import { Constants } from 'discord.js'
+import { Collection, Constants } from 'discord.js'
 import {
 	modifyWrongUsernames,
 	convertDate,
 	isImage,
 	getFileInfos,
 	displayNameAndID,
+	db,
 } from '../../util/util.js'
 
 export default async (message, client) => {
@@ -65,6 +66,56 @@ export default async (message, client) => {
 	if (message.mentions.users.has(client.user.id)) {
 		const pingEmoji = client.emojis.cache.find(emoji => emoji.name === 'ping')
 		if (pingEmoji) message.react(pingEmoji)
+	}
+
+	// Command handler
+	if (message.content.startsWith(client.config.prefix)) {
+		const args = message.content.slice(client.config.prefix.length).split(/ +/)
+		const commandName = args.shift().toLowerCase()
+		const bdd = await db(client, 'userbot')
+
+		// Vérification si la commande existe
+		const sqlCheckName = 'SELECT * FROM commands WHERE name = ?'
+		const dataCheckName = [commandName]
+		const [rowsCheckName] = await bdd.execute(sqlCheckName, dataCheckName)
+
+		if (!rowsCheckName[0]) return
+
+		// Partie cooldown
+		if (!client.cooldowns.has(commandName))
+			client.cooldowns.set(rowsCheckName[0].name, new Collection())
+		const now = Date.now()
+		const timestamps = client.cooldowns.get(rowsCheckName[0].name)
+		const cooldownAmount = (rowsCheckName[0].cooldown || 4) * 1000
+		if (timestamps.has(message.author.id)) {
+			const expirationTime = timestamps.get(message.author.id) + cooldownAmount
+			if (now < expirationTime) {
+				const timeLeft = expirationTime - now
+				const sentMessage = await message.reply({
+					content: `Merci d'attendre ${(timeLeft / 1000).toFixed(
+						1,
+					)} seconde(s) de plus avant de réutiliser la commande \`${
+						rowsCheckName[0].name
+					}\` 😬`,
+				})
+
+				// Suppression du message
+				return client.cache.deleteMessagesID.add(sentMessage.id)
+			}
+		}
+		timestamps.set(message.author.id, now)
+		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount)
+
+		// Exécution de la commande
+		try {
+			const sql = 'UPDATE commands SET numberOfUses = numberOfUses + 1 WHERE name = ?'
+			const data = [commandName]
+			await bdd.execute(sql, data)
+
+			return message.channel.send(rowsCheckName[0].content)
+		} catch (error) {
+			message.reply({ content: 'Il y a eu une erreur en exécutant la commande 😬' })
+		}
 	}
 
 	// Partie citation
