@@ -12,6 +12,14 @@ export default {
 		.setDescription('Gère les avertissements')
 		.addSubcommand(subcommand =>
 			subcommand
+				.setName('view')
+				.setDescription('Voir les avertissements')
+				.addUserOption(option =>
+					option.setName('membre').setDescription('Membre').setRequired(true),
+				),
+		)
+		.addSubcommand(subcommand =>
+			subcommand
 				.setName('create')
 				.setDescription('Crée un nouvel avertissement')
 				.addUserOption(option =>
@@ -22,14 +30,6 @@ export default {
 						.setName('raison')
 						.setDescription("Raison de l'avertissement")
 						.setRequired(true),
-				),
-		)
-		.addSubcommand(subcommand =>
-			subcommand
-				.setName('view')
-				.setDescription('Voir les avertissements')
-				.addUserOption(option =>
-					option.setName('membre').setDescription('Membre').setRequired(true),
 				),
 		)
 		.addSubcommand(subcommand =>

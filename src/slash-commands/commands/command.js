@@ -9,6 +9,20 @@ export default {
 		.setName('command')
 		.setDescription('Gère les commandes')
 		.addSubcommand(subcommand =>
+			subcommand.setName('view').setDescription('Voir la liste des commandes'),
+		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('search')
+				.setDescription('Cherche une commande')
+				.addStringOption(option =>
+					option
+						.setName('keyword')
+						.setDescription('Mot clé de la recherche (par nom)')
+						.setRequired(true),
+				),
+		)
+		.addSubcommand(subcommand =>
 			subcommand
 				.setName('create')
 				.setDescription('Crée une nouvelle commande')
@@ -43,16 +57,13 @@ export default {
 				.addStringOption(option =>
 					option.setName('nom').setDescription('Nom de la commande').setRequired(true),
 				),
-		)
-		.addSubcommand(subcommand =>
-			subcommand.setName('view').setDescription('Voir la liste des commandes'),
 		),
 	interaction: async (interaction, client) => {
 		const nom = interaction.options.getString('nom')
 		const contenu = interaction.options.getString('contenu')
+		const keyword = interaction.options.getString('keyword')
 
 		const bdd = await db(client, 'userbot')
-
 		if (!bdd)
 			return interaction.reply({
 				content: 'Une erreur est survenue lors de la connexion à la base de données 😕',
@@ -74,16 +85,16 @@ export default {
 						content: 'Une erreur est survenue lors de la récupération des commandes 😬',
 					})
 
-				const fieldsEmbed = []
+				const fieldsEmbedView = []
 				resultView.forEach(command => {
-					fieldsEmbed.push({
+					fieldsEmbedView.push({
 						name: command.name,
 						value: `Créée par ${command.author} (<t:${command.createdAt}>)\nDernière modification par ${command.lastModificationBy} (<t:${command.lastModification}>)`,
 					})
 				})
 
 				// Configuration de l'embed
-				const pagination = new Pagination(interaction, {
+				const paginationView = new Pagination(interaction, {
 					firstEmoji: '⏮',
 					prevEmoji: '◀️',
 					nextEmoji: '▶️',
@@ -97,14 +108,58 @@ export default {
 					loop: false,
 				})
 
-				pagination.setTitle('Commandes personnalisées')
-				pagination.setDescription(`**Total : ${resultView.length}**`)
-				pagination.setColor('#C27C0E')
-				pagination.setFields(fieldsEmbed)
-				pagination.footer = { text: 'Page : {pageNumber} / {totalPages}' }
-				pagination.paginateFields(true)
+				paginationView.setTitle('Commandes personnalisées')
+				paginationView.setDescription(`**Total : ${resultView.length}**`)
+				paginationView.setColor('#C27C0E')
+				paginationView.setFields(fieldsEmbedView)
+				paginationView.footer = { text: 'Page : {pageNumber} / {totalPages}' }
+				paginationView.paginateFields(true)
 
-				return pagination.render()
+				return paginationView.render()
+
+			// Chercher une commande
+			case 'search':
+				const sqlSearch =
+					'SELECT * FROM commands WHERE MATCH(name) AGAINST(? IN BOOLEAN MODE) OR MATCH(content) AGAINST(? IN BOOLEAN MODE);'
+				const dataSearch = [keyword, keyword]
+				const [resultSearch] = await bdd.execute(sqlSearch, dataSearch)
+
+				if (!resultSearch)
+					return interaction.reply({
+						content: 'Une erreur est survenue lors de la recherche de la commande 😬',
+					})
+
+				const fieldsEmbedSearch = []
+				resultSearch.forEach(command => {
+					fieldsEmbedSearch.push({
+						name: command.name,
+						value: `Créée par ${command.author} (<t:${command.createdAt}>)\nDernière modification par ${command.lastModificationBy} (<t:${command.lastModification}>)`,
+					})
+				})
+
+				// Configuration de l'embed
+				const paginationSearch = new Pagination(interaction, {
+					firstEmoji: '⏮',
+					prevEmoji: '◀️',
+					nextEmoji: '▶️',
+					lastEmoji: '⏭',
+					limit: 5,
+					idle: 30000,
+					ephemeral: false,
+					prevDescription: '',
+					postDescription: '',
+					buttonStyle: 'SECONDARY',
+					loop: false,
+				})
+
+				paginationSearch.setTitle('Résultats de la recherche')
+				paginationSearch.setDescription(`**Total : ${resultSearch.length}**`)
+				paginationSearch.setColor('#C27C0E')
+				paginationSearch.setFields(fieldsEmbedSearch)
+				paginationSearch.footer = { text: 'Page : {pageNumber} / {totalPages}' }
+				paginationSearch.paginateFields(true)
+
+				return paginationSearch.render()
 
 			// Nouvelle commande
 			case 'create':
@@ -123,7 +178,7 @@ export default {
 					interaction.user.tag,
 					Math.round(new Date() / 1000),
 					Math.round(new Date() / 1000),
-					interaction.user.id,
+					interaction.user.tag,
 					0,
 				]
 
