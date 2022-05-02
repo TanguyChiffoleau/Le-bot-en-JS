@@ -160,52 +160,69 @@ export default async client => {
 
 		// Si le rappel est expiré alors on supprime en base de données
 		// et on envoi le message privé
-		if (reminder.timestampEnd - Math.round(Date.now() / 1000) <= 0) {
+		if (reminder.timestampEnd - Math.round(Date.now() / 1000) <= 0)
 			// Suppression du rappel en base de données
-			const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
-			const dataDeleteReminder = [member.id]
-			const [resultDeleteReminder] = await bdd.execute(sqlDeleteReminder, dataDeleteReminder)
+			try {
+				const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
+				const dataDeleteReminder = [member.id]
+				const [resultDeleteReminder] = await bdd.execute(
+					sqlDeleteReminder,
+					dataDeleteReminder,
+				)
 
-			// Si erreur
-			if (!resultDeleteReminder)
+				// Si erreur
+				if (!resultDeleteReminder)
+					return console.log(
+						'Une erreur est survenue lors de la suppression du rappel dans la base de données',
+					)
+
+				// Sinon, envoi du rappel en message privé
+				return member
+					.send({
+						content: `Rappel : ${reminder.reminder}`,
+					})
+					.catch(error => {
+						console.error(error)
+						return error
+					})
+			} catch {
 				return console.log(
 					'Une erreur est survenue lors de la suppression du rappel dans la base de données',
 				)
-
-			// Sinon, envoi du rappel en message privé
-			return member
-				.send({
-					content: `Rappel : ${reminder.reminder}`,
-				})
-				.catch(error => {
-					console.error(error)
-					return error
-				})
-		}
+			}
 
 		// Sinon on réactive le timeout et on supprime en base de données
 		// puis on envoi le message privé
 		setTimeout(async () => {
-			// Suppression du rappel en base de données
-			const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
-			const dataDeleteReminder = [member.id]
-			const [resultDeleteReminder] = await bdd.execute(sqlDeleteReminder, dataDeleteReminder)
+			try {
+				// Suppression du rappel en base de données
+				const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
+				const dataDeleteReminder = [member.id]
+				const [resultDeleteReminder] = await bdd.execute(
+					sqlDeleteReminder,
+					dataDeleteReminder,
+				)
 
-			// Si erreur
-			if (!resultDeleteReminder)
+				// Si erreur
+				if (!resultDeleteReminder)
+					return console.log(
+						'Une erreur est survenue lors de la suppression du rappel dans la base de données',
+					)
+
+				// Sinon, envoi du rappel en message privé
+				return member
+					.send({
+						content: `Rappel : ${reminder.reminder}`,
+					})
+					.catch(error => {
+						console.error(error)
+						return error
+					})
+			} catch {
 				return console.log(
 					'Une erreur est survenue lors de la suppression du rappel dans la base de données',
 				)
-
-			// Sinon, envoi du rappel en message privé
-			return member
-				.send({
-					content: `Rappel : ${reminder.reminder}`,
-				})
-				.catch(error => {
-					console.error(error)
-					return error
-				})
+			}
 		}, (reminder.timestampEnd - Math.round(Date.now() / 1000)) * 1000)
 	})
 }

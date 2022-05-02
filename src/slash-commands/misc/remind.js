@@ -29,27 +29,49 @@ export default {
 		const timestampStart = Math.round(Date.now() / 1000)
 		const timestampEnd = Math.round(Date.now() / 1000) + ms(temps) / 1000
 
-		const sql = 'INSERT INTO reminders (discordID, reminder, timestampEnd) VALUES (?, ?, ?)'
-		const data = [interaction.user.id, rappel, timestampEnd]
-		const [resultInsert] = await bdd.execute(sql, data)
+		try {
+			const sql = 'INSERT INTO reminders (discordID, reminder, timestampEnd) VALUES (?, ?, ?)'
+			const data = [interaction.user.id, rappel, timestampEnd]
+			const [resultInsert] = await bdd.execute(sql, data)
 
-		if (!resultInsert.insertId)
+			if (!resultInsert.insertId)
+				return interaction.reply({
+					content:
+						'Une erreur est survenue lors de la création du rappel en base de données 😬',
+					ephemeral: true,
+				})
+		} catch (error) {
 			return interaction.reply({
-				content: 'Une erreur est survenue lors du rappel en base de données 😬',
+				content:
+					'Une erreur est survenue lors de la création du rappel en base de données 😬',
 				ephemeral: true,
 			})
+		}
 
 		setTimeout(async () => {
-			const sqlDelete = 'DELETE FROM reminders WHERE timestampEnd = ?'
-			const dataDelete = [timestampEnd]
-			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
+			try {
+				const sqlDelete = 'DELETE FROM reminders WHERE timestampEnd = ?'
+				const dataDelete = [timestampEnd]
+				const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-			const member = interaction.guild.members.cache.get(interaction.user.id)
+				const member = interaction.guild.members.cache.get(interaction.user.id)
 
-			if (resultDelete)
+				if (!resultDelete)
+					return member.send({
+						content:
+							'Une erreur est survenue lors de la suppression du rappel en base de données 😬',
+					})
+
 				return member.send({
 					content: `Rappel : ${rappel}`,
 				})
+			} catch {
+				return interaction.reply({
+					content:
+						'Une erreur est survenue lors de la suppression du rappel en base de données 😬',
+					ephemeral: true,
+				})
+			}
 		}, (timestampEnd - timestampStart) * 1000)
 
 		return interaction.reply({
