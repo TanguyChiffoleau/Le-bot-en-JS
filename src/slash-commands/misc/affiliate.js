@@ -23,10 +23,10 @@ export default {
 
 		const sql = 'SELECT api_key FROM tokens WHERE discord_id = ?'
 		const data = [interaction.user.id]
-		const [rows] = await bdd.execute(sql, data)
+		const [result] = await bdd.execute(sql, data)
 
 		try {
-			api_key = rows[0].api_key
+			api_key = result[0].api_key
 		} catch (error) {
 			return interaction.reply({
 				content: "Vous n'êtes pas autorisé à créer un lien affilié 😕",

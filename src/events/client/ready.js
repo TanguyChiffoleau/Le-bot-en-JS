@@ -42,11 +42,13 @@ export default async client => {
 		})
 	else await client.user.setPresence({ activities: [], status: 'online' })
 
+	// Réactivation ou désactivation des mutes
+	// s'il y en avait en fonction des durées
 	const bdd = await db(client, 'userbot')
 	if (!bdd) console.log('Une erreur est survenue lors de la connexion à la base de données')
 
 	const sqlCheck = 'SELECT * FROM mute'
-	const [rowsCheck] = await bdd.execute(sqlCheck)
+	const [resultsCheck] = await bdd.execute(sqlCheck)
 
 	const guild = await client.guilds.fetch(client.config.guildID)
 
@@ -64,7 +66,7 @@ export default async client => {
 		},
 	}
 
-	rowsCheck.forEach(async mutedMember => {
+	resultsCheck.forEach(async mutedMember => {
 		const member = guild.members.cache.get(mutedMember.discordID)
 		const mutedRole = client.config.mutedRoleID
 
@@ -78,9 +80,9 @@ export default async client => {
 
 			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
 			const dataDelete = [member.id]
-			const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-			if (rowsDelete)
+			if (resultDelete)
 				member.send({ embeds: [embed] }).catch(error => {
 					console.error(error)
 					return error
@@ -95,9 +97,9 @@ export default async client => {
 
 				const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
 				const dataDelete = [member.id]
-				const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+				const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-				if (rowsDelete)
+				if (resultDelete)
 					member.send({ embeds: [embed] }).catch(error => {
 						console.error(error)
 						return error

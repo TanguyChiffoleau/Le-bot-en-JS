@@ -20,7 +20,12 @@ export default {
 				ephemeral: true,
 			})
 
+		// Acquisition du rôle muted
 		const mutedRole = client.config.mutedRoleID
+		if (!mutedRole)
+			return interaction.reply({
+				content: "Il n'y a pas de rôle Muted 😕",
+			})
 
 		if (!member.roles.cache.has(mutedRole))
 			return interaction.reply({
@@ -76,30 +81,49 @@ export default {
 				})
 			})
 
-		// Unmute du membre
-		// Vérification si déjà mute
+		// Vérification si déjà mute en base de données
 		const sqlCheck = 'SELECT * FROM mute WHERE discordID = ?'
 		const dataCheck = [member.id]
-		const [rowsCheck] = await bdd.execute(sqlCheck, dataCheck)
+		const [resultCheck] = await bdd.execute(sqlCheck, dataCheck)
 
-		if (rowsCheck[0]) {
+		// Si oui alors on lève le mute en base de données
+		if (resultCheck[0]) {
 			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
 			const dataDelete = [member.id]
-			const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-			if (!rowsDelete.affectedRows) {
+			if (!resultDelete.affectedRows) {
 				DMMessage.delete()
 				return interaction.reply({
-					content: "Une erreur est survenue lors de l'unmute du membre 😬",
+					content: 'Une erreur est survenue lors du mute du membre en base de données 😬',
 				})
 			}
 		}
 
+		const reinsertBDD = async () => {
+			// Réinsertion du mute en base de données
+			const sql =
+				'INSERT INTO mute (discordID, timestampStart, timestampEnd) VALUES (?, ?, ?)'
+			const data = [
+				resultCheck[0].discordID,
+				resultCheck[0].timestampStart,
+				resultCheck[0].timestampEnd,
+			]
+
+			await bdd.execute(sql, data)
+		}
+
 		const unmuteAction = await member.roles.remove(mutedRole).catch(error => {
 			DMMessage.delete()
+
+			if (![reinsertBDD()].insertId)
+				console.log(
+					'Une erreur est survenue lors de la réinsertion du mute du membre en base de données',
+				)
+
 			if (error.code === Constants.APIErrors.MISSING_PERMISSIONS)
 				return interaction.reply({
-					content: "Tu n'as pas les permissions pour unmute ce membre 😬",
+					content: "Je n'ai pas les permissions pour unmute ce membre 😬",
 					ephemeral: true,
 				})
 

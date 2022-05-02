@@ -36,6 +36,13 @@ export default {
 		const reason = interaction.options.getString('raison')
 		const duration = interaction.options.getNumber('durée')
 
+		// Acquisition du rôle muted
+		const mutedRole = client.config.mutedRoleID
+		if (!mutedRole)
+			return interaction.reply({
+				content: "Il n'y a pas de rôle Muted 😕",
+			})
+
 		// Acquisition de la base de données
 		const bdd = await db(client, 'userbot')
 		if (!bdd)
@@ -88,29 +95,21 @@ export default {
 				})
 			})
 
-		// Acquisition du rôle muted
-		const mutedRole = client.config.mutedRoleID
-		if (!mutedRole) {
-			DMMessage.delete()
-			return interaction.reply({
-				content: "Il n'y a pas de rôle Muted 😕",
-			})
-		}
-
-		// Vérification si déjà mute
+		// Vérification si déjà mute en base de données
 		const sqlCheck = 'SELECT * FROM mute WHERE discordID = ?'
 		const dataCheck = [member.id]
-		const [rowsCheck] = await bdd.execute(sqlCheck, dataCheck)
+		const [resultCheck] = await bdd.execute(sqlCheck, dataCheck)
 
-		if (rowsCheck[0]) {
+		// Si oui alors on lève le mute en base de données
+		if (resultCheck[0]) {
 			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
 			const dataDelete = [member.id]
-			const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-			if (!rowsDelete.affectedRows) {
+			if (!resultDelete.affectedRows) {
 				DMMessage.delete()
 				return interaction.reply({
-					content: 'Une erreur est survenue lors du mute du membre 😬',
+					content: 'Une erreur est survenue lors du mute du membre en base de données 😬',
 				})
 			}
 		}
@@ -122,21 +121,25 @@ export default {
 			Math.round(Date.now() / 1000),
 			Math.round(Date.now() / 1000) + duration * 60,
 		]
-		const [rows] = await bdd.execute(sql, data)
+		const [resultInsert] = await bdd.execute(sql, data)
 
-		if (!rows.insertId) {
+		if (!resultInsert.insertId) {
 			DMMessage.delete()
 			return interaction.reply({
-				content: 'Une erreur est survenue lors du mute du membre 😬',
+				content: 'Une erreur est survenue lors du mute du membre en base de données 😬',
 			})
 		}
 
 		// Action de mute du membre
 		const muteAction = await member.roles.add(mutedRole).catch(error => {
 			DMMessage.delete()
+			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
+			const dataDelete = [member.id]
+			bdd.execute(sqlDelete, dataDelete)
+
 			if (error.code === Constants.APIErrors.MISSING_PERMISSIONS)
 				return interaction.reply({
-					content: "Tu n'as pas les permissions pour mute ce membre 😬",
+					content: "Je n'ai pas les permissions pour mute ce membre 😬",
 					ephemeral: true,
 				})
 
@@ -160,9 +163,9 @@ export default {
 
 			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
 			const dataDelete = [member.id]
-			const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-			if (rowsDelete)
+			if (resultDelete)
 				member
 					.send({
 						embeds: [
