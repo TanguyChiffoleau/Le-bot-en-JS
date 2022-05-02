@@ -115,7 +115,7 @@ export default {
 				pagination.setDescription(`**Total : ${resultView.length}**`)
 				pagination.setColor('#C27C0E')
 				pagination.setFields(fieldsEmbed)
-				pagination.footer = { text: 'Pages : {pageNumber} / {totalPages}' }
+				pagination.footer = { text: 'Page : {pageNumber} / {totalPages}' }
 				pagination.paginateFields(true)
 
 				return pagination.render()
