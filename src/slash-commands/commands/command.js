@@ -2,6 +2,7 @@
 /* eslint-disable default-case */
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { db } from '../../util/util.js'
+import { Pagination } from 'pagination.djs'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -42,6 +43,9 @@ export default {
 				.addStringOption(option =>
 					option.setName('nom').setDescription('Nom de la commande').setRequired(true),
 				),
+		)
+		.addSubcommand(subcommand =>
+			subcommand.setName('view').setDescription('Voir la liste des commandes'),
 		),
 	interaction: async (interaction, client) => {
 		const nom = interaction.options.getString('nom')
@@ -61,6 +65,47 @@ export default {
 		const [rowsCheckName] = await bdd.execute(sqlCheckName, dataCheckName)
 
 		switch (interaction.options.getSubcommand()) {
+			// Visualisation des commandes
+			case 'view':
+				const [resultView] = await bdd.execute('SELECT * FROM commands')
+
+				if (!resultView)
+					return interaction.reply({
+						content: 'Une erreur est survenue lors de la récupération des commandes 😬',
+					})
+
+				const fieldsEmbed = []
+				resultView.forEach(command => {
+					fieldsEmbed.push({
+						name: command.name,
+						value: `Créée par ${command.author} (<t:${command.createdAt}>)\nDernière modification par ${command.lastModificationBy} (<t:${command.lastModification}>)`,
+					})
+				})
+
+				// Configuration de l'embed
+				const pagination = new Pagination(interaction, {
+					firstEmoji: '⏮',
+					prevEmoji: '◀️',
+					nextEmoji: '▶️',
+					lastEmoji: '⏭',
+					limit: 5,
+					idle: 30000,
+					ephemeral: false,
+					prevDescription: '',
+					postDescription: '',
+					buttonStyle: 'SECONDARY',
+					loop: false,
+				})
+
+				pagination.setTitle('Commandes personnalisées')
+				pagination.setDescription(`**Total : ${resultView.length}**`)
+				pagination.setColor('#C27C0E')
+				pagination.setFields(fieldsEmbed)
+				pagination.footer = { text: 'Pages : {pageNumber} / {totalPages}' }
+				pagination.paginateFields(true)
+
+				return pagination.render()
+
 			// Nouvelle commande
 			case 'create':
 				if (rowsCheckName[0])
@@ -75,7 +120,7 @@ export default {
 				const dataInsert = [
 					nom,
 					contenu,
-					interaction.user.id,
+					interaction.user.tag,
 					Math.round(new Date() / 1000),
 					Math.round(new Date() / 1000),
 					interaction.user.id,
@@ -104,7 +149,7 @@ export default {
 
 				const sqlEdit =
 					'UPDATE commands SET content = ?, lastModification = ?, lastModificationBy = ? WHERE name = ?'
-				const dataEdit = [contenu, Math.round(new Date() / 1000), interaction.user.id, nom]
+				const dataEdit = [contenu, Math.round(new Date() / 1000), interaction.user.tag, nom]
 
 				const [rowsEdit] = await bdd.execute(sqlEdit, dataEdit)
 

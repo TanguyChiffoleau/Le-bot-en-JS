@@ -4,6 +4,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { Constants } from 'discord.js'
 import { readFile } from 'fs/promises'
 import { db } from '../../util/util.js'
+import { Pagination } from 'pagination.djs'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -71,6 +72,54 @@ export default {
 			})
 
 		switch (interaction.options.getSubcommand()) {
+			// Voir les avertissements
+			case 'view':
+				const sqlView = 'SELECT * FROM warnings WHERE discordID = ?'
+				const dataView = [member.id]
+				const [resultView] = await bdd.execute(sqlView, dataView)
+
+				if (!resultView)
+					return interaction.reply({
+						content:
+							'Une erreur est survenue lors de la récupération des avertissements 😬',
+					})
+
+				const fieldsEmbed = []
+				resultView.forEach(warning => {
+					fieldsEmbed.push({
+						name: `Avertissement #${warning.id}`,
+						value: `Par ${warning.warnedBy} - <t:${warning.warnedAt}>\nRaison : ${warning.warnReason}`,
+					})
+				})
+
+				// Configuration de l'embed
+				const pagination = new Pagination(interaction, {
+					firstEmoji: '⏮',
+					prevEmoji: '◀️',
+					nextEmoji: '▶️',
+					lastEmoji: '⏭',
+					limit: 5,
+					idle: 30000,
+					ephemeral: false,
+					prevDescription: '',
+					postDescription: '',
+					buttonStyle: 'SECONDARY',
+					loop: false,
+				})
+
+				pagination.author = {
+					name: `${member.displayName} (ID ${member.id})`,
+					icon_url: member.user.displayAvatarURL({ dynamic: true }),
+				}
+
+				pagination.setDescription(`**Total : ${resultView.length}**`)
+				pagination.setColor('#C27C0E')
+				pagination.setFields(fieldsEmbed)
+				pagination.footer = { text: 'Pages : {pageNumber} / {totalPages}' }
+				pagination.paginateFields(true)
+
+				return pagination.render()
+
 			// Crée un nouvel avertissement
 			case 'create':
 				const reason = interaction.options.getString('raison')
@@ -82,9 +131,9 @@ export default {
 					reason,
 					Math.round(Date.now() / 1000),
 				]
-				const [rowsCreate] = await bdd.execute(sqlCreate, dataCreate)
+				const [resultCreate] = await bdd.execute(sqlCreate, dataCreate)
 
-				if (!rowsCreate.insertId)
+				if (!resultCreate.insertId)
 					return interaction.reply({
 						content:
 							"Une erreur est survenue lors de la création de l'avertissement 😬",
@@ -140,46 +189,14 @@ export default {
 					content: `⚠️ \`${member.user.tag}\` a reçu un avertissement`,
 				})
 
-			// Voir les avertissements
-			case 'view':
-				const sqlView = 'SELECT * FROM warnings WHERE discordID = ?'
-				const dataView = [member.id]
-				const [rowsView] = await bdd.execute(sqlView, dataView)
-
-				if (!rowsView)
-					return interaction.reply({
-						content:
-							'Une erreur est survenue lors de la récupération des avertissements 😬',
-					})
-
-				// Création de l'embed
-				const embed = {
-					color: '#C27C0E',
-					description: `**Total : ${rowsView.length}**`,
-					author: {
-						name: `${member.displayName} (ID ${member.id})`,
-						icon_url: member.user.displayAvatarURL({ dynamic: true }),
-					},
-					fields: [],
-				}
-
-				rowsView.forEach(warning => {
-					embed.fields.push({
-						name: `Avertissement #${warning.id}`,
-						value: `Par ${warning.warnedBy} - <t:${warning.warnedAt}>\nRaison : ${warning.warnReason}`,
-					})
-				})
-
-				return interaction.reply({ embeds: [embed] })
-
 			// Supprime un avertissement
 			case 'del':
 				const id = interaction.options.getString('id')
 				const sqlDelete = 'DELETE FROM warnings WHERE id = ?'
 				const dataDelete = [id]
-				const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+				const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
-				if (!rowsDelete.affectedRows)
+				if (!resultDelete.affectedRows)
 					return interaction.reply({
 						content:
 							"Une erreur est survenue lors de la suppression de l'avertissement 😬",
@@ -193,9 +210,9 @@ export default {
 			case 'clear':
 				const sqlDeleteAll = 'DELETE FROM warnings WHERE discordID = ?'
 				const dataDeleteAll = [member.id]
-				const [rowsDeleteAll] = await bdd.execute(sqlDeleteAll, dataDeleteAll)
+				const [resultDeleteAll] = await bdd.execute(sqlDeleteAll, dataDeleteAll)
 
-				if (!rowsDeleteAll.affectedRows)
+				if (!resultDeleteAll.affectedRows)
 					return interaction.reply({
 						content:
 							'Une erreur est survenue lors de la suppression des avertissements 😬',
