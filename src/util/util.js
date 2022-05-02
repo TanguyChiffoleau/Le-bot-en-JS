@@ -100,6 +100,23 @@ export const convertSecondsToString = secondsInput => {
 }
 
 /**
+ * Converti un nombre de minutes au format H heures M minutes
+ * @param {Number} minutesInput nombre de minutes à convertir
+ * @returns nombre de minutes au format H heures M minutes
+ * @example convertMinutesToString(123) => '2 heures 3 minutes'
+ */
+export const convertMinutesToString = minutesInput => {
+	const hours = Math.floor(minutesInput / 60)
+	const minutes = Math.floor(minutesInput % 60)
+
+	const total = []
+	if (hours) total.push(pluralize('heure', hours))
+	if (minutes) total.push(pluralize('minute', minutes))
+
+	return total.join(' ')
+}
+
+/**
  * Check si le fichier est une image (extensions de type png, jpeg, jpg, gif, webp)
  * @param {string} fileName nom du fichier
  * @returns true si le fichier est une image, sinon false
