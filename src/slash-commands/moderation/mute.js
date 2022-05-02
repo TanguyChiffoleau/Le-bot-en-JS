@@ -2,7 +2,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { Constants, GuildMember } from 'discord.js'
 import { readFile } from 'fs/promises'
-import { db } from '../../util/util.js'
+import { db, convertMinutesToString } from '../../util/util.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -35,9 +35,6 @@ export default {
 
 		const reason = interaction.options.getString('raison')
 		const duration = interaction.options.getNumber('durée')
-		let durationText = ''
-		if (duration > 1) durationText = `${duration} minutes`
-		else durationText = `${duration} minute`
 
 		// Acquisition de la base de données
 		const bdd = await db(client, 'userbot')
@@ -70,7 +67,7 @@ export default {
 							},
 							{
 								name: 'Durée',
-								value: durationText,
+								value: convertMinutesToString(duration),
 							},
 						],
 					},
@@ -192,7 +189,9 @@ export default {
 		// Si pas d'erreur, message de confirmation du mute
 		if (muteAction instanceof GuildMember)
 			await interaction.reply({
-				content: `🔇 \`${member.user.tag}\` est muté pendant \`${durationText}\``,
+				content: `🔇 \`${member.user.tag}\` est muté pendant \`${convertMinutesToString(
+					duration,
+				)}\``,
 			})
 
 		// Si au moins une erreur, throw
