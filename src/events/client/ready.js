@@ -1,7 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { readFile } from 'fs/promises'
 import { db } from '../../util/util.js'
-import { Constants } from 'discord.js'
 
 export const once = true
 
@@ -42,66 +41,30 @@ export default async client => {
 		})
 	else await client.user.setPresence({ activities: [], status: 'online' })
 
-	// Réactivation ou désactivation des mutes
+	// Réactivation ou désactivation des mutes / rappels
 	// s'il y en avait en fonction des durées
-	const bdd = await db(client, 'userbot')
-	if (!bdd) console.log('Une erreur est survenue lors de la connexion à la base de données')
-
-	const sqlCheckMute = 'SELECT * FROM mute'
-	const [resultsCheckMute] = await bdd.execute(sqlCheckMute)
-
-	const sqlCheckReminders = 'SELECT * FROM reminders'
-	const [resultsReminders] = await bdd.execute(sqlCheckReminders)
 
 	const guild = await client.guilds.fetch(client.config.guildID)
+
+	// Acquisition de la base de données
+	const bdd = await db(client, 'userbot')
+	if (!bdd)
+		return console.log('Une erreur est survenue lors de la connexion à la base de données')
+
+	// Acquisition du rôle muted
+	const mutedRole = client.config.mutedRoleID
+
+	// Acquisition des mutes depuis la base de données
+	const sqlCheckMute = 'SELECT * FROM mute'
+	const [resultsCheckMute] = await bdd.execute(sqlCheckMute)
 
 	// Lecture du message d'unmute
 	const unmuteDM = await readFile('./forms/unmute.md', { encoding: 'utf8' })
 
-	// Création de l'embed
-	const embed = {
-		color: '#C27C0E',
-		title: 'Mute terminé',
-		description: unmuteDM,
-		author: {
-			name: guild.name,
-			icon_url: guild.iconURL({ dynamic: true }),
-			url: guild.vanityURL,
-		},
-	}
-
-	// Suppression du mute en base de données
-	const deleteMute = async id => {
-		const member = guild.members.cache.get(id)
-		const sqlDeleteMute = 'DELETE FROM mute WHERE discordID = ?'
-		const dataDeleteMute = [member.id]
-		const [resultDeleteMute] = await bdd.execute(sqlDeleteMute, dataDeleteMute)
-
-		if (resultDeleteMute)
-			member.send({ embeds: [embed] }).catch(error => {
-				console.error(error)
-				return error
-			})
-	}
-
-	// Suppression du rappel en base de données
-	const deleteReminder = async id => {
-		const member = guild.members.cache.get(id)
-		const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
-		const dataDeleteReminder = [member.id]
-		const [resultDeleteReminder] = await bdd.execute(sqlDeleteReminder, dataDeleteReminder)
-
-		if (!resultDeleteReminder)
-			console.log(
-				'Une erreur est survenue lors de la suppression du rappel dans la base de données',
-			)
-	}
-
 	// Boucle mutes
 	resultsCheckMute.forEach(async mutedMember => {
-		// Acquisition du membre et du rôle muted
+		// Acquisition du membre
 		const member = guild.members.cache.get(mutedMember.discordID)
-		const mutedRole = client.config.mutedRoleID
 
 		// Si le membre a le rôle muted et que le temps du mute est expiré
 		// alors on retire le rôle muted et on supprime en base de données
@@ -111,27 +74,84 @@ export default async client => {
 		) {
 			member.roles.remove(mutedRole).catch(error => {
 				console.error(error)
+				return error
 			})
 
-			await deleteMute()
+			// Suppression du mute en base de données
+			const sqlDeleteMute = 'DELETE FROM mute WHERE discordID = ?'
+			const dataDeleteMute = [member.id]
+			const [resultDeleteMute] = await bdd.execute(sqlDeleteMute, dataDeleteMute)
+
+			// Si pas d'erreur, envoi du message privé
+			if (resultDeleteMute)
+				member
+					.send({
+						embeds: [
+							{
+								color: '#C27C0E',
+								title: 'Mute terminé',
+								description: unmuteDM,
+								author: {
+									name: guild.name,
+									icon_url: guild.iconURL({ dynamic: true }),
+									url: guild.vanityURL,
+								},
+							},
+						],
+					})
+					.catch(error => {
+						console.error(error)
+						return error
+					})
 		} else {
 			// Sinon on réactive le timeout et on supprime
 			// le rôle muted après le temps écoulé
 			// puis on envoi le message privé
 			const removeRole = async () => {
 				member.roles.remove(mutedRole).catch(error => {
-					if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
+					console.error(error)
+					return error
 				})
 
-				await deleteMute()
+				// Suppression du mute en base de données
+				const sqlDeleteMute = 'DELETE FROM mute WHERE discordID = ?'
+				const dataDeleteMute = [member.id]
+				const [resultDeleteMute] = await bdd.execute(sqlDeleteMute, dataDeleteMute)
+
+				// Si pas d'erreur, envoi du message privé
+				if (resultDeleteMute)
+					member
+						.send({
+							embeds: [
+								{
+									color: '#C27C0E',
+									title: 'Mute terminé',
+									description: unmuteDM,
+									author: {
+										name: guild.name,
+										icon_url: guild.iconURL({ dynamic: true }),
+										url: guild.vanityURL,
+									},
+								},
+							],
+						})
+						.catch(error => {
+							console.error(error)
+							return error
+						})
 			}
 
+			// Redéfinition du timeout
 			setTimeout(
 				removeRole,
 				(mutedMember.timestampEnd - Math.round(Date.now() / 1000)) * 1000,
 			)
 		}
 	})
+
+	// Acquisition des rappels depuis la base de données
+	const sqlCheckReminders = 'SELECT * FROM reminders'
+	const [resultsReminders] = await bdd.execute(sqlCheckReminders)
 
 	// Boucle rappels
 	resultsReminders.forEach(async reminder => {
@@ -141,8 +161,18 @@ export default async client => {
 		// Si le rappel est expiré alors on supprime en base de données
 		// et on envoi le message privé
 		if (reminder.timestampEnd - Math.round(Date.now() / 1000) <= 0) {
-			await deleteReminder(reminder.discordID)
+			// Suppression du rappel en base de données
+			const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
+			const dataDeleteReminder = [member.id]
+			const [resultDeleteReminder] = await bdd.execute(sqlDeleteReminder, dataDeleteReminder)
 
+			// Si erreur
+			if (!resultDeleteReminder)
+				return console.log(
+					'Une erreur est survenue lors de la suppression du rappel dans la base de données',
+				)
+
+			// Sinon, envoi du rappel en message privé
 			return member
 				.send({
 					content: `Rappel : ${reminder.reminder}`,
@@ -156,7 +186,18 @@ export default async client => {
 		// Sinon on réactive le timeout et on supprime en base de données
 		// puis on envoi le message privé
 		setTimeout(async () => {
-			await deleteReminder(reminder.discordID)
+			// Suppression du rappel en base de données
+			const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
+			const dataDeleteReminder = [member.id]
+			const [resultDeleteReminder] = await bdd.execute(sqlDeleteReminder, dataDeleteReminder)
+
+			// Si erreur
+			if (!resultDeleteReminder)
+				return console.log(
+					'Une erreur est survenue lors de la suppression du rappel dans la base de données',
+				)
+
+			// Sinon, envoi du rappel en message privé
 			return member
 				.send({
 					content: `Rappel : ${reminder.reminder}`,
