@@ -47,8 +47,11 @@ export default async client => {
 	const bdd = await db(client, 'userbot')
 	if (!bdd) console.log('Une erreur est survenue lors de la connexion à la base de données')
 
-	const sqlCheck = 'SELECT * FROM mute'
-	const [resultsCheck] = await bdd.execute(sqlCheck)
+	const sqlCheckMute = 'SELECT * FROM mute'
+	const [resultsCheckMute] = await bdd.execute(sqlCheckMute)
+
+	const sqlCheckReminders = 'SELECT * FROM reminders'
+	const [resultsReminders] = await bdd.execute(sqlCheckReminders)
 
 	const guild = await client.guilds.fetch(client.config.guildID)
 
@@ -66,7 +69,33 @@ export default async client => {
 		},
 	}
 
-	resultsCheck.forEach(async mutedMember => {
+	const deleteMute = async id => {
+		const member = guild.members.cache.get(id)
+		const sqlDeleteMute = 'DELETE FROM mute WHERE discordID = ?'
+		const dataDeleteMute = [member.id]
+		const [resultDeleteMute] = await bdd.execute(sqlDeleteMute, dataDeleteMute)
+
+		if (resultDeleteMute)
+			member.send({ embeds: [embed] }).catch(error => {
+				console.error(error)
+				return error
+			})
+	}
+
+	const deleteReminder = async id => {
+		const member = guild.members.cache.get(id)
+		const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
+		const dataDeleteReminder = [member.id]
+		const [resultDeleteReminder] = await bdd.execute(sqlDeleteReminder, dataDeleteReminder)
+
+		if (!resultDeleteReminder)
+			console.log(
+				'Une erreur est survenue lors de la suppression du rappel dans la base de données',
+			)
+	}
+
+	// Mutes
+	resultsCheckMute.forEach(async mutedMember => {
 		const member = guild.members.cache.get(mutedMember.discordID)
 		const mutedRole = client.config.mutedRoleID
 
@@ -78,15 +107,7 @@ export default async client => {
 				console.error(error)
 			})
 
-			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
-			const dataDelete = [member.id]
-			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
-
-			if (resultDelete)
-				member.send({ embeds: [embed] }).catch(error => {
-					console.error(error)
-					return error
-				})
+			await deleteMute()
 		} else {
 			// Suppression du rôle Muted après le temps écoulé
 			// et envoi du message privé
@@ -95,15 +116,7 @@ export default async client => {
 					if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
 				})
 
-				const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
-				const dataDelete = [member.id]
-				const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
-
-				if (resultDelete)
-					member.send({ embeds: [embed] }).catch(error => {
-						console.error(error)
-						return error
-					})
+				await deleteMute()
 			}
 
 			setTimeout(
@@ -111,5 +124,35 @@ export default async client => {
 				(mutedMember.timestampEnd - Math.round(Date.now() / 1000)) * 1000,
 			)
 		}
+	})
+
+	// Rappels
+	resultsReminders.forEach(async reminder => {
+		const member = guild.members.cache.get(reminder.discordID)
+
+		if (reminder.timestampEnd - Math.round(Date.now() / 1000) <= 0) {
+			await deleteReminder(reminder.discordID)
+
+			return member
+				.send({
+					content: `Rappel : ${reminder.reminder}`,
+				})
+				.catch(error => {
+					console.error(error)
+					return error
+				})
+		}
+
+		setTimeout(async () => {
+			await deleteReminder(reminder.discordID)
+			return member
+				.send({
+					content: `Rappel : ${reminder.reminder}`,
+				})
+				.catch(error => {
+					console.error(error)
+					return error
+				})
+		}, (reminder.timestampEnd - Math.round(Date.now() / 1000)) * 1000)
 	})
 }
