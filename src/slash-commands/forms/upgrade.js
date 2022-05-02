@@ -7,7 +7,6 @@ export default {
 		.setName('upgrade')
 		.setDescription("Donne le formulaire d'upgrade")
 		.addUserOption(option => option.setName('membre').setDescription('Membre')),
-	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const [upgrade, upgradeDescription] = await Promise.all([
 			readFile('./forms/upgrade.md', { encoding: 'utf8' }),

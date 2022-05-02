@@ -7,7 +7,6 @@ export default {
 		.setDescription(
 			'Crée un salon textuel nomic si tu es connecté dans un salon vocal personnalisé',
 		),
-	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const voiceChannel = interaction.member.voice.channel
 

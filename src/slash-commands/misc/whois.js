@@ -6,7 +6,6 @@ export default {
 		.setName('whois')
 		.setDescription('Donne des infos sur soit ou un autre utilisateur')
 		.addUserOption(option => option.setName('membre').setDescription('Membre')),
-	requirePermissions: [],
 	interaction: interaction => {
 		// Acquisition du membre
 		const user = interaction.options.getUser('membre') || interaction.user

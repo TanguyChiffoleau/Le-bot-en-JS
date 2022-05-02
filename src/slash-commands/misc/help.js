@@ -10,7 +10,6 @@ export default {
 				.setName('commande')
 				.setDescription("Nom de la commande où l'on veut des détails"),
 		),
-	requirePermissions: [],
 	interaction: (interaction, client) => {
 		// Si aucun argument, on montre la liste des commandes principales
 		const commandeName = interaction.options.getString('commande')

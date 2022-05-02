@@ -7,7 +7,6 @@ export default {
 		.setName('config')
 		.setDescription('Donne le formulaire de config')
 		.addUserOption(option => option.setName('membre').setDescription('Membre')),
-	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const [config, configDescription] = await Promise.all([
 			readFile('./forms/config.md', { encoding: 'utf8' }),

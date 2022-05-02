@@ -42,7 +42,6 @@ export default {
 						.setRequired(true),
 				),
 		),
-	requirePermissions: [],
 	interaction: async interaction => {
 		const proposition = interaction.options.getString('proposition')
 		const thread = interaction.options.getBoolean('thread')

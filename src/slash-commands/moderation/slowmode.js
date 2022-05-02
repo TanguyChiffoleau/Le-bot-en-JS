@@ -26,8 +26,17 @@ export default {
 					option.setName('durée').setDescription('Durée du mode lent (en secondes)'),
 				),
 		),
-	requirePermissions: [Permissions.FLAGS.MANAGE_MESSAGES],
 	interaction: async interaction => {
+		if (
+			!interaction.member
+				.permissionsIn(interaction.channel)
+				.has(Permissions.FLAGS.MANAGE_MESSAGES)
+		)
+			return interaction.reply({
+				content: "Tu n'as pas les permissions pour effectuer cette commande 😕",
+				ephemeral: true,
+			})
+
 		switch (interaction.options.getSubcommand()) {
 			// Ajout d'un cooldown
 			case 'set':

@@ -4,7 +4,6 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription("Donne le ping de l'API ainsi que du bot"),
-	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		await interaction.reply({ content: '🏓 Pong ?' })
 		const start = new Date()

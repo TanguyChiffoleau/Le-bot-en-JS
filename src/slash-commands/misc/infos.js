@@ -9,7 +9,6 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName('infos')
 		.setDescription('Donne quelques infos et le statut du bot'),
-	requirePermissions: [],
 	interaction: async (interaction, client) => {
 		const embed = {
 			color: '01579B',
@@ -33,11 +32,6 @@ export default {
 				{
 					name: 'Version',
 					value: version,
-					inline: true,
-				},
-				{
-					name: 'Code source',
-					value: `[GitHub](https://github.com/TanguyChiffoleau/Le-bot-en-JS)`,
 					inline: true,
 				},
 			],

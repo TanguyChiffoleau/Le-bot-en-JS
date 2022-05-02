@@ -2,7 +2,6 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default {
 	data: new SlashCommandBuilder().setName('cf').setDescription('Coinflip! (pile ou face)'),
-	requirePermissions: [],
 	interaction: async interaction => {
 		const random = Math.round(Math.random() * 100)
 
