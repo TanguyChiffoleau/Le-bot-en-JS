@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
 
-    le-bot-en-js:
+    userbot:
         build:
             context: ../
             dockerfile: ./docker/Dockerfile
-        container_name: le-bot-en-js
+        container_name: UserBot
         restart: on-failure
         env_file:
             - ../config/bot.env

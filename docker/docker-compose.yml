@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
 
-    le-bot-en-js:
-        image: tanguychiffoleau/le-bot-en-js:latest
-        container_name: le-bot-en-js
+    userbot:
+        image: ctrlfdocker/userbot:latest
+        container_name: UserBot
         restart: on-failure
         env_file:
             - ../config/bot.env
