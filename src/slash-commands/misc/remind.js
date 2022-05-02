@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-operators */
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { db } from '../../util/util.js'
+import { db, convertDateForDiscord } from '../../util/util.js'
 import ms from 'ms'
 
 export default {
@@ -53,9 +53,9 @@ export default {
 		}, (timestampEnd - timestampStart) * 1000)
 
 		return interaction.reply({
-			content: `Rappel créé 👌\nRappel : ${rappel}\nProgrammé le <t:${
-				timestampStart + ms(temps) / 1000
-			}>`,
+			content: `Rappel créé 👌\nRappel : ${rappel}\nProgrammé le ${convertDateForDiscord(
+				timestampEnd * 1000,
+			)}`,
 			ephemeral: true,
 		})
 	},
