@@ -50,10 +50,13 @@ export default async client => {
 
 	const guild = await client.guilds.fetch(client.config.guildID)
 
+	// Lecture du message d'unmute
+	const unmuteDM = await readFile('./forms/unmute.md', { encoding: 'utf8' })
+
 	const embed = {
 		color: '#C27C0E',
-		title: 'Mute',
-		description: 'Votre mute est terminé',
+		title: 'Mute terminé',
+		description: unmuteDM,
 		author: {
 			name: guild.name,
 			icon_url: guild.iconURL({ dynamic: true }),

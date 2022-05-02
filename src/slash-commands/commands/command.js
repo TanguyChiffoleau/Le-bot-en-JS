@@ -14,7 +14,7 @@ export default {
 				.addStringOption(option =>
 					option.setName('nom').setDescription('Nom de la commande').setRequired(true),
 				)
-				.addAttachmentOption(option =>
+				.addStringOption(option =>
 					option
 						.setName('contenu')
 						.setDescription('Contenu de la commande')

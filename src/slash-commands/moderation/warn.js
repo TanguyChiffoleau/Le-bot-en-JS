@@ -78,7 +78,7 @@ export default {
 					'INSERT INTO warnings (discordID, warnedBy, warnReason, warnedAt) VALUES (?, ?, ?, ?)'
 				const dataCreate = [
 					member.id,
-					interaction.user.id,
+					interaction.user.tag,
 					reason,
 					Math.round(Date.now() / 1000),
 				]
@@ -166,7 +166,7 @@ export default {
 				rowsView.forEach(warning => {
 					embed.fields.push({
 						name: `Avertissement #${warning.id}`,
-						value: `Par <@${warning.warnedBy}> - <t:${warning.warnedAt}>\nRaison : ${warning.warnReason}`,
+						value: `Par ${warning.warnedBy} - <t:${warning.warnedAt}>\nRaison : ${warning.warnReason}`,
 					})
 				})
 

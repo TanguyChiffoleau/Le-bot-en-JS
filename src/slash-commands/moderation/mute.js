@@ -152,6 +152,10 @@ export default {
 
 		// Suppression du rôle Muted après le temps écoulé
 		// et envoi du message privé
+
+		// Lecture du message d'unmute
+		const unmuteDM = await readFile('./forms/unmute.md', { encoding: 'utf8' })
+
 		const removeRole = async () => {
 			member.roles.remove(mutedRole).catch(error => {
 				if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
@@ -167,8 +171,8 @@ export default {
 						embeds: [
 							{
 								color: '#C27C0E',
-								title: 'Mute',
-								description: 'Votre mute est terminé',
+								title: 'Mute terminé',
+								description: unmuteDM,
 								author: {
 									name: interaction.guild.name,
 									icon_url: interaction.guild.iconURL({ dynamic: true }),
