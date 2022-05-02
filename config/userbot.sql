@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mariadb
--- Generation Time: May 02, 2022 at 07:46 AM
+-- Generation Time: May 02, 2022 at 03:02 PM
 -- Server version: 10.6.4-MariaDB-1:10.6.4+maria~focal
 -- PHP Version: 7.4.23
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `commands` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` text NOT NULL,
   `author` varchar(255) NOT NULL,
   `createdAt` varchar(255) NOT NULL,
   `lastModification` varchar(255) NOT NULL,
@@ -48,6 +48,19 @@ CREATE TABLE `mute` (
   `id` int(11) NOT NULL,
   `discordID` varchar(255) NOT NULL,
   `timestampStart` varchar(255) NOT NULL,
+  `timestampEnd` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reminders`
+--
+
+CREATE TABLE `reminders` (
+  `id` int(11) NOT NULL,
+  `discordID` varchar(255) NOT NULL,
+  `reminder` text NOT NULL,
   `timestampEnd` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -74,11 +87,19 @@ CREATE TABLE `warnings` (
 --
 ALTER TABLE `commands`
   ADD PRIMARY KEY (`id`);
+ALTER TABLE `commands` ADD FULLTEXT KEY `name` (`name`);
+ALTER TABLE `commands` ADD FULLTEXT KEY `content` (`content`);
 
 --
 -- Indexes for table `mute`
 --
 ALTER TABLE `mute`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reminders`
+--
+ALTER TABLE `reminders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -101,6 +122,12 @@ ALTER TABLE `commands`
 -- AUTO_INCREMENT for table `mute`
 --
 ALTER TABLE `mute`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reminders`
+--
+ALTER TABLE `reminders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
