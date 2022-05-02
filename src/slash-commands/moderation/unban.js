@@ -12,6 +12,7 @@ export default {
 		// Acquisition de l'utilisateur
 		const user = interaction.options.getString('id')
 
+		// On ne peut pas s'unban soi-même
 		if (user.id === interaction.user.id)
 			return interaction.reply({
 				content: 'Tu ne peux pas lever ton propre bannissement 😕',
@@ -40,6 +41,7 @@ export default {
 			})
 		})
 
+		// Si pas d'erreur, message de confirmation d'unban
 		if (unbanAction)
 			return interaction.reply({
 				content: `🔓 Le bannissement de \`${user}\` a été levé`,

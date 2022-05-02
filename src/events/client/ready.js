@@ -58,6 +58,7 @@ export default async client => {
 	// Lecture du message d'unmute
 	const unmuteDM = await readFile('./forms/unmute.md', { encoding: 'utf8' })
 
+	// Création de l'embed
 	const embed = {
 		color: '#C27C0E',
 		title: 'Mute terminé',
@@ -69,6 +70,7 @@ export default async client => {
 		},
 	}
 
+	// Suppression du mute en base de données
 	const deleteMute = async id => {
 		const member = guild.members.cache.get(id)
 		const sqlDeleteMute = 'DELETE FROM mute WHERE discordID = ?'
@@ -82,6 +84,7 @@ export default async client => {
 			})
 	}
 
+	// Suppression du rappel en base de données
 	const deleteReminder = async id => {
 		const member = guild.members.cache.get(id)
 		const sqlDeleteReminder = 'DELETE FROM reminders WHERE discordID = ?'
@@ -94,11 +97,14 @@ export default async client => {
 			)
 	}
 
-	// Mutes
+	// Boucle mutes
 	resultsCheckMute.forEach(async mutedMember => {
+		// Acquisition du membre et du rôle muted
 		const member = guild.members.cache.get(mutedMember.discordID)
 		const mutedRole = client.config.mutedRoleID
 
+		// Si le membre a le rôle muted et que le temps du mute est expiré
+		// alors on retire le rôle muted et on supprime en base de données
 		if (
 			member.roles.cache.has(mutedRole) &&
 			mutedMember.timestampEnd - Math.round(Date.now() / 1000) <= 0
@@ -109,8 +115,9 @@ export default async client => {
 
 			await deleteMute()
 		} else {
-			// Suppression du rôle Muted après le temps écoulé
-			// et envoi du message privé
+			// Sinon on réactive le timeout et on supprime
+			// le rôle muted après le temps écoulé
+			// puis on envoi le message privé
 			const removeRole = async () => {
 				member.roles.remove(mutedRole).catch(error => {
 					if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
@@ -126,10 +133,13 @@ export default async client => {
 		}
 	})
 
-	// Rappels
+	// Boucle rappels
 	resultsReminders.forEach(async reminder => {
+		// Acquisition du membre
 		const member = guild.members.cache.get(reminder.discordID)
 
+		// Si le rappel est expiré alors on supprime en base de données
+		// et on envoi le message privé
 		if (reminder.timestampEnd - Math.round(Date.now() / 1000) <= 0) {
 			await deleteReminder(reminder.discordID)
 
@@ -143,6 +153,8 @@ export default async client => {
 				})
 		}
 
+		// Sinon on réactive le timeout et on supprime en base de données
+		// puis on envoi le message privé
 		setTimeout(async () => {
 			await deleteReminder(reminder.discordID)
 			return member

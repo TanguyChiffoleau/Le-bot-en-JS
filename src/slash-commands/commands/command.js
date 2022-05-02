@@ -59,10 +59,12 @@ export default {
 				),
 		),
 	interaction: async (interaction, client) => {
+		// Acquisition du nom, du contenu et du mot clé de recherche
 		const nom = interaction.options.getString('nom')
 		const contenu = interaction.options.getString('contenu')
 		const keyword = interaction.options.getString('keyword')
 
+		// Acquisition de la base de données
 		const bdd = await db(client, 'userbot')
 		if (!bdd)
 			return interaction.reply({
@@ -80,11 +82,13 @@ export default {
 			case 'view':
 				const [resultView] = await bdd.execute('SELECT * FROM commands')
 
+				// Si erreur
 				if (!resultView)
 					return interaction.reply({
 						content: 'Une erreur est survenue lors de la récupération des commandes 😬',
 					})
 
+				// Sinon, boucle d'ajout des champs
 				const fieldsEmbedView = []
 				resultView.forEach(command => {
 					fieldsEmbedView.push({
@@ -115,6 +119,7 @@ export default {
 				paginationView.footer = { text: 'Page : {pageNumber} / {totalPages}' }
 				paginationView.paginateFields(true)
 
+				// Envoi de l'embed
 				return paginationView.render()
 
 			// Chercher une commande
@@ -124,11 +129,13 @@ export default {
 				const dataSearch = [keyword, keyword]
 				const [resultSearch] = await bdd.execute(sqlSearch, dataSearch)
 
+				// Si erreur
 				if (!resultSearch)
 					return interaction.reply({
 						content: 'Une erreur est survenue lors de la recherche de la commande 😬',
 					})
 
+				// Sinon, boucle d'ajout des champs
 				const fieldsEmbedSearch = []
 				resultSearch.forEach(command => {
 					fieldsEmbedSearch.push({
@@ -159,16 +166,19 @@ export default {
 				paginationSearch.footer = { text: 'Page : {pageNumber} / {totalPages}' }
 				paginationSearch.paginateFields(true)
 
+				// Envoi de l'embed
 				return paginationSearch.render()
 
 			// Nouvelle commande
 			case 'create':
+				// Vérification si la commande existe déjà
 				if (rowsCheckName[0])
 					return interaction.reply({
 						content: `La commande **${nom}** existe déjà 😕`,
 						ephemeral: true,
 					})
 
+				// Sinon, insertion de la nouvelle commande en base de données
 				const sqlInsert =
 					'INSERT INTO commands (name, content, author, createdAt, lastModification, lastModificationBy, numberOfUses) VALUES (?, ?, ?, ?, ?, ?, ?)'
 
@@ -196,12 +206,14 @@ export default {
 
 			// Modifie une commande
 			case 'edit':
+				// Vérification que la commande existe bien
 				if (!rowsCheckName[0])
 					return interaction.reply({
 						content: `La commande **${nom}** n'existe pas 😕`,
 						ephemeral: true,
 					})
 
+				// Sinon, mise à jour de la commande en base de données
 				const sqlEdit =
 					'UPDATE commands SET content = ?, lastModification = ?, lastModificationBy = ? WHERE name = ?'
 				const dataEdit = [contenu, Math.round(new Date() / 1000), interaction.user.tag, nom]
@@ -220,12 +232,14 @@ export default {
 
 			// Supprime une commande
 			case 'delete':
+				// Vérification que la commande existe bien
 				if (!rowsCheckName[0])
 					return interaction.reply({
 						content: `La commande **${nom}** n'existe pas 😕`,
 						ephemeral: true,
 					})
 
+				// Si oui, alors suppression de la commande en base de données
 				const sqlDelete = 'DELETE FROM commands WHERE name = ?'
 				const dataDelete = [nom]
 

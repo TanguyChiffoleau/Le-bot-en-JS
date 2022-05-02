@@ -27,12 +27,14 @@ export default {
 				content: "Il n'y a pas de rôle Muted 😕",
 			})
 
+		// Vérification si le membre a bien le rôle muted
 		if (!member.roles.cache.has(mutedRole))
 			return interaction.reply({
 				content: "Le membre n'est pas muté 😕",
 				ephemeral: true,
 			})
 
+		// On ne peut pas se démute soi-même
 		if (member.id === interaction.user.id)
 			return interaction.reply({
 				content: 'Tu ne peux pas te démute toi-même 😕',
@@ -92,7 +94,10 @@ export default {
 			const dataDelete = [member.id]
 			const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
+			// Si erreur
 			if (!resultDelete.affectedRows) {
+				// Suppression du message privé envoyé
+				// car action de mute non réalisée
 				DMMessage.delete()
 				return interaction.reply({
 					content: 'Une erreur est survenue lors du mute du membre en base de données 😬',
@@ -100,8 +105,8 @@ export default {
 			}
 		}
 
+		// Réinsertion du mute en base de données
 		const reinsertBDD = async () => {
-			// Réinsertion du mute en base de données
 			const sql =
 				'INSERT INTO mute (discordID, timestampStart, timestampEnd) VALUES (?, ?, ?)'
 			const data = [
@@ -114,6 +119,8 @@ export default {
 		}
 
 		const unmuteAction = await member.roles.remove(mutedRole).catch(error => {
+			// Suppression du message privé envoyé
+			// car action de mute non réalisée
 			DMMessage.delete()
 
 			if (![reinsertBDD()].insertId)
@@ -134,7 +141,7 @@ export default {
 			})
 		})
 
-		// Si pas d'erreur, message de confirmation du mute
+		// Si pas d'erreur, message de confirmation de l'unmute
 		if (unmuteAction instanceof GuildMember)
 			await interaction.reply({
 				content: `🔈 \`${member.user.tag}\` est démuté`,

@@ -21,6 +21,7 @@ export default {
 				ephemeral: true,
 			})
 
+		// Requête de récupération de la clé API de l'utilisateur
 		const sql = 'SELECT api_key FROM tokens WHERE discord_id = ?'
 		const data = [interaction.user.id]
 		const [result] = await bdd.execute(sql, data)

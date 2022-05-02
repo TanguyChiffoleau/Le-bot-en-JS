@@ -52,6 +52,8 @@ export default {
 		let user = ''
 		let member = ''
 
+		// Afin d'éviter les erreurs, on récupère le membre
+		// pour toutes les commandes sauf "del"
 		if (interaction.options.getSubcommand() !== 'del') {
 			// Acquisition du membre
 			user = interaction.options.getUser('membre')
@@ -78,12 +80,14 @@ export default {
 				const dataView = [member.id]
 				const [resultView] = await bdd.execute(sqlView, dataView)
 
+				// Si erreur
 				if (!resultView)
 					return interaction.reply({
 						content:
 							'Une erreur est survenue lors de la récupération des avertissements 😬',
 					})
 
+				// Sinon, boucle d'ajout des champs
 				const fieldsEmbed = []
 				resultView.forEach(warning => {
 					fieldsEmbed.push({
@@ -118,10 +122,12 @@ export default {
 				pagination.footer = { text: 'Page : {pageNumber} / {totalPages}' }
 				pagination.paginateFields(true)
 
+				// Envoi de l'embed
 				return pagination.render()
 
 			// Crée un nouvel avertissement
 			case 'create':
+				// Acquisition de la raison puis insertion en base de données
 				const reason = interaction.options.getString('raison')
 				const sqlCreate =
 					'INSERT INTO warnings (discordID, warnedBy, warnReason, warnedAt) VALUES (?, ?, ?, ?)'
@@ -133,6 +139,7 @@ export default {
 				]
 				const [resultCreate] = await bdd.execute(sqlCreate, dataCreate)
 
+				// Si erreur
 				if (!resultCreate.insertId)
 					return interaction.reply({
 						content:
@@ -185,39 +192,47 @@ export default {
 						"L'envoi d'un message a échoué. Voir les logs précédents pour plus d'informations.",
 					)
 
+				// Message de confirmation
 				return interaction.reply({
 					content: `⚠️ \`${member.user.tag}\` a reçu un avertissement`,
 				})
 
 			// Supprime un avertissement
 			case 'del':
+				// Acquisition de l'id de la commande
+				// puis suppresion en base de données
 				const id = interaction.options.getString('id')
 				const sqlDelete = 'DELETE FROM warnings WHERE id = ?'
 				const dataDelete = [id]
 				const [resultDelete] = await bdd.execute(sqlDelete, dataDelete)
 
+				// Si erreur
 				if (!resultDelete.affectedRows)
 					return interaction.reply({
 						content:
 							"Une erreur est survenue lors de la suppression de l'avertissement 😬",
 					})
 
+				// Sinon, message de confirmation
 				return interaction.reply({
 					content: "L'avertissement a bien été supprimé 👌",
 				})
 
 			// Supprime tous les avertissements
 			case 'clear':
+				// Suppression en base de données
 				const sqlDeleteAll = 'DELETE FROM warnings WHERE discordID = ?'
 				const dataDeleteAll = [member.id]
 				const [resultDeleteAll] = await bdd.execute(sqlDeleteAll, dataDeleteAll)
 
+				// Si erreur
 				if (!resultDeleteAll.affectedRows)
 					return interaction.reply({
 						content:
 							'Une erreur est survenue lors de la suppression des avertissements 😬',
 					})
 
+				// Sinon, message de confirmation
 				return interaction.reply({
 					content: 'Les avertissements ont bien été supprimés 👌',
 				})

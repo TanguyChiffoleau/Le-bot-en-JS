@@ -27,12 +27,14 @@ export default {
 				ephemeral: true,
 			})
 
+		// On ne peut pas se mute soi-même
 		if (member.id === interaction.user.id)
 			return interaction.reply({
 				content: 'Tu ne peux pas te mute toi-même 😕',
 				ephemeral: true,
 			})
 
+		// Acquisition de la raison et la durée du mute
 		const reason = interaction.options.getString('raison')
 		const duration = interaction.options.getNumber('durée')
 
@@ -114,7 +116,7 @@ export default {
 			}
 		}
 
-		// Insertion du mute en base de données
+		// Insertion du nouveau mute en base de données
 		const sql = 'INSERT INTO mute (discordID, timestampStart, timestampEnd) VALUES (?, ?, ?)'
 		const data = [
 			member.id,
@@ -150,7 +152,7 @@ export default {
 			})
 		})
 
-		// Suppression du rôle Muted après le temps écoulé
+		// Suppression du rôle muted après le temps écoulé
 		// et envoi du message privé
 
 		// Lecture du message d'unmute

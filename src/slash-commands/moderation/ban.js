@@ -22,12 +22,14 @@ export default {
 				ephemeral: true,
 			})
 
+		// On ne peut pas se ban soi-même
 		if (member.id === interaction.user.id)
 			return interaction.reply({
 				content: 'Tu ne peux pas te bannir toi-même 😕',
 				ephemeral: true,
 			})
 
+		// Acquisition de la raison du bannissement
 		const reason = interaction.options.getString('raison')
 
 		// Lecture du message de ban
@@ -74,6 +76,8 @@ export default {
 		const banAction = await member
 			.ban({ days: 7, reason: `${interaction.user.tag}: ${reason}` })
 			.catch(error => {
+				// Suppression du message privé envoyé
+				// car action de bannissement non réalisée
 				DMMessage.delete()
 
 				if (error.code === Constants.APIErrors.MISSING_PERMISSIONS)
