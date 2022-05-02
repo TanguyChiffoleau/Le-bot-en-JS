@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { readFile } from 'fs/promises'
+import { db } from '../../util/util.js'
+import { Constants } from 'discord.js'
 
 export const once = true
 
@@ -39,4 +41,70 @@ export default async client => {
 			status: 'online',
 		})
 	else await client.user.setPresence({ activities: [], status: 'online' })
+
+	const bdd = await db(client, 'userbot')
+	if (!bdd) console.log('Une erreur est survenue lors de la connexion à la base de données')
+
+	const sqlCheck = 'SELECT * FROM mute'
+	const [rowsCheck] = await bdd.execute(sqlCheck)
+
+	const guild = await client.guilds.fetch(client.config.guildID)
+
+	const embed = {
+		color: '#C27C0E',
+		title: 'Mute',
+		description: 'Votre mute est terminé',
+		author: {
+			name: guild.name,
+			icon_url: guild.iconURL({ dynamic: true }),
+			url: guild.vanityURL,
+		},
+	}
+
+	rowsCheck.forEach(async mutedMember => {
+		const member = guild.members.cache.get(mutedMember.discordID)
+		const mutedRole = client.config.mutedRoleID
+
+		if (
+			member.roles.cache.has(mutedRole) &&
+			mutedMember.timestampEnd - Math.round(Date.now() / 1000) <= 0
+		) {
+			member.roles.remove(mutedRole).catch(error => {
+				console.error(error)
+			})
+
+			const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
+			const dataDelete = [member.id]
+			const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+
+			if (rowsDelete)
+				member.send({ embeds: [embed] }).catch(error => {
+					console.error(error)
+					return error
+				})
+		} else {
+			// Suppression du rôle Muted après le temps écoulé
+			// et envoi du message privé
+			const removeRole = async () => {
+				member.roles.remove(mutedRole).catch(error => {
+					if (error.code !== Constants.APIErrors.UNKNOWN_MEMBER) throw error
+				})
+
+				const sqlDelete = 'DELETE FROM mute WHERE discordID = ?'
+				const dataDelete = [member.id]
+				const [rowsDelete] = await bdd.execute(sqlDelete, dataDelete)
+
+				if (rowsDelete)
+					member.send({ embeds: [embed] }).catch(error => {
+						console.error(error)
+						return error
+					})
+			}
+
+			setTimeout(
+				removeRole,
+				(mutedMember.timestampEnd - Math.round(Date.now() / 1000)) * 1000,
+			)
+		}
+	})
 }
