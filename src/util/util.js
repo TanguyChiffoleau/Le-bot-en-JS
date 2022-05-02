@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-mixed-operators */
 import { GuildMember, Client, User } from 'discord.js'
+import mysql from 'mysql2/promise'
 
 /**
  * Gère l'ajout de "s" à la fin d'un mot en fonction de la quantité
@@ -199,3 +200,23 @@ export const closeGracefully = (signal, client) => {
  * @param {Date} date
  */
 export const convertDateForDiscord = date => `<t:${Math.round(new Date(date) / 1000)}>`
+
+/**
+ * Crée une connexion à la base de données
+ * @param {Client} client Discord.js
+ * @param {string} table nom de la table à utiliser
+ */
+export const db = async (client, table) => {
+	try {
+		const bdd = await mysql.createConnection({
+			host: client.config.dbHost,
+			user: client.config.dbUser,
+			password: client.config.dbPass,
+			database: table,
+		})
+
+		return bdd
+	} catch (error) {
+		return false
+	}
+}
