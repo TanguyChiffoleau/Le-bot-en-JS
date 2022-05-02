@@ -1,4 +1,3 @@
-/* eslint-disable no-continue */
 import { readdir } from 'fs/promises'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v9'
