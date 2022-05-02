@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { Constants, Permissions, GuildMember } from 'discord.js'
+import { Constants, GuildMember } from 'discord.js'
 import { readFile } from 'fs/promises'
 
 export default {
@@ -13,16 +13,6 @@ export default {
 			option.setName('raison').setDescription('Raison du bannissement').setRequired(true),
 		),
 	interaction: async interaction => {
-		if (
-			!interaction.member
-				.permissionsIn(interaction.channel)
-				.has(Permissions.FLAGS.BAN_MEMBERS)
-		)
-			return interaction.reply({
-				content: "Tu n'as pas les permissions pour effectuer cette commande 😕",
-				ephemeral: true,
-			})
-
 		// Acquisition du membre et de la raison du bannissement
 		const user = interaction.options.getUser('membre')
 		const member = interaction.guild.members.cache.get(user.id)

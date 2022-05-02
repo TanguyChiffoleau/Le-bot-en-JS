@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { Constants, Permissions } from 'discord.js'
+import { Constants } from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -9,16 +9,6 @@ export default {
 			option.setName('id').setDescription('Discord ID').setRequired(true),
 		),
 	interaction: async interaction => {
-		if (
-			!interaction.member
-				.permissionsIn(interaction.channel)
-				.has(Permissions.FLAGS.BAN_MEMBERS)
-		)
-			return interaction.reply({
-				content: "Tu n'as pas les permissions pour effectuer cette commande 😕",
-				ephemeral: true,
-			})
-
 		// Acquisition de l'utilisateur
 		const user = interaction.options.getString('id')
 

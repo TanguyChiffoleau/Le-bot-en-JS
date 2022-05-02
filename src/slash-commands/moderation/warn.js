@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { Constants, Permissions } from 'discord.js'
+import { Constants } from 'discord.js'
 import { readFile } from 'fs/promises'
 import { db } from '../../util/util.js'
 
@@ -48,16 +48,6 @@ export default {
 				),
 		),
 	interaction: async (interaction, client) => {
-		if (
-			!interaction.member
-				.permissionsIn(interaction.channel)
-				.has(Permissions.FLAGS.BAN_MEMBERS)
-		)
-			return interaction.reply({
-				content: "Tu n'as pas les permissions pour effectuer cette commande 😕",
-				ephemeral: true,
-			})
-
 		let user = ''
 		let member = ''
 

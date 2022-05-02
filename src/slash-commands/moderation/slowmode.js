@@ -2,7 +2,6 @@
 /* eslint-disable default-case */
 import { convertSecondsToString } from '../../util/util.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { Permissions } from 'discord.js'
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export default {
@@ -27,16 +26,6 @@ export default {
 				),
 		),
 	interaction: async interaction => {
-		if (
-			!interaction.member
-				.permissionsIn(interaction.channel)
-				.has(Permissions.FLAGS.MANAGE_MESSAGES)
-		)
-			return interaction.reply({
-				content: "Tu n'as pas les permissions pour effectuer cette commande 😕",
-				ephemeral: true,
-			})
-
 		switch (interaction.options.getSubcommand()) {
 			// Ajout d'un cooldown
 			case 'set':
